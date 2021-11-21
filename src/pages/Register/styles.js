@@ -1,44 +1,31 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  background-color: whitesmoke;
   height: 100%;
-  flex-direction: column;
-  background: rgb(242, 193, 75);
-  background: linear-gradient(
-    180deg,
-    rgba(242, 193, 75, 1) 0%,
-    rgba(213, 162, 39, 1) 35%,
-    rgba(214, 158, 23, 1) 100%
-  );
+  padding-top: 20px;
 `;
 
-export const Content = styled.div`
+export const Content = styled.form`
   background-color: white;
-  margin: 0 auto;
+  padding: 40px;
   border-radius: 4px;
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  margin-top: 120px;
-  padding: 40px 20px;
-  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.5);
-  width: 30%;
-  @media (max-width: 768px) {
-    width: 80%;
+  width: 40%;
+  margin: 0 auto;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.3);
+
+  @media(max-width: 768px) {
+    width: 90%;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    text-align: center;
   }
 
-  button {
-    padding: 10px 30px;
-    border-radius: 4px;
-    border: transparent;
-    background-color: var(--yellow);
-    font-weight: bold;
-    color: #111;
-
-    &:hover {
-      filter: brightness(0.8);
-      transition: 0.3s ease-in-out;
-    }
+  div {
+    margin-bottom: 8px;
   }
 `;
