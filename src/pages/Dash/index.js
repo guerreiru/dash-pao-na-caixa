@@ -37,9 +37,9 @@ const Dash = () => {
             ) : null}
           </Breadcrumbs>
           <Routes>
-            <Route path="/" element={<p>Home</p>} />
-            <Route path="padarias" element={<Padaria />} />
-            <Route path="condominios" element={<Condominio />} />
+            <Route path="/" element={<p>Aqui vai ter o conteudo padrão</p>} />
+            <Route path="padarias/*" element={<Padaria />} />
+            <Route path="condominios/*" element={<Condominio />} />
           </Routes>
         </TableContainer>
       </Content>

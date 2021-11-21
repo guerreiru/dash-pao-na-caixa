@@ -19,5 +19,7 @@ export const TableContainer = styled.div`
 
   a {
     text-transform: capitalize;
+    text-decoration: none;
+    color: #737373;
   }
 `;

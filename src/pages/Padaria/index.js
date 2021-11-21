@@ -1,31 +1,52 @@
 import React from "react";
-// import { Container } from "./styles";
-import DenseTable from "../../components/Table";
+import { Route, Routes } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@material-ui/core";
+import { FiPlus } from "react-icons/fi";
 import { api } from "../../services/api";
+import Table from "../../components/Table";
+import FormEstablishment from "../../components/FormEstablishment";
+
 const Padaria = () => {
   const [bakery, setBakery] = React.useState([]);
-  const [loading, setLoading] = React.useState(null);
+  const navigate = useNavigate();
 
-  async function loadBakery(params) {
+  async function loadBakery() {
     try {
-      const res = await api.get("bakery")
+      const res = await api.get("bakery");
       setBakery(res.data.data);
     } catch (error) {
       console.log(error);
     }
+  }
 
-    console.log(bakery)
+  function handleAdd() {
+    navigate("adicionar");
   }
 
   React.useEffect(() => {
-    loadBakery()
-  }, [])
+    loadBakery();
+  }, [setBakery]);
 
   return (
-    <DenseTable
-      label="Padarias"
-      data={bakery}
-    />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Table label="Padarias" data={bakery}>
+            <Button
+              type="button"
+              variant="contained"
+              startIcon={<FiPlus />}
+              onClick={handleAdd}
+            >
+              Adicionar
+            </Button>
+          </Table>
+        }
+      />
+      <Route path="adicionar" element={<FormEstablishment label="Padarias" />} />
+    </Routes>
   );
 };
 

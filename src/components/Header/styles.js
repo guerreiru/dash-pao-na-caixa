@@ -33,10 +33,6 @@ export const Content = styled.div`
       justify-content: center;
       align-items: center;
       gap: 1px;
-      li {
-        flex: 1 0 25%;
-        text-align: center;
-      }
     }
   }
 `;
@@ -59,6 +55,13 @@ export const ListLinks = styled.div`
     &:hover {
       background-color: #999;
       cursor: pointer;
+    }
+  }
+
+  @media (max-width: 992px) {
+    a {
+      flex: 1 0 25%;
+      text-align: center;
     }
   }
 `;

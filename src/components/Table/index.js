@@ -7,17 +7,13 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
 } from "@material-ui/core";
 import { Container, TableHeader, SearchInput } from "./styles";
 import { FaEdit, FaSearch } from "react-icons/fa";
-import { FiTrash, FiPlus } from "react-icons/fi";
+import { FiTrash } from "react-icons/fi";
 
-function createData(name, calories, icon) {
-  return { name, calories, icon };
-}
+export default function DateTable(props) {
 
-export default function DenseTable(props) {
   return (
     <Container>
       <TableHeader>
@@ -26,9 +22,7 @@ export default function DenseTable(props) {
           <FaSearch color="#737373" />
           <input type="search" placeholder="Pesquisar" />
         </SearchInput>
-        <Button type="button" variant="contained" startIcon={<FiPlus />}>
-          Adicionar
-        </Button>
+        {props.children}
       </TableHeader>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
