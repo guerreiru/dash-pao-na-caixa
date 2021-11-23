@@ -1,14 +1,16 @@
 import * as React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import GlobalStyles from "./styles/globalStyles";
 import Router from "./routes";
-import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GlobalContext } from "./context/GlobalContext";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <ToastContainer autoClose={2000} />
       <GlobalStyles />
+      <ToastContainer autoClose={2000} />
       <Router />
     </BrowserRouter>
   );

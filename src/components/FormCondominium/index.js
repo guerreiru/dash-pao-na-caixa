@@ -1,17 +1,36 @@
 import React from "react";
-import { TextField, Button, Grid } from "@material-ui/core";
-import { Form, Title, InputImage, FormGroup } from "./styles";
+import { TextField, Button, Grid, Autocomplete } from "@material-ui/core";
+import { Form, Title, FormGroup } from "./styles";
 import CondominiumSchema from "../../utils/YupSchemas/CondominiumSchema";
 import ErrorMessage from "../ErrorMessage";
 
 const Condominio = (props) => {
   const [values, setValues] = React.useState({
     name: "",
-    email: "",
-    cell_phone: "",
-    cpf: "",
-    user: "",
-    password: "",
+    bakery: {
+      name: "",
+      imgLogo: "",
+      address: {
+        street_name: "",
+        number: 0,
+        city: "",
+        state: "",
+        zip_code: "",
+        complement: "",
+      },
+    },
+    subscriptionPlan: {
+      name: "",
+      price: 0,
+      deadline_orders_morning: 0,
+      deadline_orders_afternoon: 0,
+    },
+    street_name: "",
+    number: 0,
+    city: "",
+    state: "",
+    zip_code: "",
+    complement: "",
   });
   const [erros, setErros] = React.useState({});
 
@@ -26,7 +45,7 @@ const Condominio = (props) => {
     const haveErros = Object.values(CondominiumSchema(values)).length;
     event.preventDefault();
     setErros(CondominiumSchema(values));
-    if (haveErros === 0) console.log("Pera lá")
+    if (haveErros === 0) console.log("Pera lá");
   }
   return (
     <Grid container>
@@ -42,7 +61,7 @@ const Condominio = (props) => {
                 label="Nome"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.name}
                 fullWidth
               />
               {erros.name && <ErrorMessage message={erros.name} />}
@@ -50,93 +69,102 @@ const Condominio = (props) => {
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
-            <InputImage>
-              <input type="file" id="logo" />
-              <label htmlFor="logo">Escolher arquivo</label>
-            </InputImage>
+            <FormGroup>
+              <TextField
+                name="bakery"
+                label="Padaria"
+                type="text"
+                onChange={handleChange}
+                value={values.name}
+                fullWidth
+              />
+              {erros.name && <ErrorMessage message={erros.name} />}
+            </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={9}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
+                name="street_name"
+                label="Rua"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.street_name}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.street_name && (
+                <ErrorMessage message={erros.street_name} />
+              )}
             </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={3}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
-                type="text"
+                name="number"
+                label="Número"
+                type="number"
                 onChange={handleChange}
-                value={values.user}
+                value={values.number}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.number && <ErrorMessage message={erros.number} />}
             </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
+                name="city"
+                label="Cidade"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.city}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.city && <ErrorMessage message={erros.city} />}
             </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
+                name="state"
+                label="Estado"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.state}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.state && <ErrorMessage message={erros.state} />}
             </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={2}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
+                name="zip_code"
+                label="CEP"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.zip_code}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.zip_code && <ErrorMessage message={erros.zip_code} />}
             </FormGroup>
           </Grid>
 
           <Grid item xs={12} sm={4} md={2}>
             <FormGroup>
               <TextField
-                name="name"
-                label="Nome"
+                name="complement"
+                label="Complemento"
                 type="text"
                 onChange={handleChange}
-                value={values.user}
+                value={values.complement}
                 fullWidth
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
+              {erros.complement && <ErrorMessage message={erros.complement} />}
             </FormGroup>
           </Grid>
 

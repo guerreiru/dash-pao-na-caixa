@@ -25,6 +25,10 @@ const FormBakery = (props) => {
     });
   }
 
+  function handleBlur() {
+    setErros(BakerySchema(values));
+  }
+
   async function handleSubmit(event) {
     const haveErros = Object.values(BakerySchema(values)).length;
     event.preventDefault();
@@ -59,6 +63,7 @@ const FormBakery = (props) => {
                 label="Nome"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.name}
                 fullWidth
               />
@@ -80,6 +85,7 @@ const FormBakery = (props) => {
                 label="Rua"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.street_name}
                 fullWidth
               />
@@ -96,6 +102,7 @@ const FormBakery = (props) => {
                 label="Número"
                 type="number"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.number}
                 fullWidth
               />
@@ -110,6 +117,7 @@ const FormBakery = (props) => {
                 label="Cidade"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.city}
                 fullWidth
               />
@@ -124,6 +132,7 @@ const FormBakery = (props) => {
                 label="Estado"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.state}
                 fullWidth
               />
@@ -138,6 +147,7 @@ const FormBakery = (props) => {
                 label="CEP"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.zip_code}
                 fullWidth
               />
@@ -152,6 +162,7 @@ const FormBakery = (props) => {
                 label="Complemento"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.complement}
                 fullWidth
               />

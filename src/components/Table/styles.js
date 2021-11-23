@@ -17,11 +17,11 @@ export const TableHeader = styled.div`
     flex: 1;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 568px) {
+    row-gap: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 10px;
   }
 `;
 

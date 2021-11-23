@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { FiPlus } from "react-icons/fi";
 import { api } from "../../services/api";
 import Table from "../../components/Table";
-import FormCondominio from "../../components/Condominio";
+import FormCondominio from "../../components/FormCondominium";
 
 const Condominio = () => {
   const [condominium, setCondominium] = React.useState([]);

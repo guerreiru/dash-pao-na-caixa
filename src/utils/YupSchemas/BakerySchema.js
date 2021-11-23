@@ -12,10 +12,10 @@ const BakerySchema = (values) => {
     errors.street_name = "A rua deve conter pelo menos 4 caracteres";
   }
 
-  if (!values.street_name) {
-    errors.street_name = "Campo obrigatório!";
-  } else if (values.street_name.length < 1) {
-    errors.street_name = "O número deve conter pelo menos 1 caracter";
+  if (!values.number) {
+    errors.number = "Campo obrigatório!";
+  } else if (values.number.length < 1) {
+    errors.number = "O número deve conter pelo menos 1 caracter";
   }
 
   if (!values.city) {
