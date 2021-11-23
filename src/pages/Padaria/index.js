@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { FiPlus } from "react-icons/fi";
 import { api } from "../../services/api";
 import Table from "../../components/Table";
-import FormEstablishment from "../../components/FormEstablishment";
+import FormBakery from "../../components/FormBakery";
 
 const Padaria = () => {
   const [bakery, setBakery] = React.useState([]);
@@ -45,7 +45,7 @@ const Padaria = () => {
           </Table>
         }
       />
-      <Route path="adicionar" element={<FormEstablishment label="Padarias" />} />
+      <Route path="adicionar" element={<FormBakery label="Padarias" />} />
     </Routes>
   );
 };

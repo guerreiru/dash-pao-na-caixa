@@ -24,12 +24,17 @@ export const Content = styled.form`
     width: 90%;
   }
 
-  div {
-    margin-bottom: 8px;
-    text-align: center;
+  button {
+    align-self: center;
   }
 `;
 
 export const FormHeader = styled.div`
   text-align: center;
+  margin-bottom: 10px;
 `;
+
+export const FormGroup = styled.div`
+  margin-bottom: 10px;
+  text-align: center;
+`

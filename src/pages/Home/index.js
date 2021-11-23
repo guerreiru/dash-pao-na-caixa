@@ -1,72 +1,66 @@
 import React from "react";
-import { useFormik } from "formik";
 import { TextField, Button } from "@material-ui/core";
-import { Container, Content, FormHeader } from "./styles";
+import { Container, Content, FormHeader, FormGroup } from "./styles";
 import Logo from "../../components/Logo";
+import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router";
-
-const validate = (values) => {
-  const errors = {}
-
-  if (!values.user) {
-    errors.user = "Campo obrigatório!";
-  } else if (values.user.length < 4) {
-    errors.user = "Must be 4 characters or less";
-  }
-
-  if (!values.password) {
-    errors.password = "Campo obrigatório!";
-  } else if (values.password.length < 6) {
-    errors.password = "Must be 6 characters or less";
-  }
-
-  return errors;
-};
+import UserSchema from "../../utils/YupSchemas/UserSchema";
 
 const Home = () => {
-  const navigate = useNavigate()
-
-  const formik = useFormik({
-    initialValues: {
-      user: "",
-      password: "",
-    },
-    validate,
-    onSubmit: (values) => {
-      navigate("/dash")
-    },
+  const navigate = useNavigate();
+  const [values, setValues] = React.useState({
+    user: "",
+    password: "",
   });
+  const [erros, setErros] = React.useState({});
+
+  function handleChange(ev) {
+    setValues({
+      ...values,
+      [ev.target.name]: ev.target.value,
+    });
+  }
+
+  function handleSubmit(event) {
+    const haveErros = Object.values(UserSchema(values)).length;
+    event.preventDefault();
+    setErros(UserSchema(values));
+    if (haveErros === 0) navigate("/dash")
+  }
+
   return (
     <Container>
-      <Content onSubmit={formik.handleSubmit}>
+      <Content onSubmit={handleSubmit}>
         <FormHeader>
           <Logo />
           <p>Área Administrativa</p>
         </FormHeader>
-        <TextField
-          name="user"
-          label="Usuário"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.user}
-          error={formik.errors.user}
-          helperText={formik.errors.user}
-        />
+        <FormGroup>
+          <TextField
+            name="user"
+            label="Usuário"
+            type="text"
+            onChange={handleChange}
+            value={values.user}
+            fullWidth
+          />
+          {erros.user && <ErrorMessage message={erros.user} />}
+        </FormGroup>
 
-        <TextField
-          name="password"
-          label="Senha"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
-          error={formik.errors.password}
-          helperText={formik.errors.password}
-        />
-        <div>
-          <Button type="submit" variant="contained">
-            Entrar
-          </Button>
-        </div>
+        <FormGroup>
+          <TextField
+            name="password"
+            label="Senha"
+            type="password"
+            onChange={handleChange}
+            value={values.password}
+            fullWidth
+          />
+          {erros.password && <ErrorMessage message={erros.password} />}
+        </FormGroup>
+        <Button type="submit" variant="contained">
+          Entrar
+        </Button>
       </Content>
     </Container>
   );

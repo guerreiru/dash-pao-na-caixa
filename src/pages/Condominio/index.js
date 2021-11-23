@@ -5,7 +5,7 @@ import { Button } from "@material-ui/core";
 import { FiPlus } from "react-icons/fi";
 import { api } from "../../services/api";
 import Table from "../../components/Table";
-import FormEstablishment from "../../components/FormEstablishment";
+import FormCondominio from "../../components/Condominio";
 
 const Condominio = () => {
   const [condominium, setCondominium] = React.useState([]);
@@ -45,7 +45,7 @@ const Condominio = () => {
           </Table>
         }
       />
-      <Route path="adicionar" element={<FormEstablishment />} />
+      <Route path="adicionar" element={<FormCondominio />} />
     </Routes>
   );
 };

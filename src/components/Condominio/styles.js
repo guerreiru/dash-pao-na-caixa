@@ -60,3 +60,8 @@ export const InputImage = styled.div`
     border-radius: 0 0.25rem 0.25rem 0;
   }
 `;
+
+export const FormGroup = styled.div`
+  margin-bottom: 10px;
+  text-align: center;
+`
