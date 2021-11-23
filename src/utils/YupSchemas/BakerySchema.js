@@ -12,6 +12,12 @@ const BakerySchema = (values) => {
     errors.street_name = "A rua deve conter pelo menos 4 caracteres";
   }
 
+  if (!values.street_name) {
+    errors.street_name = "Campo obrigatório!";
+  } else if (values.street_name.length < 1) {
+    errors.street_name = "O número deve conter pelo menos 1 caracter";
+  }
+
   if (!values.city) {
     errors.city = "Campo obrigatório!";
   } else if (values.city.length < 3) {
@@ -32,7 +38,7 @@ const BakerySchema = (values) => {
 
   if (!values.complement) {
     errors.complement = "Campo obrigatório!";
-  } else if (values.complement.length < 8) {
+  } else if (values.complement.length < 2) {
     errors.complement = "o complemento deve conter pelo menos 2 caracteres";
   }
 

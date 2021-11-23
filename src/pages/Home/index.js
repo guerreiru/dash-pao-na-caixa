@@ -5,6 +5,7 @@ import Logo from "../../components/Logo";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router";
 import UserSchema from "../../utils/YupSchemas/UserSchema";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const Home = () => {
     const haveErros = Object.values(UserSchema(values)).length;
     event.preventDefault();
     setErros(UserSchema(values));
+    toast.info("Padaroa criada com sucesso!")
+    return 
     if (haveErros === 0) navigate("/dash")
   }
 
