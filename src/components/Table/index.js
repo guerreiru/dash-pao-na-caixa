@@ -36,7 +36,7 @@ export default function DateTable(props) {
           <TableBody>
             {props.data.map((data) => (
               <TableRow
-                key={data.name}
+                key={data.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>{data.id}</TableCell>

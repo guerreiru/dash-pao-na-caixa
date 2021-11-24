@@ -33,11 +33,7 @@ const Condominio = (props) => {
   });
   const [erros, setErros] = React.useState({});
   const { data, bakeryOptions } = React.useContext(BakeryContext);
-  const [bakerySelected, setBakerySelected] = React.useState("");
-
-  React.useEffect(() => {
-    setBakerySelected(bakeryOptions());
-  }, []);
+  const [options, setOptions] = React.useState("");
 
   function handleChange(ev) {
     setValues({
@@ -53,7 +49,7 @@ const Condominio = (props) => {
   function handleSubmit(event) {
     event.preventDefault();
     const bakery = ObjVal(data).find(
-      (bakeries) => bakeries.id === bakerySelected
+      (bakeries) => bakeries.id === options
     );
     const haveErros = ObjVal(CondominiumSchema(values)).length;
     setErros(CondominiumSchema(values));
@@ -71,14 +67,15 @@ const Condominio = (props) => {
         });
         toast.success("Condomínio cadastrado!");
         setValues(ClearForm(values));
-        setBakerySelected("");
+        setOptions("");
       } catch (error) {}
     }
   }
 
-  function handleSelectBakery({ target }) {
-    setBakerySelected(target.value);
-  }
+  const handleSelectBakery = ({ target }) => {
+    setOptions(target.value);
+  };
+
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -105,13 +102,14 @@ const Condominio = (props) => {
             <FormControl fullWidth>
               <InputLabel id="padarias">Padaria</InputLabel>
               <Select
-                labelId="padarias"
-                value={bakerySelected}
-                label="Padaria"
+                id="padarias"
+                value={options}
                 onChange={handleSelectBakery}
+                autoWidth
+                label="Padria"
               >
                 <MenuItem value="">
-                  <em>Selecione</em>
+                  <em>None</em>
                 </MenuItem>
                 {ObjVal(bakeryOptions()).map((item) => (
                   <MenuItem key={item.id} value={item.id}>
