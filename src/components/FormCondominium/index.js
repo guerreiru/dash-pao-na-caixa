@@ -1,10 +1,21 @@
 import React from "react";
-import { TextField, Button, Grid, Autocomplete } from "@material-ui/core";
-import { Form, Title, FormGroup } from "./styles";
-import CondominiumSchema from "../../utils/YupSchemas/CondominiumSchema";
-import ErrorMessage from "../ErrorMessage";
-import { BakeryContext } from "../../context/BakeryContext";
+import {
+  TextField,
+  Button,
+  Grid,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from "@material-ui/core";
+import { toast } from "react-toastify";
+import { api } from "../../services/api";
 import { ObjVal } from "../../utils/Functions/ObjecValue";
+import { Form, Title, FormGroup } from "./styles";
+import { BakeryContext } from "../../context/BakeryContext";
+import CondominiumSchema from "../../utils/Schemas/CondominiumSchema";
+import ErrorMessage from "../ErrorMessage";
+import ClearForm from "../../utils/Functions/ClearForm";
 
 const Condominio = (props) => {
   const [values, setValues] = React.useState({
@@ -14,43 +25,59 @@ const Condominio = (props) => {
     plan_deadline_orders_morning: 0,
     plan_deadline_orders_afternoon: 0,
     street_name: "",
-    number: 0,
+    number: "",
     city: "",
     state: "",
     zip_code: "",
     complement: "",
   });
   const [erros, setErros] = React.useState({});
-  const [bakerySelected, setBakerySelected] = React.useState([]);
-  const bakeries = React.useContext(BakeryContext);
-  let bakeriesOptions = [];
+  const { data, bakeryOptions } = React.useContext(BakeryContext);
+  const [bakerySelected, setBakerySelected] = React.useState("");
 
-  function handleChange({ target }) {
-    setValues({ ...values, [target.name]: target.value });
+  React.useEffect(() => {
+    setBakerySelected(bakeryOptions());
+  }, []);
+
+  function handleChange(ev) {
+    setValues({
+      ...values,
+      [ev.target.name]: ev.target.value,
+    });
   }
 
-  if (bakeries) {
-    bakeriesOptions = ObjVal(bakeries).map((value) => {
-      return {
-        label: value.name,
-        id: value.id,
-      };
-    });
+  function handleBlur() {
+    setErros(CondominiumSchema(values));
   }
 
   function handleSubmit(event) {
     event.preventDefault();
+    const bakery = ObjVal(data).find(
+      (bakeries) => bakeries.id === bakerySelected
+    );
     const haveErros = ObjVal(CondominiumSchema(values)).length;
     setErros(CondominiumSchema(values));
-    if (haveErros === 0) console.info("Pera lá");
+    if (haveErros === 0) {
+      try {
+        api.post("condominium", {
+          ...values,
+          bakery,
+          subscriptionPlan: {
+            name: "basic",
+            price: 0,
+            deadline_orders_morning: 0,
+            deadline_orders_afternoon: 0,
+          },
+        });
+        toast.success("Condomínio cadastrado!");
+        setValues(ClearForm(values));
+        setBakerySelected("");
+      } catch (error) {}
+    }
   }
 
-  function handleBakerySelected(value) {
-    const teste = ObjVal(bakeries).filter(
-      (bakery) => bakery.name === value.label
-    );
-    setBakerySelected(teste)
-    console.log(bakerySelected);
+  function handleSelectBakery({ target }) {
+    setBakerySelected(target.value);
   }
   return (
     <Grid container>
@@ -66,6 +93,7 @@ const Condominio = (props) => {
                 label="Nome"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.name}
                 fullWidth
               />
@@ -74,18 +102,24 @@ const Condominio = (props) => {
           </Grid>
 
           <Grid item xs={12} sm={4} md={4}>
-            <FormGroup>
-              <Autocomplete
-                disablePortal
-                onChange={(event, newValue) => {
-                  handleBakerySelected(newValue);
-                }}
-                options={bakeriesOptions}
-                renderInput={(params) => (
-                  <TextField {...params} label="Padria" />
-                )}
-              />
-            </FormGroup>
+            <FormControl fullWidth>
+              <InputLabel id="padarias">Padaria</InputLabel>
+              <Select
+                labelId="padarias"
+                value={bakerySelected}
+                label="Padaria"
+                onChange={handleSelectBakery}
+              >
+                <MenuItem value="">
+                  <em>Selecione</em>
+                </MenuItem>
+                {ObjVal(bakeryOptions()).map((item) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={4} md={9}>
@@ -95,6 +129,7 @@ const Condominio = (props) => {
                 label="Rua"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.street_name}
                 fullWidth
               />
@@ -111,6 +146,7 @@ const Condominio = (props) => {
                 label="Número"
                 type="number"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.number}
                 fullWidth
               />
@@ -125,6 +161,7 @@ const Condominio = (props) => {
                 label="Cidade"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.city}
                 fullWidth
               />
@@ -139,6 +176,7 @@ const Condominio = (props) => {
                 label="Estado"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.state}
                 fullWidth
               />
@@ -153,6 +191,7 @@ const Condominio = (props) => {
                 label="CEP"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.zip_code}
                 fullWidth
               />
@@ -167,6 +206,7 @@ const Condominio = (props) => {
                 label="Complemento"
                 type="text"
                 onChange={handleChange}
+                onBlur={handleBlur}
                 value={values.complement}
                 fullWidth
               />

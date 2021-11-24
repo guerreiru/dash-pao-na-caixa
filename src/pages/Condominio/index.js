@@ -45,7 +45,7 @@ const Condominio = () => {
           </Table>
         }
       />
-      <Route path="adicionar" element={<FormCondominio />} />
+      <Route path="adicionar" element={<FormCondominio label="Adicionar condomínio" />} />
     </Routes>
   );
 };

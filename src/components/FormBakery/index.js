@@ -1,9 +1,11 @@
 import React from "react";
 import { TextField, Button, Grid } from "@material-ui/core";
 import { Form, Title, InputImage, FormGroup } from "./styles";
-import BakerySchema from "../../utils/YupSchemas/BakerySchema";
+import BakerySchema from "../../utils/Schemas/BakerySchema";
 import ErrorMessage from "../ErrorMessage";
 import { api } from "../../services/api";
+import ClearForm from "../../utils/Functions/ClearForm";
+import { toast } from "react-toastify";
 
 const FormBakery = (props) => {
   const [values, setValues] = React.useState({
@@ -42,11 +44,14 @@ const FormBakery = (props) => {
       };
       try {
         await api.post("bakery", bakery);
+        toast.success("Padaria cadastrada!");
+        setValues(ClearForm(values))
       } catch (error) {
         console.error(error)
       }
     }
   }
+  
   return (
     <Grid container>
       <Grid item xs={12}>

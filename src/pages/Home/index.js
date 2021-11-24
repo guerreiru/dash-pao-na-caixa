@@ -4,7 +4,7 @@ import { Container, Content, FormHeader, FormGroup } from "./styles";
 import Logo from "../../components/Logo";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router";
-import UserSchema from "../../utils/YupSchemas/UserSchema";
+import UserSchema from "../../utils/Schemas/UserSchema";
 
 const Home = () => {
   const navigate = useNavigate();

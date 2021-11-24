@@ -45,7 +45,7 @@ const Padaria = () => {
           </Table>
         }
       />
-      <Route path="adicionar" element={<FormBakery label="Padarias" />} />
+      <Route path="adicionar" element={<FormBakery label="Adicionar Padaria" />} />
     </Routes>
   );
 };

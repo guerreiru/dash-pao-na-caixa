@@ -7,17 +7,26 @@ export const BakeryStorage = ({ children }) => {
   const [data, setdata] = React.useState([]);
 
   React.useEffect(() => {
-    loadData()
+    loadData();
   }, []);
 
   async function loadData() {
-    const res = await api.get("bakery")
-    const data = await res.data.data
+    const res = await api.get("bakery");
+    const data = await res.data.data;
     setdata(data);
   }
 
+  function bakeryOptions() {
+    return data.map((value) => {
+      return {
+        label: value.name,
+        id: value.id
+      }
+    });
+  }
+
   return (
-    <BakeryContext.Provider value={data}>
+    <BakeryContext.Provider value={{data, bakeryOptions}}>
       {children}
     </BakeryContext.Provider>
   );
