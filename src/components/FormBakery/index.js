@@ -35,17 +35,15 @@ const FormBakery = (props) => {
     setErros(BakerySchema(values));
 
     if (haveErros === 0) {
-      console.log(values);
       const bakery = {
         name: values.name,
         imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
         address: { ...values },
       };
       try {
-        const res = await api.post("bakery", bakery);
-        console.log(res);
+        await api.post("bakery", bakery);
       } catch (error) {
-        console.log(error);
+        console.error(error)
       }
     }
   }

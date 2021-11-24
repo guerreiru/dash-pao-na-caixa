@@ -3,28 +3,16 @@ import { TextField, Button, Grid, Autocomplete } from "@material-ui/core";
 import { Form, Title, FormGroup } from "./styles";
 import CondominiumSchema from "../../utils/YupSchemas/CondominiumSchema";
 import ErrorMessage from "../ErrorMessage";
+import { BakeryContext } from "../../context/BakeryContext";
+import { ObjVal } from "../../utils/Functions/ObjecValue";
 
 const Condominio = (props) => {
   const [values, setValues] = React.useState({
     name: "",
-    bakery: {
-      name: "",
-      imgLogo: "",
-      address: {
-        street_name: "",
-        number: 0,
-        city: "",
-        state: "",
-        zip_code: "",
-        complement: "",
-      },
-    },
-    subscriptionPlan: {
-      name: "",
-      price: 0,
-      deadline_orders_morning: 0,
-      deadline_orders_afternoon: 0,
-    },
+    plan_name: "",
+    plan_price: 0,
+    plan_deadline_orders_morning: 0,
+    plan_deadline_orders_afternoon: 0,
     street_name: "",
     number: 0,
     city: "",
@@ -33,19 +21,36 @@ const Condominio = (props) => {
     complement: "",
   });
   const [erros, setErros] = React.useState({});
+  const [bakerySelected, setBakerySelected] = React.useState([]);
+  const bakeries = React.useContext(BakeryContext);
+  let bakeriesOptions = [];
 
-  function handleChange(ev) {
-    setValues({
-      ...values,
-      [ev.target.name]: ev.target.value,
+  function handleChange({ target }) {
+    setValues({ ...values, [target.name]: target.value });
+  }
+
+  if (bakeries) {
+    bakeriesOptions = ObjVal(bakeries).map((value) => {
+      return {
+        label: value.name,
+        id: value.id,
+      };
     });
   }
 
   function handleSubmit(event) {
-    const haveErros = Object.values(CondominiumSchema(values)).length;
     event.preventDefault();
+    const haveErros = ObjVal(CondominiumSchema(values)).length;
     setErros(CondominiumSchema(values));
-    if (haveErros === 0) console.log("Pera lá");
+    if (haveErros === 0) console.info("Pera lá");
+  }
+
+  function handleBakerySelected(value) {
+    const teste = ObjVal(bakeries).filter(
+      (bakery) => bakery.name === value.label
+    );
+    setBakerySelected(teste)
+    console.log(bakerySelected);
   }
   return (
     <Grid container>
@@ -70,15 +75,16 @@ const Condominio = (props) => {
 
           <Grid item xs={12} sm={4} md={4}>
             <FormGroup>
-              <TextField
-                name="bakery"
-                label="Padaria"
-                type="text"
-                onChange={handleChange}
-                value={values.name}
-                fullWidth
+              <Autocomplete
+                disablePortal
+                onChange={(event, newValue) => {
+                  handleBakerySelected(newValue);
+                }}
+                options={bakeriesOptions}
+                renderInput={(params) => (
+                  <TextField {...params} label="Padria" />
+                )}
               />
-              {erros.name && <ErrorMessage message={erros.name} />}
             </FormGroup>
           </Grid>
 

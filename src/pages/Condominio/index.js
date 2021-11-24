@@ -16,7 +16,7 @@ const Condominio = () => {
       const res = await api.get("condominium");
       setCondominium(res.data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

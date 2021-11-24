@@ -16,7 +16,7 @@ const Padaria = () => {
       const res = await api.get("bakery");
       setBakery(res.data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
