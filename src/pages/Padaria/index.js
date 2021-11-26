@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@material-ui/core";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
+import { TiDeleteOutline } from "react-icons/ti";
 import { api } from "../../services/api";
 import Table from "../../components/Table";
 import FormBakery from "../../components/FormBakery";
@@ -11,6 +12,7 @@ import { TableHeader, SearchInput } from "./styles";
 
 const Padaria = () => {
   const [bakeries, setBakeries] = React.useState([]);
+  const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
   let location = useLocation();
 
@@ -32,14 +34,21 @@ const Padaria = () => {
   }
 
   function searchStringInArray(str) {
-    const results = []
+    setBusca(str);
+    const results = [];
     if (str.length > 2) {
       for (var j = 0; j < bakeries.length; j++) {
         if (bakeries[j].name.toLowerCase().match(str.toLowerCase())) {
           results.push(bakeries[j]);
+          setBakeries(results);
         }
       }
     }
+  }
+
+  function clearBusca() {
+    setBusca("");
+    loadBakeries();
   }
 
   return (
@@ -50,10 +59,12 @@ const Padaria = () => {
           <SearchInput>
             <FaSearch color="#737373" onClick={searchStringInArray} />
             <input
+              value={busca}
               onChange={({ target }) => searchStringInArray(target.value)}
-              type="search"
+              type="text"
               placeholder="Pesquisar"
             />
+            {busca && <TiDeleteOutline color="#737373" onClick={clearBusca} />}
           </SearchInput>
         )}
         <Button
