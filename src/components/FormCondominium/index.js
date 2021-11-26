@@ -55,7 +55,7 @@ const Condominio = (props) => {
     setErros(CondominiumSchema(values));
     if (haveErros === 0) {
       try {
-        api.post("condominium", {
+        api.post("condominiums", {
           ...values,
           bakery,
           subscriptionPlan: {
@@ -109,7 +109,7 @@ const Condominio = (props) => {
                 label="Padria"
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>Selecione</em>
                 </MenuItem>
                 {ObjVal(bakeryOptions()).map((item) => (
                   <MenuItem key={item.id} value={item.id}>

@@ -11,7 +11,7 @@ export const BakeryStorage = ({ children }) => {
   }, []);
 
   async function loadData() {
-    const res = await api.get("bakery");
+    const res = await api.get("bakeries");
     const data = await res.data.data;
     setdata(data);
   }

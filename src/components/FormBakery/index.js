@@ -37,13 +37,13 @@ const FormBakery = (props) => {
     setErros(BakerySchema(values));
 
     if (haveErros === 0) {
-      const bakery = {
+      const bakeries = {
         name: values.name,
         imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
         address: { ...values },
       };
       try {
-        await api.post("bakery", bakery);
+        await api.post("bakeries", bakeries);
         toast.success("Padaria cadastrada!");
         setValues(ClearForm(values))
       } catch (error) {
