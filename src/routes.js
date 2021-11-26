@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Dash from "./pages/Dash";
+import SubscriptionPlan from "./pages/SubscriptionPlan";
 
 const isAuth = true
 const PrivateRoute = ({ children }) => {
@@ -21,6 +22,7 @@ const Router = () => {
           <PrivateRoute><Dash /></PrivateRoute>
         }
       />
+      <Route path="/planos" element={<SubscriptionPlan />} />
     </Routes>
   );
 };

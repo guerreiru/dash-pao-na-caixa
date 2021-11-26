@@ -43,6 +43,8 @@ const Condominio = () => {
           setCondominiums(results);
         }
       }
+    }  else if (str.length === 0) {
+      clearBusca()
     }
   }
 

@@ -12,6 +12,7 @@ import { TableHeader, SearchInput } from "./styles";
 
 const Padaria = () => {
   const [bakeries, setBakeries] = React.useState([]);
+  const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
   let location = useLocation();
@@ -40,15 +41,17 @@ const Padaria = () => {
       for (var j = 0; j < bakeries.length; j++) {
         if (bakeries[j].name.toLowerCase().match(str.toLowerCase())) {
           results.push(bakeries[j]);
-          setBakeries(results);
+          setResults(results);
         }
       }
+    } else if (str.length === 0) {
+      clearBusca()
     }
   }
 
   function clearBusca() {
     setBusca("");
-    loadBakeries();
+    setResults([]);
   }
 
   return (
@@ -80,7 +83,7 @@ const Padaria = () => {
         <Route
           path="/"
           element={
-            <Table label="Padarias" data={bakeries} apiRoute="bakeries"></Table>
+            <Table label="Padarias" data={results.length > 0 ? results : bakeries} apiRoute="bakeries"></Table>
           }
         />
         <Route

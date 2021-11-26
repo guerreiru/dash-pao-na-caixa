@@ -5,6 +5,7 @@ import { Container, Content, TableContainer } from "./styles";
 import Header from "../../components/Header";
 import Padaria from "../Padaria";
 import Condominio from "../Condominio";
+import SubscriptionPlan from "../SubscriptionPlan";
 
 const Dash = () => {
   const [breadcrumb, setBreadcrumb] = React.useState("");
@@ -21,6 +22,7 @@ const Dash = () => {
         <Link to="condominios" onClick={() => handleBreadcrumbs("condominios")}>
           Condomínio
         </Link>
+        <Link to="/planos">Planos</Link>
         <Link to="/assinaturas">Assinatura</Link>
         <Link to="/pedidos">Pedidos</Link>
         <Link to="/relatorios">Relatórios</Link>
@@ -40,6 +42,7 @@ const Dash = () => {
             <Route path="/" element={<p>Aqui vai ter o conteudo padrão</p>} />
             <Route path="padarias/*" element={<Padaria />} />
             <Route path="condominios/*" element={<Condominio />} />
+            <Route path="planos/*" element={<SubscriptionPlan />} />
           </Routes>
         </TableContainer>
       </Content>
