@@ -1,3 +1,3 @@
-export const ObjVal = (value) => {
+export default function ObjVal(value) {
   return Object.values(value)
 }

@@ -6,7 +6,7 @@ import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router";
 import UserSchema from "../../utils/Schemas/UserSchema";
 
-const Home = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [values, setValues] = React.useState({
     user: "",
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Login;

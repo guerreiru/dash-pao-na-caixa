@@ -44,3 +44,17 @@ export const SearchInput = styled.div`
     }
   }
 `;
+
+export const BtnOptions = styled.div`
+  svg:hover {
+    transform: scale(110%);
+    filter: brightness(0.5);
+  }
+  .btnEdit {
+    color: #1565c0;
+    margin-right: 5px;
+  }
+  .btnDelete {
+    color: #ff7a7a;
+  }
+`;

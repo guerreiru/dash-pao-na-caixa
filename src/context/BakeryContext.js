@@ -4,7 +4,7 @@ import { api } from "../services/api";
 export const BakeryContext = React.createContext();
 
 export const BakeryStorage = ({ children }) => {
-  const [data, setdata] = React.useState([]);
+  const [bakeries, setBakeries] = React.useState([]);
 
   React.useEffect(() => {
     loadData();
@@ -12,12 +12,12 @@ export const BakeryStorage = ({ children }) => {
 
   async function loadData() {
     const res = await api.get("bakeries");
-    const data = await res.data.data;
-    setdata(data);
+    const bakeries = await res.data.data;
+    setBakeries(bakeries);
   }
 
   function bakeryOptions() {
-    return data.map((value) => {
+    return bakeries.map((value) => {
       return {
         label: value.name,
         id: value.id
@@ -26,7 +26,7 @@ export const BakeryStorage = ({ children }) => {
   }
 
   return (
-    <BakeryContext.Provider value={{data, bakeryOptions}}>
+    <BakeryContext.Provider value={{bakeries, bakeryOptions}}>
       {children}
     </BakeryContext.Provider>
   );

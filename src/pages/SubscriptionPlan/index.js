@@ -26,7 +26,6 @@ const Condominio = (props) => {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(values);
-    return;
     try {
       api.post("subscription-plans", {
         ...values,
@@ -122,8 +121,15 @@ const Condominio = (props) => {
               </Grid>
 
               <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="error"
+                  style={{ marginRight: "5px" }}
+                >
+                  Cancelar
+                </Button>
                 <Button type="submit" variant="contained">
-                  Cadastrar
+                  Gravar
                 </Button>
               </Grid>
             </Grid>
@@ -135,4 +141,3 @@ const Condominio = (props) => {
 };
 
 export default Condominio;
-

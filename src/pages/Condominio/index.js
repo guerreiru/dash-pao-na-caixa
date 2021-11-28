@@ -1,20 +1,25 @@
 import React from "react";
-import { Route, Routes } from "react-router";
-import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
 import { TiDeleteOutline } from "react-icons/ti";
-import { api } from "../../services/api";
+import {
+  Container,
+  Content,
+  SearchInput,
+  TableContainer,
+  TableHeader,
+} from "./styles";
 import Table from "../../components/Table";
-import FormCondominio from "../../components/FormCondominium";
-import { TableHeader, SearchInput } from "./styles";
+import Header from "../../components/Header";
+import { api } from "../../services/api";
 
 const Condominio = () => {
   const [condominiums, setCondominiums] = React.useState([]);
+  const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
-  let location = useLocation();
 
   React.useEffect(() => {
     loadCondominiums();
@@ -40,70 +45,53 @@ const Condominio = () => {
       for (var j = 0; j < condominiums.length; j++) {
         if (condominiums[j].name.toLowerCase().match(str.toLowerCase())) {
           results.push(condominiums[j]);
-          setCondominiums(results);
+          setResults(results);
         }
       }
-    }  else if (str.length === 0) {
-      clearBusca()
+    } else if (str.length === 0) {
+      clearBusca();
     }
   }
 
   function clearBusca() {
     setBusca("");
-    loadCondominiums();
+    setResults([]);
   }
-
   return (
-    <>
-      <TableHeader>
-        <h3>Condomínios</h3>
-        {location.pathname === "/dash/condominios" && (
-          <SearchInput>
-            <FaSearch color="#737373" onClick={searchStringInArray} />
-            <input
-              value={busca}
-              onChange={({ target }) => searchStringInArray(target.value)}
-              type="text"
-              placeholder="Pesquisar"
-            />
-            {busca && <TiDeleteOutline color="#737373" onClick={clearBusca} />}
-          </SearchInput>
-        )}
-        <Button
-          type="button"
-          variant="contained"
-          startIcon={<FiPlus />}
-          onClick={handleAdd}
-        >
-          Adicionar
-        </Button>
-      </TableHeader>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Table
-              label="Condomínios"
-              data={condominiums}
-              apiRoute="condominiums"
+    <Container>
+      <Header loc="/dash" />
+      <Content>
+        <TableContainer>
+          <TableHeader>
+            <h3>Condomínios</h3>
+            <SearchInput>
+              <FaSearch color="#737373" onClick={searchStringInArray} />
+              <input
+                value={busca}
+                onChange={({ target }) => searchStringInArray(target.value)}
+                type="text"
+                placeholder="Pesquisar"
+              />
+              {busca && (
+                <TiDeleteOutline color="#737373" onClick={clearBusca} />
+              )}
+            </SearchInput>
+            <Button
+              type="button"
+              variant="contained"
+              startIcon={<FiPlus />}
+              onClick={handleAdd}
             >
-              <Button
-                type="button"
-                variant="contained"
-                startIcon={<FiPlus />}
-                onClick={handleAdd}
-              >
-                Adicionar
-              </Button>
-            </Table>
-          }
-        />
-        <Route
-          path="adicionar"
-          element={<FormCondominio label="Adicionar condomínio" />}
-        />
-      </Routes>
-    </>
+              Adicionar
+            </Button>
+          </TableHeader>
+          <Table
+            data={results.length > 0 ? results : condominiums}
+            apiRoute="condominiums"
+          ></Table>
+        </TableContainer>
+      </Content>
+    </Container>
   );
 };
 

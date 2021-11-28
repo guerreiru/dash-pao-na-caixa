@@ -1,27 +1,31 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Dash from "./pages/Dash";
-import SubscriptionPlan from "./pages/SubscriptionPlan";
+import Padaria from "./pages/Padaria";
+import FormPadaria from "./pages/FormPadaria";
+import Condominio from "./pages/Condominio";
+import FormCondominio from "./pages/FormCondominio";
 
-const isAuth = true
-const PrivateRoute = ({ children }) => {
-  const authed = isAuth
-  return authed ? children : <Navigate to="/" />;
-};
+import SubscriptionPlan from "./pages/SubscriptionPlan";
 
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" exact element={<Home />} />
+      <Route path="/" exact element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route
-        path="/dash/*"
-        element={
-          <PrivateRoute><Dash /></PrivateRoute>
-        }
-      />
+      <Route path="/dash" element={<Dash />} />
+
+      <Route path="/padarias" element={<Padaria />} />
+      <Route path="/padarias/adicionar" element={<FormPadaria />} />
+
+      <Route path="/condominios" element={<Condominio />} />
+      <Route path="/condominios/adicionar" element={<FormCondominio />} />
+
+
+      <Route path="/home" exact element={<Home />} />
       <Route path="/planos" element={<SubscriptionPlan />} />
     </Routes>
   );

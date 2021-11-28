@@ -7,19 +7,37 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Button,
 } from "@material-ui/core";
-import { Container } from "./styles";
+import { toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
+import AlertDialog from "../../components/AlertDialog";
+import { Container, BtnOptions } from "./styles";
 import { api } from "../../services/api";
-import { toast } from "react-toastify";
 
 export default function DateTable(props) {
   const [data, setData] = React.useState([]);
+  const [alertOpen, setAlertOpen] = React.useState(false);
+  const [itemSeleted, setItemSeleted] = React.useState([]);
 
   React.useEffect(() => {
     setData(props.data);
   }, [props.data]);
+
+  const handleOpen = (data) => {
+    setAlertOpen(true);
+    setItemSeleted(data);
+  };
+
+  const handleClose = () => {
+    setAlertOpen(false);
+  };
+
+  function handleConfirm() {
+    handleDelete(itemSeleted.id);
+    handleClose()
+  }
 
   async function handleDelete(id) {
     try {
@@ -60,20 +78,33 @@ export default function DateTable(props) {
                 <TableCell>{data.id}</TableCell>
                 <TableCell>{data.name}</TableCell>
                 <TableCell>
-                  <span>
-                    <FaEdit size="16px" />
+                  <BtnOptions>
+                    <FaEdit size="16px" className="btnEdit" />
                     <FiTrash
-                      onClick={() => handleDelete(data.id)}
-                      color="#FF7A7A"
+                      onClick={() => handleOpen(data)}
                       size="16px"
+                      className="btnDelete"
                     />
-                  </span>
+                  </BtnOptions>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+      <AlertDialog open={alertOpen} item={itemSeleted}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={handleClose}
+          style={{ marginRight: "5px" }}
+        >
+          Cancelar
+        </Button>
+        <Button type="submit" variant="contained" onClick={handleConfirm}>
+          Confirmar
+        </Button>
+      </AlertDialog>
     </Container>
   );
 }
