@@ -1,6 +1,7 @@
 import React from "react";
 import { TextField, Button, Grid } from "@material-ui/core";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 import { Form, Title, FormGroup, Container, Content } from "./styles";
 import Header from "../../components/Header";
@@ -15,12 +16,18 @@ const Condominio = (props) => {
     deadline_orders_afternoon: "",
     duedate: "",
   });
+  const navigate = useNavigate();
 
   function handleChange(ev) {
     setValues({
       ...values,
       [ev.target.name]: ev.target.value,
     });
+  }
+
+  function handleCancel() {
+    setValues(ClearForm(values));
+    navigate("/padarias");
   }
 
   function handleSubmit(event) {
@@ -122,14 +129,18 @@ const Condominio = (props) => {
 
               <Grid item xs={12}>
                 <Button
+                  type="submit"
                   variant="contained"
-                  color="error"
                   style={{ marginRight: "5px" }}
                 >
-                  Cancelar
-                </Button>
-                <Button type="submit" variant="contained">
                   Gravar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleCancel}
+                >
+                  Cancelar
                 </Button>
               </Grid>
             </Grid>

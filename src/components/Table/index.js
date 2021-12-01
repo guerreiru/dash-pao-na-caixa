@@ -12,6 +12,8 @@ import {
 import { toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
+import { HiUser } from "react-icons/hi";
+import { useNavigate, useLocation } from "react-router-dom";
 import AlertDialog from "../../components/AlertDialog";
 import { Container, BtnOptions } from "./styles";
 import { api } from "../../services/api";
@@ -20,6 +22,8 @@ export default function DateTable(props) {
   const [data, setData] = React.useState([]);
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [itemSeleted, setItemSeleted] = React.useState([]);
+  const navigate = useNavigate();
+  const location = useLocation().pathname;
 
   React.useEffect(() => {
     setData(props.data);
@@ -36,7 +40,7 @@ export default function DateTable(props) {
 
   function handleConfirm() {
     handleDelete(itemSeleted.id);
-    handleClose()
+    handleClose();
   }
 
   async function handleDelete(id) {
@@ -76,11 +80,20 @@ export default function DateTable(props) {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>{data.id}</TableCell>
-                <TableCell>{data.name}</TableCell>
+                <TableCell>{data.name || data.user_name}</TableCell>
                 <TableCell>
                   <BtnOptions>
-                    <FaEdit size="16px" className="btnEdit" />
+                    <FaEdit size="16px" className="btnEdit" title="Editar" />
+                    {location.includes("users") ? null : (
+                      <HiUser
+                        title="Usuários"
+                        onClick={() => navigate(`${data.id}/users`)}
+                        size="16px"
+                        className="btnAdd"
+                      />
+                    )}
                     <FiTrash
+                      title="Excluir"
                       onClick={() => handleOpen(data)}
                       size="16px"
                       className="btnDelete"

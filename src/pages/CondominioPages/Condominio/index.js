@@ -11,24 +11,24 @@ import {
   TableContainer,
   TableHeader,
 } from "./styles";
-import Table from "../../components/Table";
-import Header from "../../components/Header";
-import { api } from "../../services/api";
+import Table from "../../../components/Table";
+import Header from "../../../components/Header";
+import { api } from "../../../services/api";
 
-const Padaria = () => {
-  const [bakeries, setBakeries] = React.useState([]);
+const Condominio = () => {
+  const [condominiums, setCondominiums] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadBakeries();
+    loadCondominiums();
   }, []);
 
-  async function loadBakeries() {
+  async function loadCondominiums() {
     try {
-      const res = await api.get("bakeries");
-      setBakeries(res.data.data);
+      const res = await api.get("condominiums");
+      setCondominiums(res.data.data);
     } catch (error) {
       console.error(error);
     }
@@ -42,9 +42,9 @@ const Padaria = () => {
     setBusca(str);
     const results = [];
     if (str.length > 2) {
-      for (var j = 0; j < bakeries.length; j++) {
-        if (bakeries[j].name.toLowerCase().match(str.toLowerCase())) {
-          results.push(bakeries[j]);
+      for (var j = 0; j < condominiums.length; j++) {
+        if (condominiums[j].name.toLowerCase().match(str.toLowerCase())) {
+          results.push(condominiums[j]);
           setResults(results);
         }
       }
@@ -63,7 +63,7 @@ const Padaria = () => {
       <Content>
         <TableContainer>
           <TableHeader>
-            <h3>Padarias</h3>
+            <h3>Condomínios</h3>
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -86,8 +86,8 @@ const Padaria = () => {
             </Button>
           </TableHeader>
           <Table
-            data={results.length > 0 ? results : bakeries}
-            apiRoute="bakeries"
+            data={results.length > 0 ? results : condominiums}
+            apiRoute="condominiums"
           ></Table>
         </TableContainer>
       </Content>
@@ -95,4 +95,4 @@ const Padaria = () => {
   );
 };
 
-export default Padaria;
+export default Condominio;

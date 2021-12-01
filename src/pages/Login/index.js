@@ -9,7 +9,7 @@ import UserSchema from "../../utils/Schemas/UserSchema";
 const Login = () => {
   const navigate = useNavigate();
   const [values, setValues] = React.useState({
-    user: "",
+    user_name: "",
     password: "",
   });
   const [erros, setErros] = React.useState({});
@@ -38,14 +38,14 @@ const Login = () => {
         </FormHeader>
         <FormGroup>
           <TextField
-            name="user"
+            name="user_name"
             label="Usuário"
             type="text"
             onChange={handleChange}
-            value={values.user}
+            value={values.user_name}
             fullWidth
           />
-          {erros.user && <ErrorMessage message={erros.user} />}
+          {erros.user_name && <ErrorMessage message={erros.user_name} />}
         </FormGroup>
 
         <FormGroup>

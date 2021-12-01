@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Container,
@@ -8,28 +8,26 @@ import {
   FormContainer,
   FormHeader,
   FormGroup,
-  InputImage,
 } from "./styles";
-import Header from "../../components/Header";
-import ErrorMessage from "../../components/ErrorMessage";
-import { api } from "../../services/api";
-import BakerySchema from "../../utils/Schemas/BakerySchema";
-import ClearForm from "../../utils/Functions/ClearForm";
-import ObjVal from "../../utils/Functions/ObjecValue";
+import Header from "../../../components/Header";
+import ErrorMessage from "../../../components/ErrorMessage";
+import { api } from "../../../services/api";
+import UserSchema from "../../../utils/Schemas/UserSchema";
+import ClearForm from "../../../utils/Functions/ClearForm";
+import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const FormPadaria = () => {
   const [values, setValues] = React.useState({
     name: "",
-    img_logo: " ",
-    street_name: "",
-    number: "",
-    city: "",
-    state: "",
-    zip_code: "",
-    complement: "",
+    email: "",
+    cell_phone: "",
+    cpf: "",
+    user_name: "",
+    password: "",
   });
   const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
+  const { id: bakeryId } = useParams();
 
   function handleChange(ev) {
     setValues({
@@ -39,23 +37,18 @@ const FormPadaria = () => {
   }
 
   function handleBlur() {
-    setErros(BakerySchema(values));
+    setErros(UserSchema(values));
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const haveErros = ObjVal(BakerySchema(values)).length;
-    setErros(BakerySchema(values));
+    const haveErros = ObjVal(UserSchema(values)).length;
+    setErros(UserSchema(values));
 
     if (haveErros === 0) {
-      const bakeries = {
-        name: values.name,
-        imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
-        address: { ...values },
-      };
       try {
-        await api.post("bakeries", bakeries);
-        toast.success("Padaria cadastrada!");
+        await api.post(`bakeries/${bakeryId}/person`, values);
+        toast.success("Usuario cadastrado!");
         setValues(ClearForm(values));
         navigate("/padarias");
       } catch (error) {
@@ -75,7 +68,7 @@ const FormPadaria = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Padaria</h3>
+            <h3>Adicionar Usuário</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -84,7 +77,7 @@ const FormPadaria = () => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={4} md={8}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
                     name="name"
@@ -99,118 +92,99 @@ const FormPadaria = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
-                <InputImage>
-                  <input type="file" id="logo" />
-                  <label htmlFor="logo">Escolher arquivo</label>
-                </InputImage>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={9}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="street_name"
-                    label="Rua"
-                    type="text"
+                    name="email"
+                    label="Email"
+                    type="email"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.street_name}
+                    value={values.email}
                     fullWidth
                   />
-                  {erros.street_name && (
-                    <ErrorMessage message={erros.street_name} />
+                  {erros.email && <ErrorMessage message={erros.email} />}
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={6}>
+                <FormGroup>
+                  <TextField
+                    name="cell_phone"
+                    label="Telefone"
+                    type="tel"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.cell_phone}
+                    fullWidth
+                  />
+                  {erros.cell_phone && (
+                    <ErrorMessage message={erros.cell_phone} />
                   )}
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={3}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="number"
-                    label="Número"
-                    type="number"
+                    name="cpf"
+                    label="CPF"
+                    type="tel"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.number}
+                    value={values.cpf}
                     fullWidth
                   />
-                  {erros.number && <ErrorMessage message={erros.number} />}
+                  {erros.cpf && <ErrorMessage message={erros.cpf} />}
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="city"
-                    label="Cidade"
+                    name="user_name"
+                    label="Usuário"
                     type="text"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.city}
+                    value={values.user_name}
                     fullWidth
                   />
-                  {erros.city && <ErrorMessage message={erros.city} />}
-                </FormGroup>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={4}>
-                <FormGroup>
-                  <TextField
-                    name="state"
-                    label="Estado"
-                    type="text"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.state}
-                    fullWidth
-                  />
-                  {erros.state && <ErrorMessage message={erros.state} />}
-                </FormGroup>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={2}>
-                <FormGroup>
-                  <TextField
-                    name="zip_code"
-                    label="CEP"
-                    type="text"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.zip_code}
-                    fullWidth
-                  />
-                  {erros.zip_code && <ErrorMessage message={erros.zip_code} />}
-                </FormGroup>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={2}>
-                <FormGroup>
-                  <TextField
-                    name="complement"
-                    label="Complemento"
-                    type="text"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.complement}
-                    fullWidth
-                  />
-                  {erros.complement && (
-                    <ErrorMessage message={erros.complement} />
+                  {erros.user_name && (
+                    <ErrorMessage message={erros.user_name} />
                   )}
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={6}>
+                <FormGroup>
+                  <TextField
+                    name="password"
+                    label="Senha"
+                    type="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                    fullWidth
+                  />
+                  {erros.password && <ErrorMessage message={erros.password} />}
                 </FormGroup>
               </Grid>
 
               <Grid item xs={12}>
                 <Button
+                  type="submit"
                   variant="contained"
-                  color="error"
-                  onClick={handleCancel}
                   style={{ marginRight: "5px" }}
                 >
-                  Cancelar
-                </Button>
-                <Button type="submit" variant="contained">
                   Gravar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleCancel}
+                >
+                  Cancelar
                 </Button>
               </Grid>
             </Grid>

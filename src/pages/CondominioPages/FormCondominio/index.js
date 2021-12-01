@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { api } from "../../services/api";
+import { api } from "../../../services/api";
 import {
   Container,
   Content,
@@ -18,13 +18,13 @@ import {
   FormHeader,
   FormGroup,
 } from "./styles";
-import Header from "../../components/Header";
-import ErrorMessage from "../../components/ErrorMessage";
-import { BakeryContext } from "../../context/BakeryContext";
-import { SubscriptionContext } from "../../context/SubscriptionContext";
-import CondominiumSchema from "../../utils/Schemas/CondominiumSchema";
-import ClearForm from "../../utils/Functions/ClearForm";
-import ObjVal from "../../utils/Functions/ObjecValue";
+import Header from "../../../components/Header";
+import ErrorMessage from "../../../components/ErrorMessage";
+import { BakeryContext } from "../../../context/BakeryContext";
+import { SubscriptionContext } from "../../../context/SubscriptionContext";
+import CondominiumSchema from "../../../utils/Schemas/CondominiumSchema";
+import ClearForm from "../../../utils/Functions/ClearForm";
+import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const Condominio = () => {
   const [values, setValues] = React.useState({
@@ -270,15 +270,18 @@ const Condominio = () => {
 
               <Grid item xs={12}>
                 <Button
+                  type="submit"
                   variant="contained"
-                  color="error"
-                  onClick={handleCancel}
                   style={{ marginRight: "5px" }}
                 >
-                  Cancelar
-                </Button>
-                <Button type="submit" variant="contained">
                   Gravar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleCancel}
+                >
+                  Cancelar
                 </Button>
               </Grid>
             </Grid>

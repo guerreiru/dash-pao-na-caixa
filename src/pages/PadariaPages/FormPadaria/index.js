@@ -10,22 +10,23 @@ import {
   FormGroup,
   InputImage,
 } from "./styles";
-import Header from "../../components/Header";
-import ErrorMessage from "../../components/ErrorMessage";
-import { api } from "../../services/api";
-import BakerySchema from "../../utils/Schemas/BakerySchema";
-import ClearForm from "../../utils/Functions/ClearForm";
-import ObjVal from "../../utils/Functions/ObjecValue";
+import Header from "../../../components/Header";
+import ErrorMessage from "../../../components/ErrorMessage";
+import { api } from "../../../services/api";
+import BakerySchema from "../../../utils/Schemas/BakerySchema";
+import ClearForm from "../../../utils/Functions/ClearForm";
+import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const Person = () => {
+const FormPadaria = () => {
   const [values, setValues] = React.useState({
-    name: "string",
-    email: "string",
-    cell_phone: "string",
-    cpf: "string",
-    user_name: "string",
-    password: "string",
-    roles: [],
+    name: "",
+    img_logo: " ",
+    street_name: "",
+    number: "",
+    city: "",
+    state: "",
+    zip_code: "",
+    complement: "",
   });
   const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
@@ -54,9 +55,9 @@ const Person = () => {
       };
       try {
         await api.post("bakeries", bakeries);
-        toast.success("Usuário cadastrado!");
+        toast.success("Padaria cadastrada!");
         setValues(ClearForm(values));
-        navigate("/usuarios");
+        navigate("/padarias");
       } catch (error) {
         console.error(error);
       }
@@ -65,7 +66,7 @@ const Person = () => {
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/usuarios");
+    navigate("/padarias");
   }
 
   return (
@@ -74,7 +75,7 @@ const Person = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Usuário</h3>
+            <h3>Adicionar Padaria</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -223,4 +224,4 @@ const Person = () => {
   );
 };
 
-export default Person;
+export default FormPadaria;
