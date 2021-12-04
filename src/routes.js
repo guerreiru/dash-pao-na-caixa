@@ -12,10 +12,13 @@ import PadariaUsers from "./pages/PadariaPages/PadariaUsers";
 
 import Condominio from "./pages/CondominioPages/Condominio";
 import FormCondominio from "./pages/CondominioPages/FormCondominio";
+import CondominioResidents from "./pages/CondominioPages/CondominioResidents";
+import FormCondominioResident from "./pages/CondominioPages/FormCondominioResident";
 
 import Person from "./pages/Person";
 
-import SubscriptionPlan from "./pages/SubscriptionPlan";
+import SubscriptionPlanForm from "./pages/SubscriptionPages/SubscriptionPlanForm";
+import SubscriptionPlanList from "./pages/SubscriptionPages/SubscriptionPlanList";
 
 const Router = () => {
   return (
@@ -31,10 +34,13 @@ const Router = () => {
 
       <Route path="/condominios" element={<Condominio />} />
       <Route path="/condominios/adicionar" element={<FormCondominio />} />
+      <Route path="/condominios/:id/users" element={<CondominioResidents />} />
+      <Route path="/condominios/:id/users/adicionar" element={<FormCondominioResident />} />
 
       <Route path="/usuarios" element={<Person />} />
 
-      <Route path="/planos" element={<SubscriptionPlan />} />
+      <Route path="/planos" element={<SubscriptionPlanList />} />
+      <Route path="/planos/adicionar" element={<SubscriptionPlanForm />} />
     </Routes>
   );
 };

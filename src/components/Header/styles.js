@@ -52,7 +52,9 @@ export const SideMenu = styled.aside`
   top: 0;
   bottom: 0;
   right: 0;
-  padding: 10px;
+  padding: 20px;
+  min-width: 40%;
+  z-index: 10;
 
   svg {
     align-self: flex-end;
@@ -63,7 +65,7 @@ export const SideMenu = styled.aside`
     color: #111;
     text-decoration: none;
     font-weight: 600;
-    margin-top: 5px;
+    margin-top: 10px;
 
     &:hover {
       color: #777;

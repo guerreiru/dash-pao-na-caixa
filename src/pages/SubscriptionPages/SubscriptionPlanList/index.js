@@ -1,5 +1,12 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
@@ -12,24 +19,24 @@ import {
   TableContainer,
   TableHeader,
 } from "./styles";
-import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
+import { formatPrice } from "../../../utils/Functions/formatPrice";
 
-const Padaria = () => {
-  const [bakeries, setBakeries] = React.useState([]);
+const SubscriptionList = () => {
+  const [plans, setPlans] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadBakeries();
+    loadPlans();
   }, []);
 
-  async function loadBakeries() {
+  async function loadPlans() {
     try {
-      const res = await api.get("bakeries");
-      setBakeries(res.data.data);
+      const res = await api.get("subscription-plans");
+      setPlans(res.data.data);
     } catch (error) {
       console.error(error);
     }
@@ -42,14 +49,16 @@ const Padaria = () => {
   function searchStringInArray(str) {
     setBusca(str);
     const results = [];
+    const plansBackup = [...plans];
     if (str.length > 2) {
-      for (var j = 0; j < bakeries.length; j++) {
-        if (bakeries[j].name.toLowerCase().match(str.toLowerCase())) {
-          results.push(bakeries[j]);
-          setResults(results);
+      for (var j = 0; j < plans.length; j++) {
+        if (plans[j].name.toLowerCase().match(str.toLowerCase())) {
+          results.push(plans[j]);
+          setPlans(results);
         }
       }
     } else if (str.length === 0) {
+      loadPlans()
       clearBusca();
     }
   }
@@ -64,7 +73,7 @@ const Padaria = () => {
       <Content>
         <TableContainer>
           <TableHeader>
-            <h3>Padarias</h3>
+            <h3>Planos</h3>
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -94,14 +103,39 @@ const Padaria = () => {
               onClick={handleAdd}
             />
           </TableHeader>
-          <Table
-            data={results.length > 0 ? results : bakeries}
-            apiRoute="bakeries"
-          ></Table>
+
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            {plans.length > 0
+              ? plans.map((plan) => (
+                  <Grid item xs={12} sm={6} md={4} key={plan.id}>
+                    <Card>
+                      <CardContent>
+                        <Typography variant="h5" component="div">
+                          {plan.name}
+                        </Typography>
+                        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                          {formatPrice(plan.price)}
+                        </Typography>
+                        <Typography variant="body2">
+                          Horário limite manhã {plan.deadline_orders_morning}
+                        </Typography>
+                        <Typography variant="body2">
+                          Horário limite tarde {plan.deadline_orders_afternoon}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))
+              : null}
+          </Grid>
         </TableContainer>
       </Content>
     </Container>
   );
 };
 
-export default Padaria;
+export default SubscriptionList;

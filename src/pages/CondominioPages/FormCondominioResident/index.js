@@ -1,35 +1,35 @@
 import React from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { api } from "../../../services/api";
 import {
   Container,
   Content,
   FormContainer,
   FormHeader,
   FormGroup,
-  InputImage,
 } from "./styles";
 import Header from "../../../components/Header";
 // import ErrorMessage from "../../../components/ErrorMessage";
-import { api } from "../../../services/api";
-// import BakerySchema from "../../../utils/Schemas/BakerySchema";
+// import UserSchema from "../../../utils/Schemas/UserSchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
 // import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const FormPadaria = () => {
+const Residente = () => {
   const [values, setValues] = React.useState({
     name: "",
-    img_logo: " ",
-    street_name: "",
-    number: "",
-    city: "",
-    state: "",
-    zip_code: "",
-    complement: "",
+    email: "",
+    cell_phone: "",
+    cpf: "",
+    apartment_number: "",
+    user_name: "",
+    password: "",
   });
   // const [erros, setErros] = React.useState({});
+
   const navigate = useNavigate();
+  const { id: condominium } = useParams();
 
   function handleChange(ev) {
     setValues({
@@ -39,32 +39,27 @@ const FormPadaria = () => {
   }
 
   // function handleBlur() {
-  //   setErros(BakerySchema(values));
+  //   setErros(UserSchema(values));
   // }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    // const haveErros = ObjVal(BakerySchema(values)).length;
-    // setErros(BakerySchema(values));
-
-    const bakeries = {
-      name: values.name,
-      imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
-      address: { ...values },
-    };
+    // const haveErros = ObjVal(UserSchema(values)).length;
+    // setErros(UserSchema(values));
     try {
-      await api.post("bakeries", bakeries);
-      toast.success("Padaria cadastrada!");
+      api.post("residents", {
+        ...values,
+        condominium,
+      });
+      toast.success("Residente cadastrado!");
       setValues(ClearForm(values));
-      navigate("/padarias");
-    } catch (error) {
-      console.error(error);
-    }
+      navigate("/condominios");
+    } catch (error) {}
   }
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/padarias");
+    navigate("/condominios");
   }
 
   return (
@@ -73,7 +68,7 @@ const FormPadaria = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Padaria</h3>
+            <h3>Adicionar Residente</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -82,64 +77,53 @@ const FormPadaria = () => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={4} md={8}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
                     name="name"
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.name}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
-                <InputImage>
-                  <input type="file" id="logo" />
-                  <label htmlFor="logo">Escolher arquivo</label>
-                </InputImage>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={9}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="street_name"
-                    label="Rua"
-                    type="text"
+                    name="email"
+                    label="Email"
+                    type="email"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.street_name}
+                    value={values.email}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={3}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="number"
-                    label="Número"
-                    type="number"
+                    name="cell_phone"
+                    label="Telefone"
+                    type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.number}
+                    value={values.cell_phone}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={6}>
                 <FormGroup>
                   <TextField
-                    name="city"
-                    label="Cidade"
-                    type="text"
+                    name="cpf"
+                    label="CPF"
+                    type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.city}
+                    value={values.cpf}
                     fullWidth
                   />
                 </FormGroup>
@@ -148,40 +132,37 @@ const FormPadaria = () => {
               <Grid item xs={12} sm={4} md={4}>
                 <FormGroup>
                   <TextField
-                    name="state"
-                    label="Estado"
-                    type="text"
+                    name="apartment_number"
+                    label="Apartamento"
+                    type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.state}
+                    value={values.apartment_number}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={2}>
+              <Grid item xs={12} sm={4} md={4}>
                 <FormGroup>
                   <TextField
-                    name="zip_code"
-                    label="CEP"
+                    name="user_name"
+                    label="Usuário"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.zip_code}
+                    value={values.user_name}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={2}>
+              <Grid item xs={12} sm={4} md={4}>
                 <FormGroup>
                   <TextField
-                    name="complement"
-                    label="Complemento"
-                    type="text"
+                    name="password"
+                    label="Senha"
+                    type="password"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.complement}
+                    value={values.password}
                     fullWidth
                   />
                 </FormGroup>
@@ -207,4 +188,4 @@ const FormPadaria = () => {
   );
 };
 
-export default FormPadaria;
+export default Residente;

@@ -1,20 +1,24 @@
 import React from "react";
-import { TextField, Button, Grid } from "@material-ui/core";
-import { toast } from "react-toastify";
+import { Button, Grid, TextField } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../services/api";
-import { Form, Title, FormGroup, Container, Content } from "./styles";
-import Header from "../../components/Header";
-import ClearForm from "../../utils/Functions/ClearForm";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import {
+  Container,
+  Content,
+  FormContainer,
+  FormHeader,
+  FormGroup,
+} from "./styles";
+import Header from "../../../components/Header";
+import { api } from "../../../services/api";
+import ClearForm from "../../../utils/Functions/ClearForm";
 
-const Condominio = (props) => {
+const SubscriptionPlanForm = () => {
   const [values, setValues] = React.useState({
     name: "",
     price: "",
     deadline_orders_morning: "",
     deadline_orders_afternoon: "",
-    duedate: "",
   });
   const navigate = useNavigate();
 
@@ -25,44 +29,43 @@ const Condominio = (props) => {
     });
   }
 
-  function handleCancel() {
-    setValues(ClearForm(values));
-    navigate("/padarias");
-  }
-
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log(values);
+
     try {
-      api.post("subscription-plans", {
+      await api.post("subscription-plans", {
         ...values,
+        price: Number(values.price),
       });
       toast.success("Plano cadastrado!");
       setValues(ClearForm(values));
+      navigate("/planos");
     } catch (error) {
       console.error(error);
     }
   }
 
+  function handleCancel() {
+    setValues(ClearForm(values));
+    navigate("/planos");
+  }
+
   return (
     <Container>
-      <Header loc="/dash">
-        <Link to="/dash/padarias">Padaria</Link>
-        <Link to="/dash/condominios">Condomínio</Link>
-        <Link to="/planos">Planos</Link>
-        <Link to="/assinaturas">Assinatura</Link>
-        <Link to="/pedidos">Pedidos</Link>
-        <Link to="/relatorios">Relatórios</Link>
-        <Link to="/">Usuário</Link>
-      </Header>
+      <Header loc="/dash" />
       <Content>
-        <Grid container>
-          <Form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Title>Planos</Title>
-              </Grid>
-              <Grid item xs={12} sm={4} md={8}>
+        <FormContainer>
+          <FormHeader>
+            <h3>Adicionar Plano</h3>
+          </FormHeader>
+
+          <form onSubmit={handleSubmit}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="name"
@@ -75,7 +78,7 @@ const Condominio = (props) => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="price"
@@ -88,7 +91,7 @@ const Condominio = (props) => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="deadline_orders_morning"
@@ -101,27 +104,14 @@ const Condominio = (props) => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="deadline_orders_afternoon"
-                    label="Horário limite tarde"
+                    label="Horário limite manhã"
                     type="time"
                     onChange={handleChange}
                     value={values.deadline_orders_afternoon}
-                    fullWidth
-                  />
-                </FormGroup>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={4}>
-                <FormGroup>
-                  <TextField
-                    name="duedate"
-                    label="Dia de pagamento"
-                    type="number"
-                    onChange={handleChange}
-                    value={values.duedate}
                     fullWidth
                   />
                 </FormGroup>
@@ -135,20 +125,16 @@ const Condominio = (props) => {
                 >
                   Gravar
                 </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={handleCancel}
-                >
+                <Button variant="outlined" color="error" onClick={handleCancel}>
                   Cancelar
                 </Button>
               </Grid>
             </Grid>
-          </Form>
-        </Grid>
+          </form>
+        </FormContainer>
       </Content>
     </Container>
   );
 };
 
-export default Condominio;
+export default SubscriptionPlanForm;

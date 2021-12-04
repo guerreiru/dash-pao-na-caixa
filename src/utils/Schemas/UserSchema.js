@@ -10,7 +10,7 @@ const UserSchema = (values) => {
   if (!values.email) {
     errors.email = "Campo obrigatório!";
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "Invalid email address";
+    errors.email = "O email deve conter pelo menos 4 caracteres";
   }
 
   if (!values.cell_phone) {
@@ -23,6 +23,12 @@ const UserSchema = (values) => {
     errors.cpf = "Campo obrigatório!";
   } else if (values.cpf.length < 11) {
     errors.cpf = "O usuário deve conter pelo menos 11 caracteres";
+  }
+
+  if (!values.apartment_number) {
+    errors.apartment_number = "Campo obrigatório!";
+  } else if (values.apartment_number.length < 2) {
+    errors.apartment_number = "O apartamento deve conter pelo menos 1 caracter";
   }
 
   if (!values.user_name) {

@@ -10,11 +10,11 @@ import {
   FormGroup,
 } from "./styles";
 import Header from "../../../components/Header";
-import ErrorMessage from "../../../components/ErrorMessage";
+// import ErrorMessage from "../../../components/ErrorMessage";
 import { api } from "../../../services/api";
-import UserSchema from "../../../utils/Schemas/UserSchema";
+// import UserSchema from "../../../utils/Schemas/UserSchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-import ObjVal from "../../../utils/Functions/ObjecValue";
+// import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const FormPadaria = () => {
   const [values, setValues] = React.useState({
@@ -25,7 +25,7 @@ const FormPadaria = () => {
     user_name: "",
     password: "",
   });
-  const [erros, setErros] = React.useState({});
+  // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
   const { id: bakeryId } = useParams();
 
@@ -36,24 +36,22 @@ const FormPadaria = () => {
     });
   }
 
-  function handleBlur() {
-    setErros(UserSchema(values));
-  }
+  // function handleBlur() {
+  //   setErros(UserSchema(values));
+  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const haveErros = ObjVal(UserSchema(values)).length;
-    setErros(UserSchema(values));
+    // const haveErros = ObjVal(UserSchema(values)).length;
+    // setErros(UserSchema(values));
 
-    if (haveErros === 0) {
-      try {
-        await api.post(`bakeries/${bakeryId}/person`, values);
-        toast.success("Usuario cadastrado!");
-        setValues(ClearForm(values));
-        navigate("/padarias");
-      } catch (error) {
-        console.error(error);
-      }
+    try {
+      await api.post(`bakeries/${bakeryId}/people`, values);
+      toast.success("Usuario cadastrado!");
+      setValues(ClearForm(values));
+      navigate("/padarias");
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -84,11 +82,10 @@ const FormPadaria = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.name}
                     fullWidth
                   />
-                  {erros.name && <ErrorMessage message={erros.name} />}
                 </FormGroup>
               </Grid>
 
@@ -99,11 +96,10 @@ const FormPadaria = () => {
                     label="Email"
                     type="email"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.email}
                     fullWidth
                   />
-                  {erros.email && <ErrorMessage message={erros.email} />}
                 </FormGroup>
               </Grid>
 
@@ -114,13 +110,10 @@ const FormPadaria = () => {
                     label="Telefone"
                     type="tel"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.cell_phone}
                     fullWidth
                   />
-                  {erros.cell_phone && (
-                    <ErrorMessage message={erros.cell_phone} />
-                  )}
                 </FormGroup>
               </Grid>
 
@@ -131,11 +124,10 @@ const FormPadaria = () => {
                     label="CPF"
                     type="tel"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.cpf}
                     fullWidth
                   />
-                  {erros.cpf && <ErrorMessage message={erros.cpf} />}
                 </FormGroup>
               </Grid>
 
@@ -146,13 +138,10 @@ const FormPadaria = () => {
                     label="Usuário"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.user_name}
                     fullWidth
                   />
-                  {erros.user_name && (
-                    <ErrorMessage message={erros.user_name} />
-                  )}
                 </FormGroup>
               </Grid>
 
@@ -163,11 +152,10 @@ const FormPadaria = () => {
                     label="Senha"
                     type="password"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.password}
                     fullWidth
                   />
-                  {erros.password && <ErrorMessage message={erros.password} />}
                 </FormGroup>
               </Grid>
 
@@ -179,11 +167,7 @@ const FormPadaria = () => {
                 >
                   Gravar
                 </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={handleCancel}
-                >
+                <Button variant="outlined" color="error" onClick={handleCancel}>
                   Cancelar
                 </Button>
               </Grid>

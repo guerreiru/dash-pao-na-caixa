@@ -1,9 +1,8 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
-import { IoPersonAdd } from "react-icons/io5";
 import { TiDeleteOutline } from "react-icons/ti";
 import {
   Container,
@@ -16,24 +15,37 @@ import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 
-const Padaria = () => {
-  const [bakeries, setBakeries] = React.useState([]);
+const CondominioResidents = () => {
+  const [residents, setResidents] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
+  const [condominiumsSelected, setCondominiumsSelected] = React.useState([]);
+  const { id: condominiumId } = useParams();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadBakeries();
-  }, []);
-
-  async function loadBakeries() {
-    try {
-      const res = await api.get("bakeries");
-      setBakeries(res.data.data);
-    } catch (error) {
-      console.error(error);
+    async function loadResidents() {
+      try {
+        const res = await api.get(`condominiums/${condominiumId}/people`);
+        setResidents(res.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
+    loadResidents()
+  }, [condominiumId]);
+
+  React.useEffect(() => {
+    async function loadBakeryInfo() {
+      try {
+        const res = await api.get(`condominiums/${condominiumId}`);
+        setCondominiumsSelected(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadBakeryInfo()
+  }, [condominiumId]);
 
   function handleAdd() {
     navigate("adicionar");
@@ -43,9 +55,9 @@ const Padaria = () => {
     setBusca(str);
     const results = [];
     if (str.length > 2) {
-      for (var j = 0; j < bakeries.length; j++) {
-        if (bakeries[j].name.toLowerCase().match(str.toLowerCase())) {
-          results.push(bakeries[j]);
+      for (var j = 0; j < residents.length; j++) {
+        if (residents[j].name.toLowerCase().match(str.toLowerCase())) {
+          results.push(residents[j]);
           setResults(results);
         }
       }
@@ -58,13 +70,14 @@ const Padaria = () => {
     setBusca("");
     setResults([]);
   }
+
   return (
     <Container>
       <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>
-            <h3>Padarias</h3>
+            {condominiumsSelected ? <h3>Residentes de {condominiumsSelected.name}</h3> : null}
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -82,21 +95,13 @@ const Padaria = () => {
               variant="contained"
               startIcon={<FiPlus />}
               onClick={handleAdd}
-              className="btnAddDesktop"
             >
               Adicionar
             </Button>
-
-            <IoPersonAdd
-              title="Adicionar"
-              size="34"
-              className="btnAddMobile"
-              onClick={handleAdd}
-            />
           </TableHeader>
           <Table
-            data={results.length > 0 ? results : bakeries}
-            apiRoute="bakeries"
+            data={results.length > 0 ? results : residents}
+            apiRoute="residents"
           ></Table>
         </TableContainer>
       </Content>
@@ -104,4 +109,4 @@ const Padaria = () => {
   );
 };
 
-export default Padaria;
+export default CondominioResidents;

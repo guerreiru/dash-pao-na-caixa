@@ -3,6 +3,25 @@ import styled from "styled-components";
 export const Container = styled.div`
   background-color: var(--bg-white);
   height: 100%;
+
+  .btnAddMobile {
+    display: none;
+  }
+
+  @media (max-width: 568px) {
+    .btnAddDesktop {
+      display: none;
+    }
+
+    .btnAddMobile {
+      display: inline-block;
+
+      &:hover {
+        color: #737373;
+        transition: 0.2s ease-in;
+      }
+    }
+  }
 `;
 
 export const Content = styled.div`
@@ -11,6 +30,10 @@ export const Content = styled.div`
 
 export const TableContainer = styled.div`
   padding: 20px 30px;
+  @media (max-width: 568px) {
+    padding: 20px;
+  }
+
   background-color: white;
   margin: 20px 0;
   border-radius: 4px;
@@ -22,7 +45,6 @@ export const TableContainer = styled.div`
     color: #737373;
   }
 `;
-
 
 export const TableHeader = styled.div`
   margin-bottom: 20px;
@@ -37,10 +59,12 @@ export const TableHeader = styled.div`
   }
 
   @media (max-width: 568px) {
+    h3 {
+      flex: 1 0 100%;
+      text-align: center;
+    }
     row-gap: 10px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-around;
   }
 `;
 
@@ -63,4 +87,3 @@ export const SearchInput = styled.div`
     }
   }
 `;
-

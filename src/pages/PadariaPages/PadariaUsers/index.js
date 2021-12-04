@@ -14,41 +14,40 @@ import {
 import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
-import { BakeryContext } from "../../../context/BakeryContext";
-import ObjVal from "../../../utils/Functions/ObjecValue";
+// import { BakeryContext } from "../../../context/BakeryContext";
+// import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const Padaria = () => {
+const PadariaUsers = () => {
   const [users, setUsers] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
-  const navigate = useNavigate();
-  const { bakeries } = React.useContext(BakeryContext);
-  const [bakerySelected, setBakerySelected] = React.useState("");
+  const [bakerySelected, setBakerySelected] = React.useState([]);
   const { id: bakeryId } = useParams();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadUsers();
-  }, []);
-
-  React.useEffect(() => {
-    setBakeryData();
-  }, [bakeries]);
-
-  async function loadUsers() {
-    try {
-      const res = await api.get("users");
-      setUsers(res.data.data);
-    } catch (error) {
-      console.error(error);
+    async function loadUsers() {
+      try {
+        const res = await api.get(`bakeries/${bakeryId}/people`);
+        setUsers(res.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
+    loadUsers()
+  }, [bakeryId]);
 
-  async function setBakeryData() {
-    const bakary = ObjVal(bakeries).filter(
-      (bakary) => bakary.id === Number(bakeryId)
-    );
-    setBakerySelected(bakary);
-  }
+  React.useEffect(() => {
+    async function loadBakeryInfo() {
+      try {
+        const res = await api.get(`bakeries/${bakeryId}`);
+        setBakerySelected(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadBakeryInfo()
+  }, [bakeryId]);
 
   function handleAdd() {
     navigate("adicionar");
@@ -80,9 +79,7 @@ const Padaria = () => {
       <Content>
         <TableContainer>
           <TableHeader>
-            {bakerySelected ? (
-              <h3>Usuários de {bakerySelected[0].name}</h3>
-            ) : null}
+            {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : null}
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -114,4 +111,4 @@ const Padaria = () => {
   );
 };
 
-export default Padaria;
+export default PadariaUsers;

@@ -19,10 +19,10 @@ import {
   FormGroup,
 } from "./styles";
 import Header from "../../../components/Header";
-import ErrorMessage from "../../../components/ErrorMessage";
+// import ErrorMessage from "../../../components/ErrorMessage";
 import { BakeryContext } from "../../../context/BakeryContext";
 import { SubscriptionContext } from "../../../context/SubscriptionContext";
-import CondominiumSchema from "../../../utils/Schemas/CondominiumSchema";
+// import CondominiumSchema from "../../../utils/Schemas/CondominiumSchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
 import ObjVal from "../../../utils/Functions/ObjecValue";
 
@@ -40,7 +40,7 @@ const Condominio = () => {
     zip_code: "",
     complement: "",
   });
-  const [erros, setErros] = React.useState({});
+  // const [erros, setErros] = React.useState({});
   const { bakeries, bakeryOptions } = React.useContext(BakeryContext);
   const [bakeryItems, setBakeryOptions] = React.useState("");
 
@@ -57,9 +57,9 @@ const Condominio = () => {
     });
   }
 
-  function handleBlur() {
-    setErros(CondominiumSchema(values));
-  }
+  // function handleBlur() {
+  //   setErros(CondominiumSchema(values));
+  //  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -70,21 +70,19 @@ const Condominio = () => {
     const subscriptionPlan = ObjVal(subscriptions).find(
       (subscription) => subscription.id === subscriptionsItems
     );
-    const haveErros = ObjVal(CondominiumSchema(values)).length;
-    setErros(CondominiumSchema(values));
-    if (haveErros === 0) {
-      try {
-        api.post("condominiums", {
-          ...values,
-          bakery,
-          subscriptionPlan,
-        });
-        setBakeryOptions("");
-        toast.success("Condomínio cadastrado!");
-        setValues(ClearForm(values));
-        navigate("/condominios");
-      } catch (error) {}
-    }
+    //const haveErros = ObjVal(CondominiumSchema(values)).length;
+    // setErros(CondominiumSchema(values));
+    try {
+      api.post("condominiums", {
+        ...values,
+        bakery,
+        subscriptionPlan,
+      });
+      setBakeryOptions("");
+      toast.success("Condomínio cadastrado!");
+      setValues(ClearForm(values));
+      navigate("/condominios");
+    } catch (error) {}
   }
 
   const handleSelectBakery = ({ target }) => {
@@ -122,11 +120,10 @@ const Condominio = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.name}
                     fullWidth
                   />
-                  {erros.name && <ErrorMessage message={erros.name} />}
                 </FormGroup>
               </Grid>
 
@@ -181,13 +178,10 @@ const Condominio = () => {
                     label="Rua"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.street_name}
                     fullWidth
                   />
-                  {erros.street_name && (
-                    <ErrorMessage message={erros.street_name} />
-                  )}
                 </FormGroup>
               </Grid>
 
@@ -198,11 +192,10 @@ const Condominio = () => {
                     label="Número"
                     type="number"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.number}
                     fullWidth
                   />
-                  {erros.number && <ErrorMessage message={erros.number} />}
                 </FormGroup>
               </Grid>
 
@@ -213,11 +206,10 @@ const Condominio = () => {
                     label="Cidade"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.city}
                     fullWidth
                   />
-                  {erros.city && <ErrorMessage message={erros.city} />}
                 </FormGroup>
               </Grid>
 
@@ -228,11 +220,10 @@ const Condominio = () => {
                     label="Estado"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.state}
                     fullWidth
                   />
-                  {erros.state && <ErrorMessage message={erros.state} />}
                 </FormGroup>
               </Grid>
 
@@ -243,11 +234,10 @@ const Condominio = () => {
                     label="CEP"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.zip_code}
                     fullWidth
                   />
-                  {erros.zip_code && <ErrorMessage message={erros.zip_code} />}
                 </FormGroup>
               </Grid>
 
@@ -258,13 +248,10 @@ const Condominio = () => {
                     label="Complemento"
                     type="text"
                     onChange={handleChange}
-                    onBlur={handleBlur}
+                    // onBlur={handleBlur}
                     value={values.complement}
                     fullWidth
                   />
-                  {erros.complement && (
-                    <ErrorMessage message={erros.complement} />
-                  )}
                 </FormGroup>
               </Grid>
 
@@ -276,11 +263,7 @@ const Condominio = () => {
                 >
                   Gravar
                 </Button>
-                <Button
-                  variant="outlined"
-                  color="error"
-                  onClick={handleCancel}
-                >
+                <Button variant="outlined" color="error" onClick={handleCancel}>
                   Cancelar
                 </Button>
               </Grid>

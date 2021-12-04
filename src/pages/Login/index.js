@@ -2,9 +2,9 @@ import React from "react";
 import { TextField, Button } from "@material-ui/core";
 import { Container, Content, FormHeader, FormGroup } from "./styles";
 import Logo from "../../components/Logo";
-import ErrorMessage from "../../components/ErrorMessage";
+// import ErrorMessage from "../../components/ErrorMessage";
 import { useNavigate } from "react-router";
-import UserSchema from "../../utils/Schemas/UserSchema";
+// import UserSchema from "../../utils/Schemas/UserSchema";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Login = () => {
     user_name: "",
     password: "",
   });
-  const [erros, setErros] = React.useState({});
+  // const [erros, setErros] = React.useState({});
 
   function handleChange(ev) {
     setValues({
@@ -22,11 +22,10 @@ const Login = () => {
   }
 
   function handleSubmit(event) {
-    const haveErros = Object.values(UserSchema(values)).length;
+    // const haveErros = Object.values(UserSchema(values)).length;
     event.preventDefault();
-    setErros(UserSchema(values));
-
-    if (haveErros === 0) navigate("/dash");
+    // setErros(UserSchema(values));
+    navigate("/dash");
   }
 
   return (
@@ -45,7 +44,6 @@ const Login = () => {
             value={values.user_name}
             fullWidth
           />
-          {erros.user_name && <ErrorMessage message={erros.user_name} />}
         </FormGroup>
 
         <FormGroup>
@@ -57,7 +55,6 @@ const Login = () => {
             value={values.password}
             fullWidth
           />
-          {erros.password && <ErrorMessage message={erros.password} />}
         </FormGroup>
         <Button type="submit" variant="contained">
           Entrar

@@ -10,7 +10,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { toast } from "react-toastify";
-import { FaEdit } from "react-icons/fa";
+// import { FaEdit } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 import { HiUser } from "react-icons/hi";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -68,22 +68,19 @@ export default function DateTable(props) {
         <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell>#</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Opções</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((data) => (
+            {data.map((data, index) => (
               <TableRow
-                key={data.id}
+                key={index}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell>{data.id}</TableCell>
                 <TableCell>{data.name || data.user_name}</TableCell>
                 <TableCell>
                   <BtnOptions>
-                    <FaEdit size="16px" className="btnEdit" title="Editar" />
                     {location.includes("users") ? null : (
                       <HiUser
                         title="Usuários"

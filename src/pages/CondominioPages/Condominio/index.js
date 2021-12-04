@@ -3,6 +3,7 @@ import { Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
+import { IoPersonAdd } from "react-icons/io5";
 import { TiDeleteOutline } from "react-icons/ti";
 import {
   Container,
@@ -81,9 +82,17 @@ const Condominio = () => {
               variant="contained"
               startIcon={<FiPlus />}
               onClick={handleAdd}
+              className="btnAddDesktop"
             >
               Adicionar
             </Button>
+
+            <IoPersonAdd
+              title="Adicionar"
+              size="34"
+              className="btnAddMobile"
+              onClick={handleAdd}
+            />
           </TableHeader>
           <Table
             data={results.length > 0 ? results : condominiums}
