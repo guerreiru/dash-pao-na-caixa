@@ -14,6 +14,7 @@ import {
 import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
+import { IoPersonAdd } from "react-icons/io5";
 
 const CondominioResidents = () => {
   const [residents, setResidents] = React.useState([]);
@@ -32,7 +33,7 @@ const CondominioResidents = () => {
         console.error(error);
       }
     }
-    loadResidents()
+    loadResidents();
   }, [condominiumId]);
 
   React.useEffect(() => {
@@ -44,7 +45,7 @@ const CondominioResidents = () => {
         console.error(error);
       }
     }
-    loadBakeryInfo()
+    loadBakeryInfo();
   }, [condominiumId]);
 
   function handleAdd() {
@@ -77,7 +78,9 @@ const CondominioResidents = () => {
       <Content>
         <TableContainer>
           <TableHeader>
-            {condominiumsSelected ? <h3>Residentes de {condominiumsSelected.name}</h3> : null}
+            {condominiumsSelected ? (
+              <h3>Residentes de {condominiumsSelected.name}</h3>
+            ) : null}
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -95,9 +98,17 @@ const CondominioResidents = () => {
               variant="contained"
               startIcon={<FiPlus />}
               onClick={handleAdd}
+              className="btnAddDesktop"
             >
               Adicionar
             </Button>
+
+            <IoPersonAdd
+              title="Adicionar"
+              size="34"
+              className="btnAddMobile"
+              onClick={handleAdd}
+            />
           </TableHeader>
           <Table
             data={results.length > 0 ? results : residents}

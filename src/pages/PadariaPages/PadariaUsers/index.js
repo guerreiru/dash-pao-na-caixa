@@ -14,6 +14,7 @@ import {
 import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
+import { IoPersonAdd } from "react-icons/io5";
 // import { BakeryContext } from "../../../context/BakeryContext";
 // import ObjVal from "../../../utils/Functions/ObjecValue";
 
@@ -34,7 +35,7 @@ const PadariaUsers = () => {
         console.error(error);
       }
     }
-    loadUsers()
+    loadUsers();
   }, [bakeryId]);
 
   React.useEffect(() => {
@@ -46,7 +47,7 @@ const PadariaUsers = () => {
         console.error(error);
       }
     }
-    loadBakeryInfo()
+    loadBakeryInfo();
   }, [bakeryId]);
 
   function handleAdd() {
@@ -97,9 +98,17 @@ const PadariaUsers = () => {
               variant="contained"
               startIcon={<FiPlus />}
               onClick={handleAdd}
+              className="btnAddDesktop"
             >
               Adicionar
             </Button>
+
+            <IoPersonAdd
+              title="Adicionar"
+              size="34"
+              className="btnAddMobile"
+              onClick={handleAdd}
+            />
           </TableHeader>
           <Table
             data={results.length > 0 ? results : users}

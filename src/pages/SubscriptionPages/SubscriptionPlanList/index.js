@@ -2,7 +2,6 @@ import React from "react";
 import {
   Button,
   Card,
-  CardActions,
   CardContent,
   Grid,
   Typography,
@@ -48,13 +47,12 @@ const SubscriptionList = () => {
 
   function searchStringInArray(str) {
     setBusca(str);
-    const results = [];
-    const plansBackup = [...plans];
+    const resultsArray = [...results];
     if (str.length > 2) {
       for (var j = 0; j < plans.length; j++) {
         if (plans[j].name.toLowerCase().match(str.toLowerCase())) {
-          results.push(plans[j]);
-          setPlans(results);
+          resultsArray.push(plans[j]);
+          setPlans(resultsArray);
         }
       }
     } else if (str.length === 0) {
