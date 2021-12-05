@@ -61,6 +61,7 @@ export const TableHeader = styled.div`
   @media (max-width: 568px) {
     h3 {
       flex: 1 0 100%;
+      font-size: 1.5em;
       text-align: center;
     }
     row-gap: 10px;

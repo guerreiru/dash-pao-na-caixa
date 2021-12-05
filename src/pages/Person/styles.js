@@ -43,6 +43,11 @@ export const FormHeader = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    h3 {
+      flex: 1;
+      font-size: 1.5em;
+    }
   }
 `;
 

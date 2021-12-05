@@ -25,7 +25,7 @@ const Login = () => {
     // const haveErros = Object.values(UserSchema(values)).length;
     event.preventDefault();
     // setErros(UserSchema(values));
-    navigate("/dash");
+    navigate("/padarias");
   }
 
   return (
