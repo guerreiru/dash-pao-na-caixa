@@ -11,9 +11,6 @@ const ItemLinks = () => {
       <Link to="/condominios">Condomínios</Link>
       <Link to="/usuarios">Usuários</Link>
       <Link to="/planos">Planos</Link>
-      <Link to="/assinaturas">Assinaturas</Link>
-      <Link to="/pedidos">Pedidos</Link>
-      <Link to="/relatorios">Relatórios</Link>
     </>
   );
 };

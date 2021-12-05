@@ -29,6 +29,7 @@ const Router = () => {
 
       <Route path="/padarias" element={<Padaria />} />
       <Route path="/padarias/adicionar" element={<FormPadaria />} />
+      <Route path="/padarias/:id/editar" element={<FormPadaria />} />
       <Route path="/padarias/:id/users" element={<PadariaUsers />} />
       <Route path="/padarias/:id/users/adicionar" element={<FormPadariaUser />} />
 

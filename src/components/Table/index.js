@@ -10,7 +10,7 @@ import {
   Button,
 } from "@material-ui/core";
 import { toast } from "react-toastify";
-// import { FaEdit } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 import { HiUser } from "react-icons/hi";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -85,14 +85,19 @@ export default function DateTable(props) {
                       <HiUser
                         title="Usuários"
                         onClick={() => navigate(`${data.id}/users`)}
-                        size="16px"
+                        size="16"
                         className="btnAdd"
                       />
                     )}
+                    <FaEdit
+                      title="Editar"
+                      onClick={() => navigate(`${data.id}/editar`)}
+                      className="btnEdit"
+                    />
                     <FiTrash
                       title="Excluir"
                       onClick={() => handleOpen(data)}
-                      size="16px"
+                      size="16"
                       className="btnDelete"
                     />
                   </BtnOptions>

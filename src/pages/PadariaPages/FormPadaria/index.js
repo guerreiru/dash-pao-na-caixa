@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Container,
@@ -27,10 +27,33 @@ const FormPadaria = () => {
     state: "",
     zip_code: "",
     complement: "",
+    bank_code: "",
+    agency: "",
+    account: "",
+    account_type: "CHECKING",
   });
   // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
+  const { id: bakeryId } = useParams();
 
+  React.useEffect(() => {
+    if (bakeryId) {
+      try {
+        api.get(`bakeries/${bakeryId}`).then((res) => {
+          // setValues({
+          // name: res.data.name,
+          // street_name: res.data.street_name,
+          // number: res.data.number,
+          // city: res.data.city,
+          // state: res.data.state,
+          // zip_code: res.data.zip_code,
+          // complement: res.data.complement,
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [bakeryId]);
   function handleChange(ev) {
     setValues({
       ...values,
@@ -47,13 +70,27 @@ const FormPadaria = () => {
     // const haveErros = ObjVal(BakerySchema(values)).length;
     // setErros(BakerySchema(values));
 
-    const bakeries = {
+    const bakery = {
       name: values.name,
       imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
-      address: { ...values },
+      bankDatabakery: {
+        bank_code: Number(values.bank_code),
+        agency: values.agency,
+        account: Number(values.account),
+        account_type: values.account_type,
+      },
+      address: {
+        street_name: values.street_name,
+        number: Number(values.number),
+        city: values.city,
+        state: values.state,
+        zip_code: values.zip_code,
+        complement: values.complement,
+      },
     };
+    
     try {
-      await api.post("bakeries", bakeries);
+      await api.post("bakeries", bakery);
       toast.success("Padaria cadastrada!");
       setValues(ClearForm(values));
       navigate("/padarias");
@@ -131,7 +168,7 @@ const FormPadaria = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="city"
@@ -145,7 +182,7 @@ const FormPadaria = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="state"
@@ -159,7 +196,7 @@ const FormPadaria = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={2}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="zip_code"
@@ -173,7 +210,7 @@ const FormPadaria = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={2}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="complement"
@@ -182,6 +219,52 @@ const FormPadaria = () => {
                     onChange={handleChange}
                     // onBlur={handleBlur}
                     value={values.complement}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12}>
+                <h5>Dados bancários</h5>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="bank_code"
+                    label="Código do Banco"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.bank_code}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="agency"
+                    label="Agência"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.agency}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="account"
+                    label="Conta"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.account}
                     fullWidth
                   />
                 </FormGroup>
