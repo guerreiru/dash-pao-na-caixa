@@ -11,10 +11,7 @@ import {
   FormGroup,
 } from "./styles";
 import Header from "../../../components/Header";
-// import ErrorMessage from "../../../components/ErrorMessage";
-// import UserSchema from "../../../utils/Schemas/UserSchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-// import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const Residente = () => {
   const [values, setValues] = React.useState({
@@ -26,10 +23,10 @@ const Residente = () => {
     user_name: "",
     password: "",
   });
-  // const [erros, setErros] = React.useState({});
 
   const navigate = useNavigate();
-  const { id: condominium } = useParams();
+  const { id: condominiumId } = useParams();
+  const [condominium, setCondominium] = React.useState(null);
 
   function handleChange(ev) {
     setValues({
@@ -38,22 +35,31 @@ const Residente = () => {
     });
   }
 
-  // function handleBlur() {
-  //   setErros(UserSchema(values));
-  // }
+  React.useEffect(() => {
+    async function getCondominium() {
+      try {
+        const res = await api.get(`condominiums/${condominiumId}`);
+        setCondominium(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getCondominium();
+  }, [condominiumId]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    // const haveErros = ObjVal(UserSchema(values)).length;
-    // setErros(UserSchema(values));
+    const resident = {
+      ...values,
+      condominium: Number(condominiumId)
+    }
     try {
-      api.post("residents", {
-        ...values,
-        condominium,
+      api.post("residents", resident).then((res) => {
+        toast.success("Residente cadastrado!");
+        setValues(ClearForm(values));
+        navigate("/condominios");
       });
-      toast.success("Residente cadastrado!");
-      setValues(ClearForm(values));
-      navigate("/condominios");
     } catch (error) {}
   }
 
@@ -68,7 +74,9 @@ const Residente = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Residente</h3>
+            {condominium ? (
+              <h3>Adicionar residente a {condominium.name}</h3>
+            ) : null}
           </FormHeader>
 
           <form onSubmit={handleSubmit}>

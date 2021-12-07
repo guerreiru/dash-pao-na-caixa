@@ -10,13 +10,10 @@ import {
   FormGroup,
 } from "./styles";
 import Header from "../../../components/Header";
-// import ErrorMessage from "../../../components/ErrorMessage";
 import { api } from "../../../services/api";
-// import UserSchema from "../../../utils/Schemas/usuarioschema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-// import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const FormPadaria = () => {
+const FormPerson = () => {
   const [values, setValues] = React.useState({
     name: "",
     email: "",
@@ -25,10 +22,27 @@ const FormPadaria = () => {
     user_name: "",
     password: "",
   });
-  // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
-  const { id: bakeryId } = useParams();
-  const [bakery, setBakery] = React.useState(null);
+  const { id: userId } = useParams();
+
+  React.useEffect(() => {
+    if (userId) {
+      try {
+        api.get(`people/${userId}`).then((res) => {
+          setValues({
+            name: res.data.name,
+            email: res.data.email,
+            cell_phone: res.data.cell_phone,
+            cpf: res.data.cpf,
+            user_name: res.data.user_name,
+            password: res.data.password,
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [userId]);
 
   function handleChange(ev) {
     setValues({
@@ -37,35 +51,44 @@ const FormPadaria = () => {
     });
   }
 
-  React.useEffect(() => {
-    async function getBakery() {
-      try {
-        const res = await api.get(`bakeries/${bakeryId}`);
-        setBakery(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    getBakery();
-  }, [bakeryId]);
-
   async function handleSubmit(event) {
     event.preventDefault();
 
-    try {
-      await api.post(`bakeries/${bakeryId}/people`, values);
-      toast.success("Usuario cadastrado!");
-      setValues(ClearForm(values));
-      navigate("/padarias");
-    } catch (error) {
-      console.error(error);
+    const usuario = {
+      name: values.name,
+      email: values.email,
+      cell_phone: values.cell_phone,
+      cpf: values.cpf,
+      user: {
+        user_name: values.user_name,
+        password: values.password,
+      },
+    };
+
+    if (userId) {
+      try {
+        await api.put(`people/${userId}`, usuario);
+        toast.success("Usuário cadastrado!");
+        setValues(ClearForm(values));
+        navigate("/usuarios");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await api.post("people", usuario);
+        toast.success("Usuário cadastrado!");
+        setValues(ClearForm(values));
+        navigate("/usuarios");
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/padarias");
+    navigate("/usuarios");
   }
 
   return (
@@ -74,7 +97,7 @@ const FormPadaria = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            {bakery ? <h3>Adicionar usuário a {bakery.name}</h3> : null}
+            <h3>Adicionar Usuário</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -90,8 +113,7 @@ const FormPadaria = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.name}
+                    value={values.name || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -104,8 +126,7 @@ const FormPadaria = () => {
                     label="Email"
                     type="email"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.email}
+                    value={values.email || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -118,26 +139,26 @@ const FormPadaria = () => {
                     label="Usuário"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.user_name}
+                    value={values.user_name || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={6}>
-                <FormGroup>
-                  <TextField
-                    name="password"
-                    label="Senha"
-                    type="password"
-                    onChange={handleChange}
-                    // onBlur={handleBlur}
-                    value={values.password}
-                    fullWidth
-                  />
-                </FormGroup>
-              </Grid>
+              {userId ? null : (
+                <Grid item xs={12} sm={4} md={6}>
+                  <FormGroup>
+                    <TextField
+                      name="password"
+                      label="Senha"
+                      type="password"
+                      onChange={handleChange}
+                      value={values.password || ""}
+                      fullWidth
+                    />
+                  </FormGroup>
+                </Grid>
+              )}
 
               <Grid item xs={12}>
                 <Button
@@ -159,4 +180,4 @@ const FormPadaria = () => {
   );
 };
 
-export default FormPadaria;
+export default FormPerson;

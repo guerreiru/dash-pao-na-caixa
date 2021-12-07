@@ -8,7 +8,7 @@ import {
   Select,
   TextField,
 } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../../services/api";
 import {
@@ -19,10 +19,8 @@ import {
   FormGroup,
 } from "./styles";
 import Header from "../../../components/Header";
-// import ErrorMessage from "../../../components/ErrorMessage";
 import { BakeryContext } from "../../../context/BakeryContext";
 import { SubscriptionContext } from "../../../context/SubscriptionContext";
-// import CondominiumSchema from "../../../utils/Schemas/CondominiumSchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
 import ObjVal from "../../../utils/Functions/ObjecValue";
 
@@ -40,15 +38,39 @@ const Condominio = () => {
     zip_code: "",
     complement: "",
   });
-  // const [erros, setErros] = React.useState({});
   const { bakeries, bakeryOptions } = React.useContext(BakeryContext);
   const [bakeryItems, setBakeryOptions] = React.useState("");
 
   const { subscriptions, subscriptionOptions } =
     React.useContext(SubscriptionContext);
   const [subscriptionsItems, setSubscriptionsOptions] = React.useState("");
+  const [title, setTitle] = React.useState("");
 
   const navigate = useNavigate();
+  const { id: condominiumId } = useParams();
+
+  React.useEffect(() => {
+    if (condominiumId) {
+      try {
+        api.get(`condominiums/${condominiumId}`).then((res) => {
+          setValues({
+            name: res.data.name,
+            street_name: res.data.address.street_name,
+            number: res.data.address.number,
+            city: res.data.address.city,
+            state: res.data.address.state,
+            zip_code: res.data.address.zip_code,
+            complement: res.data.address.complement,
+          });
+          setTitle(res.data.name);
+          setBakeryOptions(res.data.bakery.id)
+          setSubscriptionsOptions(res.data.subscriptionPlan.id)
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [condominiumId]);
 
   function handleChange(ev) {
     setValues({
@@ -56,10 +78,6 @@ const Condominio = () => {
       [ev.target.name]: ev.target.value,
     });
   }
-
-  // function handleBlur() {
-  //   setErros(CondominiumSchema(values));
-  //  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -70,19 +88,38 @@ const Condominio = () => {
     const subscriptionPlan = ObjVal(subscriptions).find(
       (subscription) => subscription.id === subscriptionsItems
     );
-    //const haveErros = ObjVal(CondominiumSchema(values)).length;
-    // setErros(CondominiumSchema(values));
-    try {
-      api.post("condominiums", {
-        ...values,
-        bakery,
-        subscriptionPlan,
-      });
-      setBakeryOptions("");
-      toast.success("Condomínio cadastrado!");
-      setValues(ClearForm(values));
-      navigate("/condominios");
-    } catch (error) {}
+    
+    const condominium = {
+      name: values.name,
+      bakery,
+      subscriptionPlan,
+      address: {
+        street_name: values.street_name,
+        number: Number(values.number),
+        city: values.city,
+        state: values.state,
+        zip_code: values.zip_code,
+        complement: values.complement,
+      },
+    };
+
+    if (condominiumId) {
+      try {
+        api.put(`condominiums/${condominiumId}`, condominium);
+        setBakeryOptions("");
+        toast.success("Condomínio editado!");
+        setValues(ClearForm(values));
+        navigate("/condominios");
+      } catch (error) {}
+    } else {
+      try {
+        api.post("condominiums", condominium);
+        setBakeryOptions("");
+        toast.success("Condomínio cadastrado!");
+        setValues(ClearForm(values));
+        navigate("/condominios");
+      } catch (error) {}
+    }
   }
 
   const handleSelectBakery = ({ target }) => {
@@ -104,7 +141,9 @@ const Condominio = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Condomínio</h3>
+            <h3>
+              {condominiumId ? `Editar ${title}` : "Adicionar Condomínio"}
+            </h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>

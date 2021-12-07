@@ -65,7 +65,7 @@ export default function DateTable(props) {
   return (
     <Container>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} size="medium" aria-label="a dense table">
+        <Table sx={{ minWidth: 300 }} size="medium">
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
@@ -81,19 +81,23 @@ export default function DateTable(props) {
                 <TableCell>{data.name || data.user_name}</TableCell>
                 <TableCell>
                   <BtnOptions>
-                    {location.includes("users") ? null : (
+                    {location.includes("usuarios") ? null : (
                       <HiUser
                         title="Usuários"
-                        onClick={() => navigate(`${data.id}/users`)}
+                        onClick={() => navigate(`${data.id}/usuarios`)}
                         size="16"
                         className="btnAdd"
                       />
                     )}
-                    <FaEdit
-                      title="Editar"
-                      onClick={() => navigate(`${data.id}/editar`)}
-                      className="btnEdit"
-                    />
+
+                    {props.noEditable ? null : (
+                      <FaEdit
+                        title="Editar"
+                        onClick={() => navigate(`${data.id}/editar`)}
+                        className="btnEdit"
+                      />
+                    )}
+
                     <FiTrash
                       title="Excluir"
                       onClick={() => handleOpen(data)}

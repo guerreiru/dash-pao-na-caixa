@@ -20,7 +20,7 @@ import ClearForm from "../../../utils/Functions/ClearForm";
 const FormPadaria = () => {
   const [values, setValues] = React.useState({
     name: "",
-    img_logo: " ",
+    imgLogo: "",
     street_name: "",
     number: "",
     city: "",
@@ -32,6 +32,8 @@ const FormPadaria = () => {
     account: "",
     account_type: "CHECKING",
   });
+  const [bankDataId, setBankDataID] = React.useState(null)
+  const [title, setTitle] = React.useState("")
   // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
   const { id: bakeryId } = useParams();
@@ -40,20 +42,28 @@ const FormPadaria = () => {
     if (bakeryId) {
       try {
         api.get(`bakeries/${bakeryId}`).then((res) => {
-          // setValues({
-          // name: res.data.name,
-          // street_name: res.data.street_name,
-          // number: res.data.number,
-          // city: res.data.city,
-          // state: res.data.state,
-          // zip_code: res.data.zip_code,
-          // complement: res.data.complement,
+          setValues({
+            name: res.data.name,
+            street_name: res.data.address.street_name,
+            number: res.data.address.number,
+            city: res.data.address.city,
+            state: res.data.address.state,
+            zip_code: res.data.address.zip_code,
+            complement: res.data.address.complement,
+            bank_code: res.data.bankData.bank_code,
+            agency: res.data.bankData.agency,
+            account: res.data.bankData.account,
+            account_type: res.data.bankData.account_type,
+          });
+          setBankDataID(res.data.bankData.id)
+          setTitle(res.data.name)
         });
       } catch (error) {
         console.error(error);
       }
     }
   }, [bakeryId]);
+
   function handleChange(ev) {
     setValues({
       ...values,
@@ -73,12 +83,6 @@ const FormPadaria = () => {
     const bakery = {
       name: values.name,
       imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
-      bankDatabakery: {
-        bank_code: Number(values.bank_code),
-        agency: values.agency,
-        account: Number(values.account),
-        account_type: values.account_type,
-      },
       address: {
         street_name: values.street_name,
         number: Number(values.number),
@@ -87,15 +91,33 @@ const FormPadaria = () => {
         zip_code: values.zip_code,
         complement: values.complement,
       },
+      bankData: {
+        id: bankDataId,
+        bank_code: Number(values.bank_code),
+        agency: values.agency,
+        account: Number(values.account),
+        account_type: 0,
+      },
     };
-    
-    try {
-      await api.post("bakeries", bakery);
-      toast.success("Padaria cadastrada!");
-      setValues(ClearForm(values));
-      navigate("/padarias");
-    } catch (error) {
-      console.error(error);
+
+    if (bakeryId) {
+      try {
+        await api.put(`bakeries/${bakeryId}`, bakery);
+        toast.success("Padaria editada!");
+        setValues(ClearForm(values));
+        navigate("/padarias");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await api.post("bakeries", bakery);
+        toast.success("Padaria cadastrada!");
+        setValues(ClearForm(values));
+        navigate("/padarias");
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -110,7 +132,7 @@ const FormPadaria = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Padaria</h3>
+            <h3>{bakeryId ? `Editar ${title}` : "Adicionar Padaria"}</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -127,7 +149,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.name}
+                    value={values.name || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -148,7 +170,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.street_name}
+                    value={values.street_name || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -162,7 +184,7 @@ const FormPadaria = () => {
                     type="number"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.number}
+                    value={values.number || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -176,7 +198,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.city}
+                    value={values.city || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -190,7 +212,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.state}
+                    value={values.state || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -204,7 +226,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.zip_code}
+                    value={values.zip_code || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -218,7 +240,7 @@ const FormPadaria = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.complement}
+                    value={values.complement || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -236,7 +258,7 @@ const FormPadaria = () => {
                     type="tel"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.bank_code}
+                    value={values.bank_code || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -250,7 +272,7 @@ const FormPadaria = () => {
                     type="tel"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.agency}
+                    value={values.agency || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -264,7 +286,7 @@ const FormPadaria = () => {
                     type="tel"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.account}
+                    value={values.account || ""}
                     fullWidth
                   />
                 </FormGroup>

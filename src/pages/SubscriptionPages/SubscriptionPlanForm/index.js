@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Grid, TextField } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
   Container,
@@ -21,6 +21,24 @@ const SubscriptionPlanForm = () => {
     deadline_orders_afternoon: "",
   });
   const navigate = useNavigate();
+  const { id: planId } = useParams();
+
+  React.useEffect(() => {
+    if (planId) {
+      try {
+        api.get(`subscription-plans/${planId}`).then((res) => {
+          setValues({
+            name: res.data.name,
+            price: res.data.price,
+            deadline_orders_morning: res.data.deadline_orders_morning,
+            deadline_orders_afternoon: res.data.deadline_orders_afternoon,
+          });
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [planId]);
 
   function handleChange(ev) {
     setValues({
@@ -31,17 +49,26 @@ const SubscriptionPlanForm = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const plan = { ...values, price: Number(values.price) };
 
-    try {
-      await api.post("subscription-plans", {
-        ...values,
-        price: Number(values.price),
-      });
-      toast.success("Plano cadastrado!");
-      setValues(ClearForm(values));
-      navigate("/planos");
-    } catch (error) {
-      console.error(error);
+    if (planId) {
+      try {
+        await api.put(`subscription-plans/${planId}`, plan);
+        toast.success("Plano editado!");
+        setValues(ClearForm(values));
+        navigate("/planos");
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await api.post("subscription-plans", plan);
+        toast.success("Plano cadastrado!");
+        setValues(ClearForm(values));
+        navigate("/planos");
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -108,7 +135,7 @@ const SubscriptionPlanForm = () => {
                 <FormGroup>
                   <TextField
                     name="deadline_orders_afternoon"
-                    label="Horário limite manhã"
+                    label="Horário limite tarde"
                     type="time"
                     onChange={handleChange}
                     value={values.deadline_orders_afternoon}

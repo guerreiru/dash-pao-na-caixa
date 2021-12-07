@@ -26,13 +26,6 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 0 20px;
-
-  .btnEdit {
-    color: #1565c0;
-  }
-  .btnDelete {
-    color: #ff7a7a;
-  }
 `;
 
 export const TableContainer = styled.div`
@@ -68,30 +61,21 @@ export const TableHeader = styled.div`
   @media (max-width: 568px) {
     h3 {
       flex: 1 0 100%;
-      text-align: center;
       font-size: 1.5em;
+      text-align: center;
     }
     row-gap: 10px;
     justify-content: space-around;
   }
 `;
 
-export const SearchInput = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  padding: 9px;
-  border-radius: 4px;
-
-  input {
-    border: none;
-    outline: none;
-    padding: 0 8px;
-
-    &::placeholder {
-      color: #737373;
-      font-size: 16px;
-    }
+export const ItemPedido = styled.div`
+  h4 {
+    margin: 8px 0;
   }
-`;
+
+  h5 {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+`

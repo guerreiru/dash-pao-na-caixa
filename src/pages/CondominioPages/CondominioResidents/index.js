@@ -111,6 +111,7 @@ const CondominioResidents = () => {
             />
           </TableHeader>
           <Table
+            noEditable={true}
             data={results.length > 0 ? results : residents}
             apiRoute="residents"
           ></Table>

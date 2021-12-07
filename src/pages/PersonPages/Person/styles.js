@@ -26,13 +26,6 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 0 20px;
-
-  .btnEdit {
-    color: #1565c0;
-  }
-  .btnDelete {
-    color: #ff7a7a;
-  }
 `;
 
 export const TableContainer = styled.div`
@@ -68,8 +61,8 @@ export const TableHeader = styled.div`
   @media (max-width: 568px) {
     h3 {
       flex: 1 0 100%;
-      text-align: center;
       font-size: 1.5em;
+      text-align: center;
     }
     row-gap: 10px;
     justify-content: space-around;
