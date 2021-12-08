@@ -16,7 +16,7 @@ import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 
-const Condominio = () => {
+const Condominium = () => {
   const [condominiums, setCondominiums] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
@@ -104,4 +104,4 @@ const Condominio = () => {
   );
 };
 
-export default Condominio;
+export default Condominium;

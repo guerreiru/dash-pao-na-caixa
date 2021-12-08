@@ -13,22 +13,17 @@ import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
-const FormPerson = () => {
+const CategoryForm = () => {
   const [values, setValues] = React.useState({
     name: "",
-    email: "",
-    cell_phone: "",
-    cpf: "",
-    user_name: "",
-    password: "",
   });
   const navigate = useNavigate();
-  const { id: userId } = useParams();
+  const { id: categoryId } = useParams();
 
   React.useEffect(() => {
-    if (userId) {
+    if (categoryId) {
       try {
-        api.get(`people/${userId}`).then((res) => {
+        api.get(`categories/${categoryId}`).then((res) => {
           setValues({
             name: res.data.name,
             email: res.data.email,
@@ -42,7 +37,7 @@ const FormPerson = () => {
         console.error(error);
       }
     }
-  }, [userId]);
+  }, [categoryId]);
 
   function handleChange(ev) {
     setValues({
@@ -54,32 +49,25 @@ const FormPerson = () => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const usuario = {
+    const categoria = {
       name: values.name,
-      email: values.email,
-      cell_phone: values.cell_phone,
-      cpf: values.cpf,
-      user: {
-        user_name: values.user_name,
-        password: values.password,
-      },
     };
 
-    if (userId) {
+    if (categoryId) {
       try {
-        await api.put(`people/${userId}`, usuario);
-        toast.success("Usuário editado!");
+        await api.put(`categories/${categoryId}`, categoria);
+        toast.success("Categoria editada!");
         setValues(ClearForm(values));
-        navigate("/usuarios");
+        navigate("/categorias");
       } catch (error) {
         console.error(error);
       }
     } else {
       try {
-        await api.post("people", usuario);
-        toast.success("Usuário cadastrado!");
+        await api.post("categories", categoria);
+        toast.success("Categoria cadastrada!");
         setValues(ClearForm(values));
-        navigate("/usuarios");
+        navigate("/categorias");
       } catch (error) {
         console.error(error);
       }
@@ -88,7 +76,7 @@ const FormPerson = () => {
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/usuarios");
+    navigate("/categorias");
   }
 
   return (
@@ -97,7 +85,7 @@ const FormPerson = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Usuário</h3>
+            <h3>Adicionar Categoria</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -110,7 +98,7 @@ const FormPerson = () => {
                 <FormGroup>
                   <TextField
                     name="name"
-                    label="Nome"
+                    label="Nome da categoria"
                     type="text"
                     onChange={handleChange}
                     value={values.name || ""}
@@ -118,47 +106,6 @@ const FormPerson = () => {
                   />
                 </FormGroup>
               </Grid>
-
-              <Grid item xs={12} sm={4} md={6}>
-                <FormGroup>
-                  <TextField
-                    name="email"
-                    label="Email"
-                    type="email"
-                    onChange={handleChange}
-                    value={values.email || ""}
-                    fullWidth
-                  />
-                </FormGroup>
-              </Grid>
-
-              <Grid item xs={12} sm={4} md={6}>
-                <FormGroup>
-                  <TextField
-                    name="user_name"
-                    label="Usuário"
-                    type="text"
-                    onChange={handleChange}
-                    value={values.user_name || ""}
-                    fullWidth
-                  />
-                </FormGroup>
-              </Grid>
-
-              {userId ? null : (
-                <Grid item xs={12} sm={4} md={6}>
-                  <FormGroup>
-                    <TextField
-                      name="password"
-                      label="Senha"
-                      type="password"
-                      onChange={handleChange}
-                      value={values.password || ""}
-                      fullWidth
-                    />
-                  </FormGroup>
-                </Grid>
-              )}
 
               <Grid item xs={12}>
                 <Button
@@ -180,4 +127,4 @@ const FormPerson = () => {
   );
 };
 
-export default FormPerson;
+export default CategoryForm;

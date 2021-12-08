@@ -13,7 +13,7 @@ import {
 import Header from "../../../components/Header";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
-const Residente = () => {
+const CondominiumFormResident = () => {
   const [values, setValues] = React.useState({
     name: "",
     email: "",
@@ -196,4 +196,4 @@ const Residente = () => {
   );
 };
 
-export default Residente;
+export default CondominiumFormResident;

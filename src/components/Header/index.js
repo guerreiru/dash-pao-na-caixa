@@ -12,6 +12,7 @@ const ItemLinks = () => {
       <Link to="/usuarios">Usuários</Link>
       <Link to="/planos">Planos</Link>
       <Link to="/pedidos">Pedidos</Link>
+      <Link to="/categorias">Categorias</Link>
     </>
   );
 };

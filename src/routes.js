@@ -4,15 +4,15 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dash from "./pages/Dash";
 
-import Padaria from "./pages/PadariaPages/Padaria";
-import FormPadaria from "./pages/PadariaPages/FormPadaria";
-import FormPadariaUser from "./pages/PadariaPages/FormPadariaUser";
-import PadariaUsers from "./pages/PadariaPages/PadariaUsers";
+import Bakery from "./pages/BakeryPages/Bakery";
+import BakeryForm from "./pages/BakeryPages/BakeryForm";
+import BakeryFormUser from "./pages/BakeryPages/BakeryFormUser";
+import BakeryUsers from "./pages/BakeryPages/BakeryUsers";
 
-import Condominio from "./pages/CondominioPages/Condominio";
-import FormCondominio from "./pages/CondominioPages/FormCondominio";
-import CondominioResidents from "./pages/CondominioPages/CondominioResidents";
-import FormCondominioResident from "./pages/CondominioPages/FormCondominioResident";
+import Condominium from "./pages/CondominiumPages/Condominium";
+import CondominiumForm from "./pages/CondominiumPages/CondominiumForm";
+import CondominiumResidents from "./pages/CondominiumPages/CondominiumResidents";
+import CondominiumFormResident from "./pages/CondominiumPages/CondominiumFormResident";
 
 import Person from "./pages/PersonPages/Person";
 import FormPerson from "./pages/PersonPages/FormPerson";
@@ -20,7 +20,13 @@ import FormPerson from "./pages/PersonPages/FormPerson";
 import SubscriptionPlanForm from "./pages/SubscriptionPages/SubscriptionPlanForm";
 import SubscriptionPlanList from "./pages/SubscriptionPages/SubscriptionPlanList";
 
-import PedidosList from "./pages/PedidosPages/PedidosList";
+import PurchaseList from "./pages/PurchasePages/PurchaseList";
+
+import CategoryList from "./pages/ProductsPages/CategoryList";
+import CategoryForm from "./pages/ProductsPages/CategoryForm";
+
+import ProductForm from "./pages/ProductsPages/ProductForm";
+
 
 const Router = () => {
   return (
@@ -29,17 +35,17 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
 
-      <Route path="/padarias" element={<Padaria />} />
-      <Route path="/padarias/adicionar" element={<FormPadaria />} />
-      <Route path="/padarias/:id/editar" element={<FormPadaria />} />
-      <Route path="/padarias/:id/usuarios" element={<PadariaUsers />} />
-      <Route path="/padarias/:id/usuarios/adicionar" element={<FormPadariaUser />} />
+      <Route path="/padarias" element={<Bakery />} />
+      <Route path="/padarias/adicionar" element={<BakeryForm />} />
+      <Route path="/padarias/:id/editar" element={<BakeryForm />} />
+      <Route path="/padarias/:id/usuarios" element={<BakeryUsers />} />
+      <Route path="/padarias/:id/usuarios/adicionar" element={<BakeryFormUser />} />
 
-      <Route path="/condominios" element={<Condominio />} />
-      <Route path="/condominios/adicionar" element={<FormCondominio />} />
-      <Route path="/condominios/:id/editar" element={<FormCondominio />} />
-      <Route path="/condominios/:id/usuarios" element={<CondominioResidents />} />
-      <Route path="/condominios/:id/usuarios/adicionar" element={<FormCondominioResident />} />
+      <Route path="/condominios" element={<Condominium />} />
+      <Route path="/condominios/adicionar" element={<CondominiumForm />} />
+      <Route path="/condominios/:id/editar" element={<CondominiumForm />} />
+      <Route path="/condominios/:id/usuarios" element={<CondominiumResidents />} />
+      <Route path="/condominios/:id/usuarios/adicionar" element={<CondominiumFormResident />} />
 
       <Route path="/usuarios" element={<Person />} />
       <Route path="/usuarios/adicionar" element={<FormPerson />} />
@@ -49,7 +55,14 @@ const Router = () => {
       <Route path="/planos/adicionar" element={<SubscriptionPlanForm />} />
       <Route path="/planos/:id/editar" element={<SubscriptionPlanForm />} />
 
-      <Route path="/pedidos" element={<PedidosList />} />
+      <Route path="/pedidos" element={<PurchaseList />} />
+
+      <Route path="/categorias" element={<CategoryList />} />
+      <Route path="/categorias/adicionar" element={<CategoryForm />} />
+      <Route path="/categorias/:id/editar" element={<CategoryForm />} />
+
+      <Route path="/produtos/adicionar" element={<ProductForm />} />
+
     </Routes>
   );
 };

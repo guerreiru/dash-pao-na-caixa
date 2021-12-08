@@ -81,7 +81,7 @@ export default function DateTable(props) {
                 <TableCell>{data.name || data.user_name}</TableCell>
                 <TableCell>
                   <BtnOptions>
-                    {location.includes("usuarios") ? null : (
+                    {location.includes("usuarios") || location.includes("categorias") ? null : (
                       <HiUser
                         title="Usuários"
                         onClick={() => navigate(`${data.id}/usuarios`)}

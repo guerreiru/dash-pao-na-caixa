@@ -16,7 +16,7 @@ import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 // import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const FormPadaria = () => {
+const BakeryFormUser = () => {
   const [values, setValues] = React.useState({
     name: "",
     email: "",
@@ -159,4 +159,4 @@ const FormPadaria = () => {
   );
 };
 
-export default FormPadaria;
+export default BakeryFormUser;

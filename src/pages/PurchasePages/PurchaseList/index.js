@@ -15,7 +15,7 @@ import {
 
 const turnos = ["Manhã", "Tarde"];
 
-const PedidosList = () => {
+const PurchaseList = () => {
   const [date, setDate] = React.useState(setDefaultDate());
   const [condominiums, setCondominiums] = React.useState([]);
   const [condominiumOptions, setCondominiumOptions] = React.useState([]);
@@ -203,4 +203,4 @@ const PedidosList = () => {
   );
 };
 
-export default PedidosList;
+export default PurchaseList;

@@ -8,41 +8,48 @@ import {
   FormContainer,
   FormHeader,
   FormGroup,
+  InputImage,
 } from "./styles";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
-const FormPerson = () => {
+const ProductForm = () => {
   const [values, setValues] = React.useState({
     name: "",
-    email: "",
-    cell_phone: "",
-    cpf: "",
-    user_name: "",
-    password: "",
+    description: "",
+    price: "",
+    imgUrl: "",
+    isActive: true,
+    unitName: "",
+    unitAcronyms: "",
+    categories: [],
   });
+  const [title, setTitle] = React.useState("");
   const navigate = useNavigate();
-  const { id: userId } = useParams();
+  const { id: productId } = useParams();
 
   React.useEffect(() => {
-    if (userId) {
+    if (productId) {
       try {
-        api.get(`people/${userId}`).then((res) => {
+        api.get(`products/${productId}`).then((res) => {
           setValues({
             name: res.data.name,
-            email: res.data.email,
-            cell_phone: res.data.cell_phone,
-            cpf: res.data.cpf,
-            user_name: res.data.user_name,
-            password: res.data.password,
+            description: res.data.description,
+            price: res.data.price,
+            imgUrl: res.data.imgUrl,
+            isActive: res.data.isActive,
+            unitName: res.data.unit.name,
+            unitAcronyms: res.data.unit.acronyms,
+            categories: [res.data.categories],
           });
+          setTitle(res.data.name);
         });
       } catch (error) {
         console.error(error);
       }
     }
-  }, [userId]);
+  }, [productId]);
 
   function handleChange(ev) {
     setValues({
@@ -54,32 +61,34 @@ const FormPerson = () => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const usuario = {
+    const product = {
       name: values.name,
-      email: values.email,
-      cell_phone: values.cell_phone,
-      cpf: values.cpf,
-      user: {
-        user_name: values.user_name,
-        password: values.password,
+      description: values.description,
+      price: values.price,
+      imgUrl: values.imgUrl,
+      isActive: values.isActive,
+      unit: {
+        name: values.unitName,
+        acronyms: values.unitAcronyms,
       },
+      categories: [values.categories],
     };
 
-    if (userId) {
+    if (productId) {
       try {
-        await api.put(`people/${userId}`, usuario);
-        toast.success("Usuário editado!");
+        await api.put(`products/${productId}`, product);
+        toast.success("Produto editada!");
         setValues(ClearForm(values));
-        navigate("/usuarios");
+        navigate("/produtos");
       } catch (error) {
         console.error(error);
       }
     } else {
       try {
-        await api.post("people", usuario);
-        toast.success("Usuário cadastrado!");
+        await api.post("products", product);
+        toast.success("Produto cadastrada!");
         setValues(ClearForm(values));
-        navigate("/usuarios");
+        navigate("/produtos");
       } catch (error) {
         console.error(error);
       }
@@ -88,7 +97,7 @@ const FormPerson = () => {
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/usuarios");
+    navigate("/produtos");
   }
 
   return (
@@ -97,7 +106,7 @@ const FormPerson = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Usuário</h3>
+            <h3>{productId ? `Editar ${title}` : "Adicionar Produto"}</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -106,7 +115,7 @@ const FormPerson = () => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={4} md={6}>
+              <Grid item xs={12} sm={4} md={8}>
                 <FormGroup>
                   <TextField
                     name="name"
@@ -119,46 +128,38 @@ const FormPerson = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={6}>
-                <FormGroup>
-                  <TextField
-                    name="email"
-                    label="Email"
-                    type="email"
-                    onChange={handleChange}
-                    value={values.email || ""}
-                    fullWidth
-                  />
-                </FormGroup>
+              <Grid item xs={12} sm={4} md={4}>
+                <InputImage>
+                  <input type="file" id="logo" />
+                  <label htmlFor="logo">Escolher arquivo</label>
+                </InputImage>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={6}>
+              <Grid item xs={12} sm={4} md={9}>
                 <FormGroup>
                   <TextField
-                    name="user_name"
-                    label="Usuário"
+                    name="description"
+                    label="Descrição"
                     type="text"
                     onChange={handleChange}
-                    value={values.user_name || ""}
+                    value={values.description || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              {userId ? null : (
-                <Grid item xs={12} sm={4} md={6}>
-                  <FormGroup>
-                    <TextField
-                      name="password"
-                      label="Senha"
-                      type="password"
-                      onChange={handleChange}
-                      value={values.password || ""}
-                      fullWidth
-                    />
-                  </FormGroup>
-                </Grid>
-              )}
+              <Grid item xs={12} sm={4} md={3}>
+                <FormGroup>
+                  <TextField
+                    name="price"
+                    label="Preço"
+                    type="number"
+                    onChange={handleChange}
+                    value={values.price || ""}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
 
               <Grid item xs={12}>
                 <Button
@@ -180,4 +181,4 @@ const FormPerson = () => {
   );
 };
 
-export default FormPerson;
+export default ProductForm;

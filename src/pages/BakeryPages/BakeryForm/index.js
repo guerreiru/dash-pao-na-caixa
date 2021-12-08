@@ -1,58 +1,47 @@
 import React from "react";
-import {
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Button, Grid, TextField } from "@material-ui/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { api } from "../../../services/api";
 import {
   Container,
   Content,
   FormContainer,
   FormHeader,
   FormGroup,
+  InputImage,
 } from "./styles";
 import Header from "../../../components/Header";
-import { BakeryContext } from "../../../context/BakeryContext";
-import { SubscriptionContext } from "../../../context/SubscriptionContext";
+// import ErrorMessage from "../../../components/ErrorMessage";
+import { api } from "../../../services/api";
+// import BakerySchema from "../../../utils/Schemas/BakerySchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-import ObjVal from "../../../utils/Functions/ObjecValue";
+// import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const Condominio = () => {
+const BakeryForm = () => {
   const [values, setValues] = React.useState({
     name: "",
-    plan_name: "",
-    plan_price: 0,
-    plan_deadline_orders_morning: 0,
-    plan_deadline_orders_afternoon: 0,
+    imgLogo: "",
     street_name: "",
     number: "",
     city: "",
     state: "",
     zip_code: "",
     complement: "",
+    bank_code: "",
+    agency: "",
+    account: "",
+    account_type: "CHECKING",
   });
-  const { bakeries, bakeryOptions } = React.useContext(BakeryContext);
-  const [bakeryItems, setBakeryOptions] = React.useState("");
-
-  const { subscriptions, subscriptionOptions } =
-    React.useContext(SubscriptionContext);
-  const [subscriptionsItems, setSubscriptionsOptions] = React.useState("");
-  const [title, setTitle] = React.useState("");
-
+  const [bankDataId, setBankDataID] = React.useState(null)
+  const [title, setTitle] = React.useState("")
+  // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
-  const { id: condominiumId } = useParams();
+  const { id: bakeryId } = useParams();
 
   React.useEffect(() => {
-    if (condominiumId) {
+    if (bakeryId) {
       try {
-        api.get(`condominiums/${condominiumId}`).then((res) => {
+        api.get(`bakeries/${bakeryId}`).then((res) => {
           setValues({
             name: res.data.name,
             street_name: res.data.address.street_name,
@@ -61,16 +50,19 @@ const Condominio = () => {
             state: res.data.address.state,
             zip_code: res.data.address.zip_code,
             complement: res.data.address.complement,
+            bank_code: res.data.bankData.bank_code,
+            agency: res.data.bankData.agency,
+            account: res.data.bankData.account,
+            account_type: res.data.bankData.account_type,
           });
-          setTitle(res.data.name);
-          setBakeryOptions(res.data.bakery.id)
-          setSubscriptionsOptions(res.data.subscriptionPlan.id)
+          setBankDataID(res.data.bankData.id)
+          setTitle(res.data.name)
         });
       } catch (error) {
         console.error(error);
       }
     }
-  }, [condominiumId]);
+  }, [bakeryId]);
 
   function handleChange(ev) {
     setValues({
@@ -79,20 +71,18 @@ const Condominio = () => {
     });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const bakery = ObjVal(bakeries).find(
-      (bakeries) => bakeries.id === bakeryItems
-    );
+  // function handleBlur() {
+  //   setErros(BakerySchema(values));
+  // }
 
-    const subscriptionPlan = ObjVal(subscriptions).find(
-      (subscription) => subscription.id === subscriptionsItems
-    );
-    
-    const condominium = {
+  async function handleSubmit(event) {
+    event.preventDefault();
+    // const haveErros = ObjVal(BakerySchema(values)).length;
+    // setErros(BakerySchema(values));
+
+    const bakery = {
       name: values.name,
-      bakery,
-      subscriptionPlan,
+      imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
       address: {
         street_name: values.street_name,
         number: Number(values.number),
@@ -101,38 +91,39 @@ const Condominio = () => {
         zip_code: values.zip_code,
         complement: values.complement,
       },
+      bankData: {
+        id: bankDataId,
+        bank_code: Number(values.bank_code),
+        agency: values.agency,
+        account: Number(values.account),
+        account_type: 0,
+      },
     };
 
-    if (condominiumId) {
+    if (bakeryId) {
       try {
-        api.put(`condominiums/${condominiumId}`, condominium);
-        setBakeryOptions("");
-        toast.success("Condomínio editado!");
+        await api.put(`bakeries/${bakeryId}`, bakery);
+        toast.success("Padaria editada!");
         setValues(ClearForm(values));
-        navigate("/condominios");
-      } catch (error) {}
+        navigate("/padarias");
+      } catch (error) {
+        console.error(error);
+      }
     } else {
       try {
-        api.post("condominiums", condominium);
-        setBakeryOptions("");
-        toast.success("Condomínio cadastrado!");
+        await api.post("bakeries", bakery);
+        toast.success("Padaria cadastrada!");
         setValues(ClearForm(values));
-        navigate("/condominios");
-      } catch (error) {}
+        navigate("/padarias");
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
-  const handleSelectBakery = ({ target }) => {
-    setBakeryOptions(target.value);
-  };
-
-  const handleSelectPlan = ({ target }) => {
-    setSubscriptionsOptions(target.value);
-  };
-
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/condominios");
+    navigate("/padarias");
   }
 
   return (
@@ -141,9 +132,7 @@ const Condominio = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>
-              {condominiumId ? `Editar ${title}` : "Adicionar Condomínio"}
-            </h3>
+            <h3>{bakeryId ? `Editar ${title}` : "Adicionar Padaria"}</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -152,7 +141,7 @@ const Condominio = () => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={8}>
                 <FormGroup>
                   <TextField
                     name="name"
@@ -160,57 +149,20 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.name}
+                    value={values.name || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
-                <FormControl fullWidth>
-                  <InputLabel id="padarias">Padaria</InputLabel>
-                  <Select
-                    id="padarias"
-                    value={bakeryItems}
-                    onChange={handleSelectBakery}
-                    fullWidth
-                    label="Padaria"
-                  >
-                    <MenuItem value="">
-                      <em>Selecione</em>
-                    </MenuItem>
-                    {ObjVal(bakeryOptions()).map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+              <Grid item xs={12} sm={4} md={4}>
+                <InputImage>
+                  <input type="file" id="logo" />
+                  <label htmlFor="logo">Escolher arquivo</label>
+                </InputImage>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
-                <FormControl fullWidth>
-                  <InputLabel id="subscription-plans">Planos</InputLabel>
-                  <Select
-                    id="subscription-plans"
-                    value={subscriptionsItems}
-                    onChange={handleSelectPlan}
-                    fullWidth
-                    label="Planos"
-                  >
-                    <MenuItem value="">
-                      <em>Selecione</em>
-                    </MenuItem>
-                    {ObjVal(subscriptionOptions()).map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={9}>
                 <FormGroup>
                   <TextField
                     name="street_name"
@@ -218,13 +170,13 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.street_name}
+                    value={values.street_name || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="number"
@@ -232,13 +184,13 @@ const Condominio = () => {
                     type="number"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.number}
+                    value={values.number || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="city"
@@ -246,13 +198,13 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.city}
+                    value={values.city || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="state"
@@ -260,13 +212,13 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.state}
+                    value={values.state || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="zip_code"
@@ -274,13 +226,13 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.zip_code}
+                    value={values.zip_code || ""}
                     fullWidth
                   />
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12} sm={4} md={3}>
                 <FormGroup>
                   <TextField
                     name="complement"
@@ -288,7 +240,53 @@ const Condominio = () => {
                     type="text"
                     onChange={handleChange}
                     // onBlur={handleBlur}
-                    value={values.complement}
+                    value={values.complement || ""}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12}>
+                <h5>Dados bancários</h5>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="bank_code"
+                    label="Código do Banco"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.bank_code || ""}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="agency"
+                    label="Agência"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.agency || ""}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="account"
+                    label="Conta"
+                    type="tel"
+                    onChange={handleChange}
+                    // onBlur={handleBlur}
+                    value={values.account || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -314,4 +312,4 @@ const Condominio = () => {
   );
 };
 
-export default Condominio;
+export default BakeryForm;

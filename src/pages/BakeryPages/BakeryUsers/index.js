@@ -15,38 +15,40 @@ import Table from "../../../components/Table";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 import { IoPersonAdd } from "react-icons/io5";
+// import { BakeryContext } from "../../../context/BakeryContext";
+// import ObjVal from "../../../utils/Functions/ObjecValue";
 
-const CondominioResidents = () => {
-  const [residents, setResidents] = React.useState([]);
+const BakeryUsers = () => {
+  const [users, setUsers] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
-  const [condominiumsSelected, setCondominiumsSelected] = React.useState([]);
-  const { id: condominiumId } = useParams();
+  const [bakerySelected, setBakerySelected] = React.useState([]);
+  const { id: bakeryId } = useParams();
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    async function loadResidents() {
+    async function loadUsers() {
       try {
-        const res = await api.get(`condominiums/${condominiumId}/people`);
-        setResidents(res.data);
+        const res = await api.get(`bakeries/${bakeryId}/people`);
+        setUsers(res.data);
       } catch (error) {
         console.error(error);
       }
     }
-    loadResidents();
-  }, [condominiumId]);
+    loadUsers();
+  }, [bakeryId]);
 
   React.useEffect(() => {
     async function loadBakeryInfo() {
       try {
-        const res = await api.get(`condominiums/${condominiumId}`);
-        setCondominiumsSelected(res.data);
+        const res = await api.get(`bakeries/${bakeryId}`);
+        setBakerySelected(res.data);
       } catch (error) {
         console.error(error);
       }
     }
     loadBakeryInfo();
-  }, [condominiumId]);
+  }, [bakeryId]);
 
   function handleAdd() {
     navigate("adicionar");
@@ -56,9 +58,9 @@ const CondominioResidents = () => {
     setBusca(str);
     const results = [];
     if (str.length > 2) {
-      for (var j = 0; j < residents.length; j++) {
-        if (residents[j].name.toLowerCase().match(str.toLowerCase())) {
-          results.push(residents[j]);
+      for (var j = 0; j < users.length; j++) {
+        if (users[j].user_name.toLowerCase().match(str.toLowerCase())) {
+          results.push(users[j]);
           setResults(results);
         }
       }
@@ -78,9 +80,7 @@ const CondominioResidents = () => {
       <Content>
         <TableContainer>
           <TableHeader>
-            {condominiumsSelected ? (
-              <h3>Residentes de {condominiumsSelected.name}</h3>
-            ) : null}
+            {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : null}
             <SearchInput>
               <FaSearch color="#737373" onClick={searchStringInArray} />
               <input
@@ -112,8 +112,8 @@ const CondominioResidents = () => {
           </TableHeader>
           <Table
             noEditable={true}
-            data={results.length > 0 ? results : residents}
-            apiRoute="residents"
+            data={results.length > 0 ? results : users}
+            apiRoute="users"
           ></Table>
         </TableContainer>
       </Content>
@@ -121,4 +121,4 @@ const CondominioResidents = () => {
   );
 };
 
-export default CondominioResidents;
+export default BakeryUsers;
