@@ -22,7 +22,7 @@ import {
 } from "./styles";
 import Header from "../../../components/Header";
 import { api } from "../../../services/api";
-import { formatPrice } from "../../../utils/Functions/formatPrice";
+import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
 
 const SubscriptionList = () => {
@@ -80,7 +80,7 @@ const SubscriptionList = () => {
               {item.name}
             </Typography>
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {formatPrice(item.price)}
+              {FormatPrice(item.price)}
             </Typography>
             <Typography variant="body2">
               Horário limite manhã {item.deadline_orders_morning}

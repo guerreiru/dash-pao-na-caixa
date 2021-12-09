@@ -3,19 +3,28 @@ import styled from "styled-components";
 export const Container = styled.div`
   background-color: var(--bg-white);
 
-  @media (min-width: 900px) {
+  @media (min-width: 600px) {
     height: 100%;
   }
 `;
 
 export const Content = styled.div`
   margin: 0 20px;
+
+  @media (max-width: 568px) {
+    margin: 0 10px;
+  }
 `;
 
 export const FormContainer = styled.div`
   padding: 20px 30px;
-  background-color: white;
   margin: 20px 0;
+  @media (max-width: 568px) {
+    margin: 10px 0;
+    padding: 20px;
+  }
+
+  background-color: white;
   border-radius: 4px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
 

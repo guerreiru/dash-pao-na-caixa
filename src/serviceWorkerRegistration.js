@@ -17,7 +17,7 @@ export function register(config) {
       if (isLocalhost) {
         checkValidServiceWorker(swUrl, config);
         navigator.serviceWorker.ready.then(() => {
-          console.log(
+          console.info(
             'This web app is being served cache-first by a service ' +
               'worker. To learn more, visit https://cra.link/PWA'
           );
@@ -41,7 +41,7 @@ function registerValidSW(swUrl, config) {
         installingWorker.onstatechange = () => {
           if (installingWorker.state === 'installed') {
             if (navigator.serviceWorker.controller) {
-              console.log(
+              console.info(
                 'New content is available and will be used when all ' +
                   'tabs for this page are closed. See https://cra.link/PWA.'
               );
@@ -50,7 +50,7 @@ function registerValidSW(swUrl, config) {
                 config.onUpdate(registration);
               }
             } else {
-              console.log('Content is cached for offline use.');
+              console.info('Content is cached for offline use.');
 
               if (config && config.onSuccess) {
                 config.onSuccess(registration);
@@ -85,7 +85,7 @@ function checkValidServiceWorker(swUrl, config) {
       }
     })
     .catch(() => {
-      console.log('No internet connection found. App is running in offline mode.');
+      console.info('No internet connection found. App is running in offline mode.');
     });
 }
 

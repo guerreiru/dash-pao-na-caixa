@@ -16,7 +16,7 @@ export default function AlertDialog(props) {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {`Deseja excluir ${props.item.name}?`}
+        {`Deseja excluir ${props.item.name || props.item.user_name}?`}
       </DialogTitle>
       {props.description && (
         <DialogContent>

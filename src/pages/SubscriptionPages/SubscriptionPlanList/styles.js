@@ -27,6 +27,10 @@ export const Container = styled.div`
 export const Content = styled.div`
   margin: 0 20px;
 
+  @media (max-width: 568px) {
+    margin: 0 10px;
+  }
+
   .btnEdit {
     color: #1565c0;
   }
@@ -36,13 +40,13 @@ export const Content = styled.div`
 `;
 
 export const TableContainer = styled.div`
+  margin: 20px 0;
   padding: 20px 30px;
   @media (max-width: 568px) {
+    margin: 10px 0;
     padding: 20px;
   }
-
   background-color: white;
-  margin: 20px 0;
   border-radius: 4px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
 

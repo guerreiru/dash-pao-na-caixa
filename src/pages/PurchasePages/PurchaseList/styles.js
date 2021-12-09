@@ -2,14 +2,27 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--bg-white);
+  padding-bottom: 4px;
   height: 100%;
+
+  @media print {
+    .noprint {
+      display: none;
+    }
+  }
+
+  input,
+  select {
+    background-color: white;
+  }
 `;
 
 export const Content = styled.div`
   margin: 20px;
   padding: 20px 30px;
   @media (max-width: 568px) {
-    padding: 20px;
+    margin: 10px;
+    padding: 15px;
   }
 
   background-color: white;
@@ -41,22 +54,22 @@ export const ContentHeader = styled.div`
 `;
 
 export const ResultHeader = styled.div`
-  margin-top: 8px;
+  margin-top: 16px;
 `;
 
 export const ResidentTitle = styled.div`
-  margin: 8px 0;
+  margin: 24px 0;
 `;
 
 export const ResumoTitle = styled.div`
-  margin: 8px 0;
+  margin: 16px 0;
 `;
 
 export const FormGroup = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
 
   input,

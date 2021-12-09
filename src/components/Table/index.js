@@ -65,7 +65,7 @@ export default function DateTable(props) {
   return (
     <Container>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 300 }} size="medium">
+        <Table sx={{ minWidth: 262 }} size="medium">
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>

@@ -17,7 +17,7 @@ const ItemLinks = () => {
   );
 };
 
-const Header = ({ children, loc, setBreadcrumb }) => {
+const Header = ({ children, loc, setBreadcrumb }, props) => {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
   window.addEventListener("resize", function () {
     if (window.outerWidth >= 768) {
@@ -29,7 +29,7 @@ const Header = ({ children, loc, setBreadcrumb }) => {
     setMenuIsOpen(!menuIsOpen);
   }
   return (
-    <Container>
+    <Container className="noprint">
       <Content>
         <Link to={`${loc}` || "/"}>
           <Logo />

@@ -14,8 +14,8 @@ export const Content = styled.div`
 
 export const FormContainer = styled.div`
   padding: 20px 30px;
-  background-color: white;
   margin: 20px 0;
+background-color: white;
   border-radius: 4px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
 

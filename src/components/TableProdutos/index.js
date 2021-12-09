@@ -8,19 +8,10 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
+import { FormatPrice } from "../../utils/Functions/FormatPrice";
 
-function createData(name, amount, price) {
-  return { name, amount, price };
-}
+export default function TableProdutos(props) {
 
-const rows = [
-  createData("Pão carioca", "3kg", 22),
-  createData("Queijo coalho", "500g", 16),
-  createData("Pão doce", "1,5kg", 12.0),
-  createData("Pão de coco", "1,5kg", 6),
-];
-
-export default function TableProdutos() {
   return (
     <TableContainer component={Paper}>
       <Table size="small" aria-label="a dense table">
@@ -32,16 +23,19 @@ export default function TableProdutos() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.data.map((data) => (
             <TableRow
-              key={row.name}
+              key={data.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell>{row.name}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">R$ {row.price}</TableCell>
+              <TableCell>{data.product.name}</TableCell>
+              <TableCell align="right">{data.quantity}</TableCell>
+              <TableCell align="right">
+                {FormatPrice(data.product.price)}
+              </TableCell>
             </TableRow>
           ))}
+          
         </TableBody>
       </Table>
     </TableContainer>

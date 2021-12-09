@@ -7,6 +7,12 @@ export const Container = styled.header`
   }
   box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.3);
   background-color: white;
+
+  @media print {
+    .noprint {
+      display: none;
+    }
+  }
 `;
 
 export const Content = styled.nav`

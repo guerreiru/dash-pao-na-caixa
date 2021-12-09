@@ -26,16 +26,21 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 0 20px;
+
+  @media (max-width: 568px) {
+    margin: 0 10px;
+  }
 `;
 
 export const TableContainer = styled.div`
   padding: 20px 30px;
+  margin: 20px 0;
   @media (max-width: 568px) {
+    margin: 10px 0;
     padding: 20px;
   }
 
   background-color: white;
-  margin: 20px 0;
   border-radius: 4px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
 
@@ -61,8 +66,8 @@ export const TableHeader = styled.div`
   @media (max-width: 568px) {
     h3 {
       flex: 1 0 100%;
-      text-align: center;
       font-size: 1.5em;
+      text-align: center;
     }
     row-gap: 10px;
     justify-content: space-around;

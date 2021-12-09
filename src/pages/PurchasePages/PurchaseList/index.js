@@ -3,6 +3,7 @@ import React from "react";
 import Header from "../../../components/Header";
 import TableProdutos from "../../../components/TableProdutos";
 import { api } from "../../../services/api";
+import { SetBodyWidth } from "../../../utils/Functions/SetBodyWidth";
 import {
   Container,
   Content,
@@ -13,88 +14,114 @@ import {
   ResumoTitle,
 } from "./styles";
 
-const turnos = ["Manhã", "Tarde"];
+const turnos = [
+  {
+    value: 0,
+    label: "Manhã",
+  },
+  {
+    value: 1,
+    label: "Tarde",
+  },
+];
 
 const PurchaseList = () => {
   const [date, setDate] = React.useState(setDefaultDate());
-  const [condominiums, setCondominiums] = React.useState([]);
-  const [condominiumOptions, setCondominiumOptions] = React.useState([]);
-  const [condominiumSelected, setCondominiumSelected] = React.useState({
+  const [cond, setCond] = React.useState([]);
+  const [condOptions, setCondOptions] = React.useState([]);
+  const [condSelected, setCondSelected] = React.useState({
     id: "0",
     name: "",
   });
 
-  const [bakeries, setBakeries] = React.useState([]);
-  const [bakerySelected, setBakerySelected] = React.useState({
+  const [bake, setBak] = React.useState([]);
+  const [bakeSelected, setBakeSelected] = React.useState({
     id: "0",
     name: "",
   });
 
   const [turno, setTurno] = React.useState("");
+  const [results, setResults] = React.useState([]);
 
   React.useEffect(() => {
-    loadBakeries();
-  }, [bakeries]);
+    SetBodyWidth();
+  }, [bakeSelected, condSelected, turno, results]);
 
   React.useEffect(() => {
-    loadCondominiums();
-  }, [condominiums]);
+    loadBake();
+  }, []);
+
+  React.useEffect(() => {
+    loadCond();
+  }, []);
 
   React.useEffect(() => {
     async function getConByBakeryId() {
-      const conByBakeryId = condominiums.filter(
-        (cond) => cond.bakery.id === +bakerySelected.id
+      const conByBakeryId = cond.filter(
+        (cond) => cond.bakery.id === +bakeSelected.id
       );
-      setCondominiumOptions(conByBakeryId);
+      setCondOptions(conByBakeryId);
     }
     getConByBakeryId();
-  }, [bakerySelected, condominiums]);
+  }, [bakeSelected, cond]);
 
-  async function loadBakeries() {
+  async function loadBake() {
     const res = await api.get(`bakeries`);
-    setBakeries(res.data.data);
+    setBak(res.data.data);
   }
 
-  async function loadCondominiums() {
+  async function loadCond() {
     const res = await api.get(`condominiums`);
-    setCondominiums(res.data.data);
+    setCond(res.data.data);
   }
 
   function setDefaultDate() {
     return new Date().toISOString().slice(0, 10);
   }
 
-  function handleBakerySelected(ev) {
-    const bakeryName = bakeries.filter(
-      (bakery) => bakery.id === +ev.target.value
-    );
-    setBakerySelected({
+  function handleBakeSelected(ev) {
+    const bakeryName = bake.filter((bakery) => bakery.id === +ev.target.value);
+    setBakeSelected({
       id: ev.target.value,
       name: bakeryName[0].name,
     });
 
-    setCondominiumSelected({ id: 0, name: "" });
+    setCondSelected({ id: 0, name: "" });
+    setTurno("");
   }
 
-  function handleCondominiumSelected(ev) {
-    const condominium = condominiums.filter(
+  function handleCondSelected(ev) {
+    const condominium = cond.filter(
       (condominium) => condominium.id === +ev.target.value
     );
-    setCondominiumSelected({
+    setCondSelected({
       id: ev.target.value,
       name: condominium[0].name,
     });
   }
 
+  async function handleSubmit() {
+    const res = await api.get(
+      `purchase-orders?page=1&size=20&period=${turno}&condominium=${condSelected.id}&purchase_datetime=${date}`
+    );
+    console.log(res.data.data);
+    setResults(res.data.data);
+  }
+
   return (
-    <Container>
+    <Container className="body">
       <Header loc="/dash" />
-      <Content>
+      <Content className="content">
         <ContentHeader>
           <h3>Pedidos</h3>
         </ContentHeader>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          className="noprint"
+        >
+          <Grid item xs={6} sm={6} md={3}>
             <FormGroup>
               <label htmlFor="purchase_datetime">Data do pedido</label>
               <input
@@ -106,18 +133,18 @@ const PurchaseList = () => {
             </FormGroup>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3}>
             <FormGroup>
               <label htmlFor="padaria">Padaria</label>
               <select
                 id="padaria"
-                value={bakerySelected.id}
-                onChange={handleBakerySelected}
+                value={bakeSelected.id}
+                onChange={handleBakeSelected}
               >
                 <option value="0" disabled>
                   Selecione a Padaria
                 </option>
-                {bakeries.map((bakery) => (
+                {bake.map((bakery) => (
                   <option key={bakery.id} value={bakery.id}>
                     {bakery.name}
                   </option>
@@ -126,19 +153,19 @@ const PurchaseList = () => {
             </FormGroup>
           </Grid>
 
-          {bakerySelected.id > 0 ? (
-            <Grid item xs={12} sm={6} md={3}>
+          {bakeSelected.id > 0 ? (
+            <Grid item xs={6} sm={6} md={3}>
               <FormGroup>
                 <label htmlFor="condominio">Condomínio</label>
                 <select
                   id="condominio"
-                  value={condominiumSelected.id}
-                  onChange={handleCondominiumSelected}
+                  value={condSelected.id}
+                  onChange={handleCondSelected}
                 >
                   <option value="0" disabled>
                     Selecione o Condomínio
                   </option>
-                  {condominiumOptions.map((condominium) => (
+                  {condOptions.map((condominium) => (
                     <option key={condominium.id} value={condominium.id}>
                       {condominium.name}
                     </option>
@@ -148,8 +175,8 @@ const PurchaseList = () => {
             </Grid>
           ) : null}
 
-          {condominiumSelected.id > 0 ? (
-            <Grid item xs={12} sm={6} md={3}>
+          {condSelected.id > 0 ? (
+            <Grid item xs={6} sm={6} md={3}>
               <FormGroup>
                 <label htmlFor="turno">Turno</label>
                 <select
@@ -161,8 +188,8 @@ const PurchaseList = () => {
                     Turno
                   </option>
                   {turnos.map((turno) => (
-                    <option key={turno} label={turno}>
-                      {turno}
+                    <option key={turno.value} value={turno.value}>
+                      {turno.label}
                     </option>
                   ))}
                 </select>
@@ -171,33 +198,51 @@ const PurchaseList = () => {
           ) : null}
 
           <Grid item xs={12}>
-            <Button disabled={turno === ""} type="button" variant="contained">
-              Filtrar
-            </Button>
+            <Grid item xs={12} sm={4} md={2}>
+              <Button
+                disabled={turno === ""}
+                type="button"
+                variant="contained"
+                fullWidth
+                onClick={handleSubmit}
+              >
+                Filtrar
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
 
         <ResultHeader>
+          <h3>{bakeSelected.name}</h3>
+          <h3>{condSelected.name}</h3>
           <h3>
-            {bakerySelected.name} {`- ${condominiumSelected.name} `}{" "}
-            {`- ${turno}`}
+            {turno ? (
+              <>
+                {new Date().toLocaleDateString()} - {turno}
+              </>
+            ) : null}
           </h3>
         </ResultHeader>
 
-        <ResidentTitle>
-          <h4>Residente: Fernando - Apto. 12</h4>
-        </ResidentTitle>
-        <TableProdutos />
+        {results.length > 0 ? (
+          results.map((res) => (
+            <span key={res.id}>
+              <ResidentTitle>
+                <h4>
+                  Residente: Fernando - Apto. {res.resident.apartment_number}
+                </h4>
+              </ResidentTitle>
+              <TableProdutos data={res.items} />
 
-        <ResidentTitle>
-          <h4>Residente: Luiz - Apto. 15</h4>
-        </ResidentTitle>
-        <TableProdutos />
-
-        <ResumoTitle>
-          <h2>Resumo</h2>
-        </ResumoTitle>
-        <TableProdutos />
+              <ResumoTitle>
+                <h2>Resumo</h2>
+              </ResumoTitle>
+              <TableProdutos data={res.items} />
+            </span>
+          ))
+        ) : (
+          <p style={{ marginTop: "20px" }}>Insira dados válidos!</p>
+        )}
       </Content>
     </Container>
   );
