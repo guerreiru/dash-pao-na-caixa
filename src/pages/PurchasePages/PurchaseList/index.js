@@ -105,7 +105,6 @@ const PurchaseList = () => {
     const res = await api.get(
       `purchase-orders?page=1&size=20&period=${turno}&condominium=${condSelected.id}&purchase_datetime=${date}`
     );
-    console.log(res.data);
     setResults(res.data);
   }
 

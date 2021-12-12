@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  CardMedia,
   Grid,
   IconButton,
   Typography,
@@ -29,7 +30,6 @@ const ProductsList = () => {
   const [products, setProducts] = React.useState([]);
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
-  const [isActive, setIsActive] = React.useState(true);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -76,6 +76,12 @@ const ProductsList = () => {
     return (
       <Grid item xs={12} sm={6} md={4} key={item.id}>
         <Card>
+          <CardMedia
+            component="img"
+            width="140"
+            image={item.imgUrl}
+            alt={item.name}
+          />
           <CardContent>
             <Typography variant="h5" component="div">
               {item.name}

@@ -1,5 +1,13 @@
 import React from "react";
-import { Button, Grid, TextField } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@material-ui/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -7,7 +15,6 @@ import {
   Content,
   FormContainer,
   FormHeader,
-  FormGroup,
   InputImage,
 } from "./styles";
 import Header from "../../../components/Header";
@@ -19,15 +26,40 @@ const ProductForm = () => {
     name: "",
     description: "",
     price: "",
-    imgUrl: "",
+    imgUrl:
+      "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
     isActive: true,
     unitName: "",
-    unitAcronyms: "",
-    categories: []
+    unitAcronyms: ""
   });
+  const [categories, setCategories] = React.useState([]);
+  const [categorySelected, setCategorySelected] = React.useState([]);
+
+  const [units, setUnits] = React.useState([]);
+  const [unitSelected, setUnitSelected] = React.useState("");
+
   const [title, setTitle] = React.useState("");
   const navigate = useNavigate();
-  const { id: productId } = useParams();
+  const { id: bakeryId } = useParams();
+  const { productId } = useParams();
+
+  React.useEffect(() => {
+    async function getCategories() {
+      const res = await api.get(`categories`);
+      setCategories(res.data.data);
+    }
+
+    getCategories();
+  }, [categories]);
+
+  React.useEffect(() => {
+    async function getUnits() {
+      const res = await api.get(`units`);
+      setUnits(res.data.data);
+    }
+
+    getUnits();
+  }, [units]);
 
   React.useEffect(() => {
     if (productId) {
@@ -38,10 +70,9 @@ const ProductForm = () => {
             description: res.data.description,
             price: res.data.price,
             imgUrl: res.data.imgUrl,
+            // unitName: res.data.unit.name,
+            // unitAcronyms: res.data.unit.acronyms,
             isActive: res.data.isActive,
-            unitName: res.data.unit.name,
-            unitAcronyms: res.data.unit.acronyms,
-            categories: [res.data.categories],
           });
           setTitle(res.data.name);
         });
@@ -60,6 +91,8 @@ const ProductForm = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const bakery = await api.get(`bakeries/${bakeryId}`);
+    delete bakery.data.id;
 
     const product = {
       name: values.name,
@@ -68,10 +101,11 @@ const ProductForm = () => {
       imgUrl: values.imgUrl,
       isActive: values.isActive,
       unit: {
-        name: values.unitName,
-        acronyms: values.unitAcronyms,
+        name: unitSelected.split(",")[0],
+        acronyms: unitSelected.split(",")[1],
       },
-      categories: [values.categories],
+      categories: categorySelected,
+      bakery,
     };
 
     if (productId) {
@@ -79,7 +113,7 @@ const ProductForm = () => {
         await api.put(`products/${productId}`, product);
         toast.success("Produto editada!");
         setValues(ClearForm(values));
-        navigate("/produtos");
+        navigate("/produtos/1");
       } catch (error) {
         console.error(error);
       }
@@ -88,7 +122,7 @@ const ProductForm = () => {
         await api.post("products", product);
         toast.success("Produto cadastrada!");
         setValues(ClearForm(values));
-        navigate("/produtos");
+        navigate("/produtos/1");
       } catch (error) {
         console.error(error);
       }
@@ -112,53 +146,121 @@ const ProductForm = () => {
           <form onSubmit={handleSubmit}>
             <Grid
               container
-              rowSpacing={1}
+              rowSpacing={2}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={4} md={8}>
-                <FormGroup>
-                  <TextField
-                    name="name"
-                    label="Nome"
-                    type="text"
-                    onChange={handleChange}
-                    value={values.name || ""}
-                    fullWidth
-                  />
-                </FormGroup>
+              <Grid item xs={12}>
+                <TextField
+                  name="name"
+                  label="Nome"
+                  type="text"
+                  onChange={handleChange}
+                  value={values.name || ""}
+                  fullWidth
+                />
               </Grid>
 
-              <Grid item xs={12} sm={4} md={4}>
+              <Grid item xs={12}>
                 <InputImage>
                   <input type="file" id="logo" />
                   <label htmlFor="logo">Escolher arquivo</label>
                 </InputImage>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={9}>
-                <FormGroup>
-                  <TextField
-                    name="description"
-                    label="Descrição"
-                    type="text"
-                    onChange={handleChange}
-                    value={values.description || ""}
-                    fullWidth
-                  />
-                </FormGroup>
+              <Grid item xs={12}>
+                <TextField
+                  name="description"
+                  label="Descrição"
+                  type="text"
+                  multiline
+                  rows={4}
+                  onChange={handleChange}
+                  value={values.description || ""}
+                  fullWidth
+                />
               </Grid>
 
-              <Grid item xs={12} sm={4} md={3}>
-                <FormGroup>
-                  <TextField
-                    name="price"
-                    label="Preço"
-                    type="number"
-                    onChange={handleChange}
-                    value={values.price || ""}
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="select-categoria">Categoria</InputLabel>
+                  <Select
+                    labelId="select-categoria"
+                    id="select-categoria"
+                    label="Categoria"
+                    onChange={({ target }) =>
+                      setCategorySelected([target.value])
+                    }
                     fullWidth
-                  />
-                </FormGroup>
+                    value={categorySelected}
+                  >
+                    <MenuItem value="">
+                      <em>Slecione</em>
+                    </MenuItem>
+                    {categories.map((category) => (
+                      <MenuItem key={category.id} value={category.name}>
+                        {category.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="select-unit">Medida</InputLabel>
+                  <Select
+                    labelId="select-unit"
+                    id="select-unit"
+                    label="Medida"
+                    onChange={({ target }) => setUnitSelected(target.value)}
+                    fullWidth
+                    value={unitSelected}
+                  >
+                    <MenuItem value="">
+                      <em>Slecione</em>
+                    </MenuItem>
+                    {units.map((unit) => (
+                      <MenuItem
+                        style={{ textTransform: "capitalize" }}
+                        key={unit.id}
+                        value={`${unit.name},${unit.acronyms}`}
+                      >
+                        {unit.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  name="price"
+                  label="Preço"
+                  type="number"
+                  onChange={handleChange}
+                  value={values.price || ""}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="select-unit">Status do produto</InputLabel>
+                  <Select
+                    labelId="select-unit"
+                    id="select-unit"
+                    label="Status do produto"
+                    onChange={handleChange}
+                    fullWidth
+                    value={values.isActive}
+                  >
+                    <MenuItem value="">
+                      <em>Slecione</em>
+                    </MenuItem>
+                    <MenuItem value="true">Ativo</MenuItem>
+                    <MenuItem value="false">Inativo</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12}>

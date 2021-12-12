@@ -65,6 +65,7 @@ const Router = () => {
 
       <Route path="/produtos/:id" element={<ProductList />} />
       <Route path="/produtos/:id/adicionar" element={<ProductForm />} />
+      <Route path="/produtos/:id/:productId/editar" element={<ProductForm />} />
 
     </Routes>
   );
