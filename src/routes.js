@@ -25,7 +25,9 @@ import PurchaseList from "./pages/PurchasePages/PurchaseList";
 import CategoryList from "./pages/ProductsPages/CategoryList";
 import CategoryForm from "./pages/ProductsPages/CategoryForm";
 
+import ProductList from "./pages/ProductsPages/ProductsList"; 
 import ProductForm from "./pages/ProductsPages/ProductForm";
+
 
 
 const Router = () => {
@@ -61,7 +63,8 @@ const Router = () => {
       <Route path="/categorias/adicionar" element={<CategoryForm />} />
       <Route path="/categorias/:id/editar" element={<CategoryForm />} />
 
-      <Route path="/produtos/adicionar" element={<ProductForm />} />
+      <Route path="/produtos/:id" element={<ProductList />} />
+      <Route path="/produtos/:id/adicionar" element={<ProductForm />} />
 
     </Routes>
   );

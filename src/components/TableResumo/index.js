@@ -8,19 +8,9 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
+import { FormatPrice } from "../../utils/Functions/FormatPrice";
 
-function createData(name, amount, price) {
-  return { name, amount, price };
-}
-
-const rows = [
-  createData("Pão carioca", "6kg", 44),
-  createData("Queijo coalho", "1kg", 32),
-  createData("Pão doce", "3kg", 24.0),
-  createData("Pão de coco", "3kg", 12),
-];
-
-export default function TableResumo() {
+export default function TableProdutos(props) {
   return (
     <TableContainer component={Paper}>
       <Table size="small" aria-label="a dense table">
@@ -28,18 +18,18 @@ export default function TableResumo() {
           <TableRow>
             <TableCell>Nome</TableCell>
             <TableCell align="right">Quantidade</TableCell>
-            <TableCell align="right">Preço</TableCell>
+            <TableCell align="right">Subtotal</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {props.data.map((data, index) => (
             <TableRow
-              key={row.name}
+              key={index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell>{row.name}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="right">R$ {row.price}</TableCell>
+              <TableCell>{data.product}</TableCell>
+              <TableCell align="right">{data.quantity}</TableCell>
+              <TableCell align="right">{FormatPrice(data.subtotal)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -23,7 +23,7 @@ const ProductForm = () => {
     isActive: true,
     unitName: "",
     unitAcronyms: "",
-    categories: [],
+    categories: []
   });
   const [title, setTitle] = React.useState("");
   const navigate = useNavigate();

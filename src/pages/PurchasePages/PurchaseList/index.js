@@ -2,6 +2,7 @@ import { Grid, Button } from "@material-ui/core";
 import React from "react";
 import Header from "../../../components/Header";
 import TableProdutos from "../../../components/TableProdutos";
+import TableResumo from "../../../components/TableResumo";
 import { api } from "../../../services/api";
 import { SetBodyWidth } from "../../../utils/Functions/SetBodyWidth";
 import {
@@ -104,8 +105,8 @@ const PurchaseList = () => {
     const res = await api.get(
       `purchase-orders?page=1&size=20&period=${turno}&condominium=${condSelected.id}&purchase_datetime=${date}`
     );
-    console.log(res.data.data);
-    setResults(res.data.data);
+    console.log(res.data);
+    setResults(res.data);
   }
 
   return (
@@ -218,28 +219,31 @@ const PurchaseList = () => {
           <h3>
             {turno ? (
               <>
-                {new Date().toLocaleDateString()} - {turno}
+                {new Date(`${date} 00:00:00`).toLocaleDateString()} -{" "}
+                {turno === "0" ? "Manhã" : "Tarde"}
               </>
             ) : null}
           </h3>
         </ResultHeader>
 
-        {results.length > 0 ? (
-          results.map((res) => (
-            <span key={res.id}>
-              <ResidentTitle>
-                <h4>
-                  Residente: Fernando - Apto. {res.resident.apartment_number}
-                </h4>
-              </ResidentTitle>
-              <TableProdutos data={res.items} />
-
-              <ResumoTitle>
-                <h2>Resumo</h2>
-              </ResumoTitle>
-              <TableProdutos data={res.items} />
-            </span>
-          ))
+        {results.data ? (
+          <>
+            {results.data.map((data) => (
+              <span key={data.id}>
+                <ResidentTitle>
+                  <h4>
+                    Residente: {data.resident.name} - Apto.{" "}
+                    {data.resident.apartment_number}
+                  </h4>
+                </ResidentTitle>
+                <TableProdutos data={data} />
+              </span>
+            ))}
+            <ResumoTitle>
+              <h2>Resumo</h2>
+            </ResumoTitle>
+            <TableResumo data={results.summary} />
+          </>
         ) : (
           <p style={{ marginTop: "20px" }}>Insira dados válidos!</p>
         )}
