@@ -25,10 +25,10 @@ import PurchaseList from "./pages/PurchasePages/PurchaseList";
 import CategoryList from "./pages/ProductsPages/CategoryList";
 import CategoryForm from "./pages/ProductsPages/CategoryForm";
 
-import ProductList from "./pages/ProductsPages/ProductsList"; 
+import ProductList from "./pages/ProductsPages/ProductsList";
 import ProductForm from "./pages/ProductsPages/ProductForm";
-
-
+import PrivateRoute from "./components/PrivateRoute";
+import Error401 from "./pages/Error401";
 
 const Router = () => {
   return (
@@ -37,17 +37,72 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
 
-      <Route path="/padarias" element={<Bakery />} />
-      <Route path="/padarias/adicionar" element={<BakeryForm />} />
-      <Route path="/padarias/:id/editar" element={<BakeryForm />} />
-      <Route path="/padarias/:id/usuarios" element={<BakeryUsers />} />
-      <Route path="/padarias/:id/usuarios/adicionar" element={<BakeryFormUser />} />
+      <Route
+        path="/padarias"
+        element={
+          <PrivateRoute
+            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+          >
+            <Bakery />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/padarias/adicionar"
+        element={
+          <PrivateRoute
+            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+          >
+            <BakeryForm />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/padarias/:id/editar"
+        element={
+          <PrivateRoute
+            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+          >
+            <BakeryForm />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/padarias/:id/usuarios"
+        element={
+          <PrivateRoute
+            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+          >
+            <BakeryUsers />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/padarias/:id/usuarios/adicionar"
+        element={
+          <PrivateRoute
+            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+          >
+            <BakeryFormUser />
+          </PrivateRoute>
+        }
+      />
 
       <Route path="/condominios" element={<Condominium />} />
       <Route path="/condominios/adicionar" element={<CondominiumForm />} />
       <Route path="/condominios/:id/editar" element={<CondominiumForm />} />
-      <Route path="/condominios/:id/usuarios" element={<CondominiumResidents />} />
-      <Route path="/condominios/:id/usuarios/adicionar" element={<CondominiumFormResident />} />
+      <Route
+        path="/condominios/:id/usuarios"
+        element={<CondominiumResidents />}
+      />
+      <Route
+        path="/condominios/:id/usuarios/adicionar"
+        element={<CondominiumFormResident />}
+      />
 
       <Route path="/usuarios" element={<Person />} />
       <Route path="/usuarios/adicionar" element={<FormPerson />} />
@@ -66,6 +121,8 @@ const Router = () => {
       <Route path="/produtos/:id" element={<ProductList />} />
       <Route path="/produtos/:id/adicionar" element={<ProductForm />} />
       <Route path="/produtos/:id/:productId/editar" element={<ProductForm />} />
+
+      <Route path="/unauthorized" element={<Error401 />} />
 
     </Routes>
   );

@@ -1,18 +1,17 @@
 import React from "react";
 import { TextField, Button } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 import { Container, Content, FormHeader, FormGroup } from "./styles";
 import Logo from "../../components/Logo";
-// import ErrorMessage from "../../components/ErrorMessage";
-import { useNavigate } from "react-router";
-// import UserSchema from "../../utils/Schemas/usuarioschema";
+import { toast } from "react-toastify";
+import { makeLogin } from "../../utils/Functions/Request";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [values, setValues] = React.useState({
     user_name: "",
     password: "",
   });
-  // const [erros, setErros] = React.useState({});
+  const navigate = useNavigate();
 
   function handleChange(ev) {
     setValues({
@@ -22,10 +21,17 @@ const Login = () => {
   }
 
   function handleSubmit(event) {
-    // const haveErros = Object.values(UserSchema(values)).length;
     event.preventDefault();
-    // setErros(UserSchema(values));
-    navigate("/padarias");
+    const user_name = values.user_name;
+    const password = values.password;
+
+    makeLogin(user_name, password)
+      .then((res) => {
+        navigate("/dash");
+      })
+      .catch((err) => {
+        toast.error("Usuário ou senha incorretos!");
+      });
   }
 
   return (
@@ -37,6 +43,7 @@ const Login = () => {
         </FormHeader>
         <FormGroup>
           <TextField
+            required
             name="user_name"
             label="Usuário"
             type="text"
@@ -48,6 +55,7 @@ const Login = () => {
 
         <FormGroup>
           <TextField
+            required
             name="password"
             label="Senha"
             type="password"

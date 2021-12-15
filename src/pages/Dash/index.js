@@ -7,9 +7,7 @@ const Dash = () => {
     <Container>
       <Header loc="/dash" />
       <Content>
-        <TableContainer>
-          
-        </TableContainer>
+        <TableContainer></TableContainer>
       </Content>
     </Container>
   );
