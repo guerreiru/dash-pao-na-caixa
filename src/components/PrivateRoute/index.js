@@ -5,11 +5,13 @@ import { isAllowedByRole, isAuth } from "../../utils/Functions/Auth";
 const PrivateRoute = ({ children, allowedRoutes }) => {
   const auth = isAuth();
 
-  return auth && isAllowedByRole(allowedRoutes) ? (
-    children
-  ) : (
-    <Navigate to="/unauthorized" />
-  );
+  if (!auth) {
+    return <Navigate to="/" />;
+  } else if (auth && isAllowedByRole(allowedRoutes)) {
+    return children;
+  } else if (auth && !isAllowedByRole(allowedRoutes)) {
+    return <Navigate to="/unauthorized" />;
+  }
 };
 
 export default PrivateRoute;

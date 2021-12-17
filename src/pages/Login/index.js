@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Container, Content, FormHeader, FormGroup } from "./styles";
 import Logo from "../../components/Logo";
 import { toast } from "react-toastify";
-import { makeLogin } from "../../utils/Functions/Request";
+import { makeLogin } from "../../utils/Functions/Auth";
 
 const Login = () => {
   const [values, setValues] = React.useState({

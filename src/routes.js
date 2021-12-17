@@ -92,16 +92,84 @@ const Router = () => {
         }
       />
 
-      <Route path="/condominios" element={<Condominium />} />
-      <Route path="/condominios/adicionar" element={<CondominiumForm />} />
-      <Route path="/condominios/:id/editar" element={<CondominiumForm />} />
+      <Route
+        path="/condominios"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <Condominium />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/condominios/adicionar"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <CondominiumForm />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/condominios/:id/editar"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <CondominiumForm />
+          </PrivateRoute>
+        }
+      />
+
       <Route
         path="/condominios/:id/usuarios"
-        element={<CondominiumResidents />}
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <CondominiumResidents />
+          </PrivateRoute>
+        }
       />
+
       <Route
         path="/condominios/:id/usuarios/adicionar"
-        element={<CondominiumFormResident />}
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <CondominiumFormResident />
+          </PrivateRoute>
+        }
       />
 
       <Route path="/usuarios" element={<Person />} />
@@ -123,7 +191,6 @@ const Router = () => {
       <Route path="/produtos/:id/:productId/editar" element={<ProductForm />} />
 
       <Route path="/unauthorized" element={<Error401 />} />
-
     </Routes>
   );
 };

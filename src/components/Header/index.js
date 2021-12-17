@@ -19,21 +19,19 @@ const Header = ({ children, loc }, props) => {
   }
 
   function handleLogout() {
-    localStorage.clear();
+    localStorage.removeItem("authData");
     navigate("/");
   }
 
   const ItemLinks = () => {
     return (
       <>
-        <Link to="/padarias">Padarias</Link>
-        <Link to="/condominios">Condomínios</Link>
-        {isAllowedByRole(["ROLE_ADMIN", "ROLE_ROOT"]) ? (
-          <>
-            <Link to="/usuarios">Usuários</Link>
-            <Link to="/planos">Planos</Link>
-          </>
+        {isAllowedByRole(["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]) ? (
+          <Link to="/padarias">Padarias</Link>
         ) : null}
+        <Link to="/condominios">Condomínios</Link>
+        <Link to="/usuarios">Usuários</Link>
+        <Link to="/planos">Planos</Link>
         <Link to="/produtos">Produtos</Link>
         <Link to="/pedidos">Pedidos</Link>
         <Link to="/categorias">Categorias</Link>
