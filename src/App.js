@@ -6,6 +6,7 @@ import Router from "./routes";
 import "react-toastify/dist/ReactToastify.css";
 import { BakeryStorage } from "./context/BakeryContext";
 import { SubscriptionStorage } from "./context/SubscriptionContext";
+import Header from "./components/Header";
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <BrowserRouter>
           <GlobalStyles />
           <ToastContainer autoClose={2000} />
+          <Header loc="/dash" />
           <Router />
         </BrowserRouter>
       </BakeryStorage>

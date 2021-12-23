@@ -1,6 +1,6 @@
 import { Grid, Button } from "@material-ui/core";
 import React from "react";
-import Header from "../../../components/Header";
+
 import TableProdutos from "../../../components/TableProdutos";
 import TableResumo from "../../../components/TableResumo";
 import { api } from "../../../services/api";
@@ -110,7 +110,6 @@ const PurchaseList = () => {
 
   return (
     <Container className="body">
-      <Header loc="/dash" />
       <Content className="content">
         <ContentHeader>
           <h3>Pedidos</h3>

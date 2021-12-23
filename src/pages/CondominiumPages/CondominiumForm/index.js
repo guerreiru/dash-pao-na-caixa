@@ -18,7 +18,7 @@ import {
   FormHeader,
   FormGroup,
 } from "./styles";
-import Header from "../../../components/Header";
+
 import { BakeryContext } from "../../../context/BakeryContext";
 import { SubscriptionContext } from "../../../context/SubscriptionContext";
 import ClearForm from "../../../utils/Functions/ClearForm";
@@ -63,8 +63,8 @@ const CondominiumForm = () => {
             complement: res.data.address.complement,
           });
           setTitle(res.data.name);
-          setBakeryOptions(res.data.bakery.id)
-          setSubscriptionsOptions(res.data.subscriptionPlan.id)
+          setBakeryOptions(res.data.bakery.id);
+          setSubscriptionsOptions(res.data.subscriptionPlan.id);
         });
       } catch (error) {
         console.error(error);
@@ -88,7 +88,7 @@ const CondominiumForm = () => {
     const subscriptionPlan = ObjVal(subscriptions).find(
       (subscription) => subscription.id === subscriptionsItems
     );
-    
+
     const condominium = {
       name: values.name,
       bakery,
@@ -137,7 +137,6 @@ const CondominiumForm = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>
@@ -159,7 +158,6 @@ const CondominiumForm = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.name}
                     fullWidth
                   />
@@ -217,7 +215,6 @@ const CondominiumForm = () => {
                     label="Rua"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.street_name}
                     fullWidth
                   />
@@ -231,7 +228,6 @@ const CondominiumForm = () => {
                     label="Número"
                     type="number"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.number}
                     fullWidth
                   />
@@ -245,7 +241,6 @@ const CondominiumForm = () => {
                     label="Cidade"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.city}
                     fullWidth
                   />
@@ -259,7 +254,6 @@ const CondominiumForm = () => {
                     label="Estado"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.state}
                     fullWidth
                   />
@@ -273,7 +267,6 @@ const CondominiumForm = () => {
                     label="CEP"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.zip_code}
                     fullWidth
                   />
@@ -287,7 +280,6 @@ const CondominiumForm = () => {
                     label="Complemento"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.complement}
                     fullWidth
                   />

@@ -20,7 +20,6 @@ import {
   TableContainer,
   TableHeader,
 } from "./styles";
-import Header from "../../../components/Header";
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
@@ -125,7 +124,6 @@ const SubscriptionList = () => {
   }
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>

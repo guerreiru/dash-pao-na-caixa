@@ -9,7 +9,7 @@ import {
   FormHeader,
   FormGroup,
 } from "./styles";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
@@ -79,7 +79,6 @@ const SubscriptionPlanForm = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>

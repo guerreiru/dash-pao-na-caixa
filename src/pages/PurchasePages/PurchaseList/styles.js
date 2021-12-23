@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--bg-white);
+  padding: 20px;
   padding-bottom: 4px;
   height: 100%;
 
@@ -18,7 +19,6 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  margin: 20px;
   padding: 20px 30px;
   @media (max-width: 568px) {
     margin: 10px;

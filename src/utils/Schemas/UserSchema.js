@@ -43,13 +43,6 @@ const UserSchema = (values) => {
     errors.password = "A senha deve conter pelo menos 6 caracteres";
   }
 
-
-  //  else if (
-  //    !values.password.match(/(?=.*[A-Z])(?=.*\d)(?=.*[\W])[A-Za-z\d\W]{8,}$/)
-  //  ) {
-  //    errors.password = "A senha deve conter pelo menos um número";
-  //  }
-
   return errors;
 };
 

@@ -13,7 +13,7 @@ import {
   TableHeader,
 } from "./styles";
 import Table from "../../../components/Table";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 
 const CategoryList = () => {
@@ -60,7 +60,6 @@ const CategoryList = () => {
   }
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>

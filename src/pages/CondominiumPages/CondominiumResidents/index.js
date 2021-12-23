@@ -12,7 +12,7 @@ import {
   TableHeader,
 } from "./styles";
 import Table from "../../../components/Table";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 import { IoPersonAdd } from "react-icons/io5";
 
@@ -74,7 +74,6 @@ const CondominiumResidents = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>

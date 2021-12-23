@@ -12,11 +12,9 @@ import {
   TableHeader,
 } from "./styles";
 import Table from "../../../components/Table";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 import { IoPersonAdd } from "react-icons/io5";
-// import { BakeryContext } from "../../../context/BakeryContext";
-// import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const BakeryUsers = () => {
   const [users, setUsers] = React.useState([]);
@@ -76,7 +74,6 @@ const BakeryUsers = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>

@@ -21,10 +21,11 @@ import {
   TableContainer,
   TableHeader,
 } from "./styles";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
+import { getRole, privateRequest } from "../../../utils/Functions/Auth";
 
 const ProductsList = () => {
   const [products, setProducts] = React.useState([]);
@@ -37,12 +38,8 @@ const ProductsList = () => {
   }, []);
 
   async function loadProducts() {
-    try {
-      const res = await api.get("products");
-      setProducts(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await api.get("products");
+    setProducts(res.data.data);
   }
 
   function handleAdd() {
@@ -127,7 +124,6 @@ const ProductsList = () => {
   }
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <TableContainer>
           <TableHeader>

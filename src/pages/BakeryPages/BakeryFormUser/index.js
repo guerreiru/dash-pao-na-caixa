@@ -9,12 +9,9 @@ import {
   FormHeader,
   FormGroup,
 } from "./styles";
-import Header from "../../../components/Header";
-// import ErrorMessage from "../../../components/ErrorMessage";
+
 import { api } from "../../../services/api";
-// import UserSchema from "../../../utils/Schemas/usuarioschema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-// import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const BakeryFormUser = () => {
   const [values, setValues] = React.useState({
@@ -25,7 +22,6 @@ const BakeryFormUser = () => {
     user_name: "",
     password: "",
   });
-  // const [erros, setErros] = React.useState({});
   const navigate = useNavigate();
   const { id: bakeryId } = useParams();
   const [bakery, setBakery] = React.useState(null);
@@ -70,7 +66,6 @@ const BakeryFormUser = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>
@@ -90,7 +85,6 @@ const BakeryFormUser = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.name}
                     fullWidth
                   />
@@ -104,7 +98,6 @@ const BakeryFormUser = () => {
                     label="Email"
                     type="email"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.email}
                     fullWidth
                   />
@@ -118,7 +111,6 @@ const BakeryFormUser = () => {
                     label="Usuário"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.user_name}
                     fullWidth
                   />
@@ -132,7 +124,6 @@ const BakeryFormUser = () => {
                     label="Senha"
                     type="password"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.password}
                     fullWidth
                   />

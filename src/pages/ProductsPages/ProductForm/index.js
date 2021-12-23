@@ -17,7 +17,7 @@ import {
   FormHeader,
   InputImage,
 } from "./styles";
-import Header from "../../../components/Header";
+
 import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
@@ -29,8 +29,6 @@ const ProductForm = () => {
     imgUrl:
       "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
     isActive: true,
-    unitName: "",
-    unitAcronyms: ""
   });
   const [categories, setCategories] = React.useState([]);
   const [categorySelected, setCategorySelected] = React.useState([]);
@@ -50,7 +48,7 @@ const ProductForm = () => {
     }
 
     getCategories();
-  }, [categories]);
+  }, []);
 
   React.useEffect(() => {
     async function getUnits() {
@@ -59,7 +57,7 @@ const ProductForm = () => {
     }
 
     getUnits();
-  }, [units]);
+  }, []);
 
   React.useEffect(() => {
     if (productId) {
@@ -70,8 +68,6 @@ const ProductForm = () => {
             description: res.data.description,
             price: res.data.price,
             imgUrl: res.data.imgUrl,
-            // unitName: res.data.unit.name,
-            // unitAcronyms: res.data.unit.acronyms,
             isActive: res.data.isActive,
           });
           setTitle(res.data.name);
@@ -91,21 +87,16 @@ const ProductForm = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const bakery = await api.get(`bakeries/${bakeryId}`);
-    delete bakery.data.id;
 
     const product = {
       name: values.name,
       description: values.description,
-      price: values.price,
+      price: Number(values.price),
       imgUrl: values.imgUrl,
       isActive: values.isActive,
-      unit: {
-        name: unitSelected.split(",")[0],
-        acronyms: unitSelected.split(",")[1],
-      },
-      categories: categorySelected,
-      bakery,
+      unitId: Number(unitSelected),
+      categories_ids: categorySelected,
+      bakeryId: Number(bakeryId),
     };
 
     if (productId) {
@@ -136,7 +127,6 @@ const ProductForm = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>
@@ -197,7 +187,7 @@ const ProductForm = () => {
                       <em>Slecione</em>
                     </MenuItem>
                     {categories.map((category) => (
-                      <MenuItem key={category.id} value={category.name}>
+                      <MenuItem key={category.id} value={category.id}>
                         {category.name}
                       </MenuItem>
                     ))}
@@ -223,7 +213,7 @@ const ProductForm = () => {
                       <MenuItem
                         style={{ textTransform: "capitalize" }}
                         key={unit.id}
-                        value={`${unit.name},${unit.acronyms}`}
+                        value={unit.id}
                       >
                         {unit.name}
                       </MenuItem>

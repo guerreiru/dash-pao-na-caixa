@@ -1,11 +1,43 @@
+import axios from "axios";
 import jwtDecode from "jwt-decode";
 import qs from "qs";
-import { api } from "../../services/api";
 import { saveDataLocal } from "./LocStorage";
 
 const headers = {
   "content-type": "application/x-www-form-urlencoded",
   Authorization: "Basic cGFvLW5hLWNhaXhhOnMzY3JldA==",
+};
+
+const baseUrl = "http://pao-na-caixa-dev.herokuapp.com/";
+
+const api = axios.create({
+  baseURL: baseUrl,
+});
+
+export const getRole = () => {
+  const authData = localStorage.getItem("authData");
+  if (authData) {
+    const authDataParsed = JSON.parse(authData);
+    const authDataDecoded = jwtDecode(authDataParsed.access_token);
+    return authDataDecoded.user.roles;
+  }
+};
+
+export const privateRequest = async (method, url) => {
+  const authData = localStorage.getItem("authData");
+  if (authData) {
+    const authDataParsed = JSON.parse(authData);
+    const headers = {
+      Authorization: `Bearer ${authDataParsed.access_token}`,
+    };
+
+    return axios({
+      method,
+      url,
+      baseURL: baseUrl,
+      headers,
+    });
+  }
 };
 
 export const makeLogin = async (username, password) => {
@@ -46,24 +78,22 @@ export const refreshToken = async () => {
     const authData = res.data;
     saveDataLocal("authData", authData);
 
-    return res;
+    return authData.access_token;
   }
 };
 
-export const isValidToken = () => {
+export const isValidToken = async () => {
   const authData = localStorage.getItem("authData");
   if (authData) {
     const authDataParsed = JSON.parse(authData);
     const authDataDecoded = jwtDecode(authDataParsed.access_token);
 
     if (Date.now() <= authDataDecoded.exp * 1000) {
-      return true;
+      return authDataParsed.access_token;
     } else {
-      refreshToken();
-      return true;
+      return await refreshToken();
     }
   } else {
-    console.log("Não tem token");
     return false;
   }
 };

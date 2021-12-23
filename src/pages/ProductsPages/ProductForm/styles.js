@@ -10,12 +10,12 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 0 20px;
+  padding-top: 20px;
 `;
 
 export const FormContainer = styled.div`
   padding: 20px 30px;
-  margin: 20px 0;
-background-color: white;
+  background-color: white;
   border-radius: 4px;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
 
@@ -25,7 +25,6 @@ background-color: white;
     color: #737373;
   }
 `;
-
 
 export const FormHeader = styled.div`
   margin-bottom: 20px;
@@ -105,5 +104,4 @@ export const InputImage = styled.div`
 export const FormGroup = styled.div`
   margin-bottom: 10px;
   text-align: center;
-`
-
+`;

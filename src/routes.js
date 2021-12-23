@@ -41,7 +41,11 @@ const Router = () => {
         path="/padarias"
         element={
           <PrivateRoute
-            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+            allowedRoutes={[
+              "ROLE_BAKERY",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
           >
             <Bakery />
           </PrivateRoute>
@@ -52,7 +56,12 @@ const Router = () => {
         path="/padarias/adicionar"
         element={
           <PrivateRoute
-            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_BAKERY",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
           >
             <BakeryForm />
           </PrivateRoute>
@@ -63,7 +72,12 @@ const Router = () => {
         path="/padarias/:id/editar"
         element={
           <PrivateRoute
-            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_BAKERY",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
           >
             <BakeryForm />
           </PrivateRoute>
@@ -74,7 +88,12 @@ const Router = () => {
         path="/padarias/:id/usuarios"
         element={
           <PrivateRoute
-            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_BAKERY",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
           >
             <BakeryUsers />
           </PrivateRoute>
@@ -85,7 +104,12 @@ const Router = () => {
         path="/padarias/:id/usuarios/adicionar"
         element={
           <PrivateRoute
-            allowedRoutes={["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]}
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_BAKERY",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
           >
             <BakeryFormUser />
           </PrivateRoute>
@@ -186,7 +210,22 @@ const Router = () => {
       <Route path="/categorias/adicionar" element={<CategoryForm />} />
       <Route path="/categorias/:id/editar" element={<CategoryForm />} />
 
-      <Route path="/produtos/:id" element={<ProductList />} />
+      <Route
+        path="/produtos/"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+              "ROLE_CONDOMINIUM",
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+            ]}
+          >
+            <ProductList />
+          </PrivateRoute>
+        }
+      />
+
       <Route path="/produtos/:id/adicionar" element={<ProductForm />} />
       <Route path="/produtos/:id/:productId/editar" element={<ProductForm />} />
 

@@ -10,12 +10,9 @@ import {
   FormGroup,
   InputImage,
 } from "./styles";
-import Header from "../../../components/Header";
-// import ErrorMessage from "../../../components/ErrorMessage";
+
 import { api } from "../../../services/api";
-// import BakerySchema from "../../../utils/Schemas/BakerySchema";
 import ClearForm from "../../../utils/Functions/ClearForm";
-// import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const BakeryForm = () => {
   const [values, setValues] = React.useState({
@@ -32,9 +29,8 @@ const BakeryForm = () => {
     account: "",
     account_type: "CHECKING",
   });
-  const [bankDataId, setBankDataID] = React.useState(null)
-  const [title, setTitle] = React.useState("")
-  // const [erros, setErros] = React.useState({});
+  const [bankDataId, setBankDataID] = React.useState(null);
+  const [title, setTitle] = React.useState("");
   const navigate = useNavigate();
   const { id: bakeryId } = useParams();
 
@@ -55,8 +51,8 @@ const BakeryForm = () => {
             account: res.data.bankData.account,
             account_type: res.data.bankData.account_type,
           });
-          setBankDataID(res.data.bankData.id)
-          setTitle(res.data.name)
+          setBankDataID(res.data.bankData.id);
+          setTitle(res.data.name);
         });
       } catch (error) {
         console.error(error);
@@ -71,15 +67,8 @@ const BakeryForm = () => {
     });
   }
 
-  // function handleBlur() {
-  //   setErros(BakerySchema(values));
-  // }
-
   async function handleSubmit(event) {
     event.preventDefault();
-    // const haveErros = ObjVal(BakerySchema(values)).length;
-    // setErros(BakerySchema(values));
-
     const bakery = {
       name: values.name,
       imgLogo: "https://cdn-icons-png.flaticon.com/512/992/992747.png",
@@ -128,7 +117,6 @@ const BakeryForm = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>
@@ -148,7 +136,6 @@ const BakeryForm = () => {
                     label="Nome"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.name || ""}
                     fullWidth
                   />
@@ -169,7 +156,6 @@ const BakeryForm = () => {
                     label="Rua"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.street_name || ""}
                     fullWidth
                   />
@@ -183,7 +169,6 @@ const BakeryForm = () => {
                     label="Número"
                     type="number"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.number || ""}
                     fullWidth
                   />
@@ -197,7 +182,6 @@ const BakeryForm = () => {
                     label="Cidade"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.city || ""}
                     fullWidth
                   />
@@ -211,7 +195,6 @@ const BakeryForm = () => {
                     label="Estado"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.state || ""}
                     fullWidth
                   />
@@ -225,7 +208,6 @@ const BakeryForm = () => {
                     label="CEP"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.zip_code || ""}
                     fullWidth
                   />
@@ -239,7 +221,6 @@ const BakeryForm = () => {
                     label="Complemento"
                     type="text"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.complement || ""}
                     fullWidth
                   />
@@ -257,7 +238,6 @@ const BakeryForm = () => {
                     label="Código do Banco"
                     type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.bank_code || ""}
                     fullWidth
                   />
@@ -271,7 +251,6 @@ const BakeryForm = () => {
                     label="Agência"
                     type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.agency || ""}
                     fullWidth
                   />
@@ -285,7 +264,6 @@ const BakeryForm = () => {
                     label="Conta"
                     type="tel"
                     onChange={handleChange}
-                    // onBlur={handleBlur}
                     value={values.account || ""}
                     fullWidth
                   />

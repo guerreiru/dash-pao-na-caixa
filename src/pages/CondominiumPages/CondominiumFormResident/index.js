@@ -10,7 +10,7 @@ import {
   FormHeader,
   FormGroup,
 } from "./styles";
-import Header from "../../../components/Header";
+
 import ClearForm from "../../../utils/Functions/ClearForm";
 
 const CondominiumFormResident = () => {
@@ -52,8 +52,8 @@ const CondominiumFormResident = () => {
     event.preventDefault();
     const resident = {
       ...values,
-      condominium: Number(condominiumId)
-    }
+      condominium: Number(condominiumId),
+    };
     try {
       api.post("residents", resident).then((res) => {
         toast.success("Residente cadastrado!");
@@ -70,7 +70,6 @@ const CondominiumFormResident = () => {
 
   return (
     <Container>
-      <Header loc="/dash" />
       <Content>
         <FormContainer>
           <FormHeader>
