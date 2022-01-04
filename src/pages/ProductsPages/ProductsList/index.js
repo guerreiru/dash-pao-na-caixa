@@ -25,7 +25,6 @@ import {
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
-import { getRole, privateRequest } from "../../../utils/Functions/Auth";
 
 const ProductsList = () => {
   const [products, setProducts] = React.useState([]);

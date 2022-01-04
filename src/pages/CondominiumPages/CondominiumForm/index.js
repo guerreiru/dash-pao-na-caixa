@@ -19,10 +19,7 @@ import {
   FormGroup,
 } from "./styles";
 
-import { BakeryContext } from "../../../context/BakeryContext";
-import { SubscriptionContext } from "../../../context/SubscriptionContext";
 import ClearForm from "../../../utils/Functions/ClearForm";
-import ObjVal from "../../../utils/Functions/ObjecValue";
 
 const CondominiumForm = () => {
   const [values, setValues] = React.useState({
@@ -38,16 +35,32 @@ const CondominiumForm = () => {
     zip_code: "",
     complement: "",
   });
-  const { bakeries, bakeryOptions } = React.useContext(BakeryContext);
-  const [bakeryItems, setBakeryOptions] = React.useState("");
+  const [bakeries, setBakeries] = React.useState([]);
+  const [bakerySelected, setBakerySelected] = React.useState("");
 
-  const { subscriptions, subscriptionOptions } =
-    React.useContext(SubscriptionContext);
-  const [subscriptionsItems, setSubscriptionsOptions] = React.useState("");
+  const [subscriptions, setSubscriptions] = React.useState([]);
+  const [subscriptionSelected, setSubscriptionSelected] = React.useState("");
+
   const [title, setTitle] = React.useState("");
 
   const navigate = useNavigate();
   const { id: condominiumId } = useParams();
+
+  async function getDataSelect(url) {
+    try {
+      const res = await api.get(url);
+      return res;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  React.useEffect(() => {
+    getDataSelect("bakeries").then((res) => setBakeries(res.data.data));
+    getDataSelect("subscription-plans").then((res) =>
+      setSubscriptions(res.data.data)
+    );
+  }, []);
 
   React.useEffect(() => {
     if (condominiumId) {
@@ -63,8 +76,8 @@ const CondominiumForm = () => {
             complement: res.data.address.complement,
           });
           setTitle(res.data.name);
-          setBakeryOptions(res.data.bakery.id);
-          setSubscriptionsOptions(res.data.subscriptionPlan.id);
+          setBakerySelected(res.data.bakery.id);
+          setSubscriptionSelected(res.data.subscriptionPlan.id);
         });
       } catch (error) {
         console.error(error);
@@ -81,18 +94,9 @@ const CondominiumForm = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    const bakery = ObjVal(bakeries).find(
-      (bakeries) => bakeries.id === bakeryItems
-    );
-
-    const subscriptionPlan = ObjVal(subscriptions).find(
-      (subscription) => subscription.id === subscriptionsItems
-    );
 
     const condominium = {
       name: values.name,
-      bakery,
-      subscriptionPlan,
       address: {
         street_name: values.street_name,
         number: Number(values.number),
@@ -106,7 +110,7 @@ const CondominiumForm = () => {
     if (condominiumId) {
       try {
         api.put(`condominiums/${condominiumId}`, condominium);
-        setBakeryOptions("");
+        setBakerySelected("");
         toast.success("Condomínio editado!");
         setValues(ClearForm(values));
         navigate("/condominios");
@@ -114,7 +118,7 @@ const CondominiumForm = () => {
     } else {
       try {
         api.post("condominiums", condominium);
-        setBakeryOptions("");
+        setBakerySelected("");
         toast.success("Condomínio cadastrado!");
         setValues(ClearForm(values));
         navigate("/condominios");
@@ -123,11 +127,11 @@ const CondominiumForm = () => {
   }
 
   const handleSelectBakery = ({ target }) => {
-    setBakeryOptions(target.value);
+    setBakerySelected(target.value);
   };
 
   const handleSelectPlan = ({ target }) => {
-    setSubscriptionsOptions(target.value);
+    setSubscriptionSelected(target.value);
   };
 
   function handleCancel() {
@@ -169,7 +173,7 @@ const CondominiumForm = () => {
                   <InputLabel id="padarias">Padaria</InputLabel>
                   <Select
                     id="padarias"
-                    value={bakeryItems}
+                    value={bakerySelected}
                     onChange={handleSelectBakery}
                     fullWidth
                     label="Padaria"
@@ -177,9 +181,9 @@ const CondominiumForm = () => {
                     <MenuItem value="">
                       <em>Selecione</em>
                     </MenuItem>
-                    {ObjVal(bakeryOptions()).map((item) => (
+                    {bakeries.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.label}
+                        {item.name}
                       </MenuItem>
                     ))}
                   </Select>
@@ -191,7 +195,7 @@ const CondominiumForm = () => {
                   <InputLabel id="subscription-plans">Planos</InputLabel>
                   <Select
                     id="subscription-plans"
-                    value={subscriptionsItems}
+                    value={subscriptionSelected}
                     onChange={handleSelectPlan}
                     fullWidth
                     label="Planos"
@@ -199,9 +203,9 @@ const CondominiumForm = () => {
                     <MenuItem value="">
                       <em>Selecione</em>
                     </MenuItem>
-                    {ObjVal(subscriptionOptions()).map((item) => (
+                    {subscriptions.map((item) => (
                       <MenuItem key={item.id} value={item.id}>
-                        {item.label}
+                        {item.name}
                       </MenuItem>
                     ))}
                   </Select>

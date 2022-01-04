@@ -226,8 +226,8 @@ const Router = () => {
         }
       />
 
-      <Route path="/produtos/:id/adicionar" element={<ProductForm />} />
-      <Route path="/produtos/:id/:productId/editar" element={<ProductForm />} />
+      <Route path="/produtos/adicionar" element={<ProductForm />} />
+      <Route path="/produtos/:productId/editar" element={<ProductForm />} />
 
       <Route path="/unauthorized" element={<Error401 />} />
     </Routes>
