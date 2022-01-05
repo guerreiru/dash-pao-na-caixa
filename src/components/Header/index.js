@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
 import Logo from "../Logo";
 import { Container, Content, ListLinks, BtnMenu, SideMenu } from "./styles";
-import { isAllowedByRole } from "../../utils/Functions/Auth";
 
 const Header = ({ loc, Links }) => {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
@@ -27,7 +26,7 @@ const Header = ({ loc, Links }) => {
     return (
       <Container className="noprint">
         <Content>
-          <Link to={`${loc}` || "/"}>
+          <Link to={`${loc}` || "/dash"}>
             <Logo />
           </Link>
           <ListLinks>

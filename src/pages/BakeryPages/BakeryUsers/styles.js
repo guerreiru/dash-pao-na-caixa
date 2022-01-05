@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--bg-white);
-  height: 100%;
+  height: calc(100% - 61px);
 
   .btnAddMobile {
     display: none;

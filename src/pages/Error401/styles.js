@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 100%;
+  height: calc(100% - 61px);
 `;
 
 export const Content = styled.div`

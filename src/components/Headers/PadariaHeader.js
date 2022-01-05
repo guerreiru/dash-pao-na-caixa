@@ -17,7 +17,7 @@ const PadariaHeader = () => {
 
   return (
     <div>
-      <Header Links={ItemLinks} />
+      <Header loc="/dash" Links={ItemLinks} />
     </div>
   )
 }
