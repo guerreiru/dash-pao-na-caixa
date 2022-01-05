@@ -5,7 +5,7 @@ import Logo from "../Logo";
 import { Container, Content, ListLinks, BtnMenu, SideMenu } from "./styles";
 import { isAllowedByRole } from "../../utils/Functions/Auth";
 
-const Header = ({ loc, Links }) => {
+const Header = ({ loc }) => {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
   const location = useLocation().pathname;
 
@@ -23,6 +23,29 @@ const Header = ({ loc, Links }) => {
     localStorage.removeItem("authData");
   }
 
+  const ItemLinks = () => {
+    return (
+      <>
+        {isAllowedByRole(["ROLE_BAKERY", "ROLE_ADMIN", "ROLE_ROOT"]) ? (
+          <Link to="/padarias">Padarias</Link>
+        ) : null}
+        {isAllowedByRole(["ROLE_CONDOMINIUM", "ROLE_ADMIN", "ROLE_ROOT"]) ? (
+          <Link to="/condominios">Condomínios</Link>
+        ) : null}
+        <Link to="/usuarios">Usuários</Link>
+        {isAllowedByRole(["ROLE_ADMIN", "ROLE_ROOT"]) ? (
+          <Link to="/planos">Planos</Link>
+        ) : null}
+        <Link to="/categorias">Categorias</Link>
+        <Link to="/produtos">Produtos</Link>
+        <Link to="/pedidos">Pedidos</Link>
+        <Link to="/" onClick={handleLogout}>
+          Sair
+        </Link>
+      </>
+    );
+  };
+
   if (location !== "/") {
     return (
       <Container className="noprint">
@@ -30,19 +53,14 @@ const Header = ({ loc, Links }) => {
           <Link to={`${loc}` || "/"}>
             <Logo />
           </Link>
-          <ListLinks>
-            {<Links />}{" "}
-            <Link to="/" onClick={handleLogout}>
-              Sair
-            </Link>
-          </ListLinks>
+          <ListLinks>{<ItemLinks />}</ListLinks>
           <BtnMenu onClick={handleOpen}>
             <IoMenu size="20" />
           </BtnMenu>
 
           <SideMenu style={{ display: menuIsOpen ? "flex" : "none" }}>
             <IoCloseOutline onClick={handleOpen} />
-            {<Links />}
+            {<ItemLinks />}
           </SideMenu>
         </Content>
       </Container>

@@ -211,11 +211,12 @@ const Router = () => {
       <Route path="/categorias/:id/editar" element={<CategoryForm />} />
 
       <Route
-        path="/produtos/"
+        path="/produtos"
         element={
           <PrivateRoute
             allowedRoutes={[
               "ROLE_RESIDENT",
+              "ROLE_BAKERY",
               "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",

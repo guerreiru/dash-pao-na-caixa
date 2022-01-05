@@ -78,7 +78,7 @@ const BakeryFormUser = () => {
               rowSpacing={1}
               columnSpacing={{ xs: 1, sm: 2, md: 3 }}
             >
-              <Grid item xs={12} sm={4} md={6}>
+              <Grid item xs={12} sm={4} md={4}>
                 <FormGroup>
                   <TextField
                     name="name"
@@ -91,7 +91,20 @@ const BakeryFormUser = () => {
                 </FormGroup>
               </Grid>
 
-              <Grid item xs={12} sm={4} md={6}>
+              <Grid item xs={12} sm={4} md={4}>
+                <FormGroup>
+                  <TextField
+                    name="cpf"
+                    label="CPF"
+                    type="text"
+                    onChange={handleChange}
+                    value={values.cpf}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={4}>
                 <FormGroup>
                   <TextField
                     name="email"
