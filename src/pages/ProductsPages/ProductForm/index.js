@@ -26,8 +26,7 @@ const ProductForm = () => {
     name: "",
     description: "",
     price: "",
-    imgUrl:
-      "https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg",
+    imgUrl: "",
     isActive: true,
   });
   const [categories, setCategories] = React.useState([]);
@@ -85,14 +84,29 @@ const ProductForm = () => {
     });
   }
 
+  function handleImg(ev) {
+    setValues({
+      ...values,
+      imgUrl: ev.target.files[0],
+    });
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("file", values.imgUrl);
+    const res = await api.post("/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
     const product = {
       name: values.name,
       description: values.description,
       price: Number(values.price),
-      imgUrl: values.imgUrl,
+      imgUrl: res.data.url,
       isActive: values.isActive,
       unitId: Number(unitSelected),
       categories_ids: categorySelected,
@@ -104,7 +118,7 @@ const ProductForm = () => {
         await api.put(`products/${productId}`, product);
         toast.success("Produto editada!");
         setValues(ClearForm(values));
-        navigate("/produtos/1");
+        navigate("/produtos");
       } catch (error) {
         console.error(error);
       }
@@ -113,7 +127,7 @@ const ProductForm = () => {
         await api.post("products", product);
         toast.success("Produto cadastrada!");
         setValues(ClearForm(values));
-        navigate("/produtos/1");
+        navigate("/produtos");
       } catch (error) {
         console.error(error);
       }
@@ -152,7 +166,7 @@ const ProductForm = () => {
 
               <Grid item xs={12}>
                 <InputImage>
-                  <input type="file" id="logo" />
+                  <input type="file" id="logo" onChange={handleImg} />
                   <label htmlFor="logo">Escolher arquivo</label>
                 </InputImage>
               </Grid>

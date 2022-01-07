@@ -4,7 +4,7 @@ import { IoMenu, IoCloseOutline } from "react-icons/io5";
 import Logo from "../Logo";
 import { Container, Content, ListLinks, BtnMenu, SideMenu } from "./styles";
 
-const Header = ({ loc, Links }) => {
+const HeaderTemplate = ({ loc, Links }) => {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
   const location = useLocation().pathname;
 
@@ -51,4 +51,4 @@ const Header = ({ loc, Links }) => {
   }
 };
 
-export default Header;
+export default HeaderTemplate;

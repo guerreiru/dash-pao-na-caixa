@@ -14,12 +14,12 @@ const api = axios.create({
   baseURL: baseUrl,
 });
 
-export const getRole = () => {
+export const getUserConfig = () => {
   const authData = localStorage.getItem("authData");
   if (authData) {
     const authDataParsed = JSON.parse(authData);
     const authDataDecoded = jwtDecode(authDataParsed.access_token);
-    return authDataDecoded.user.roles;
+    return authDataDecoded.user;
   }
 };
 

@@ -1,11 +1,24 @@
 import React from "react";
 import { Container, Content, TableContainer } from "./styles";
+import { api } from "../../services/api";
 
 const Dash = () => {
+  const [user, setUser] = React.useState({});
+
+  React.useEffect(() => {
+    async function loadUserInfo() {
+      const user = await api.get("users/profile");
+      setUser(user.data);
+    }
+    loadUserInfo();
+  }, [user]);
+
   return (
     <Container>
       <Content>
-        <TableContainer></TableContainer>
+        <TableContainer>
+          {user.person ? `Olá ${user.person.name}!` : null}
+        </TableContainer>
       </Content>
     </Container>
   );

@@ -15,6 +15,7 @@ import {
 import Table from "../../../components/Table";
 
 import { api } from "../../../services/api";
+import { getUserConfig } from "../../../utils/Functions/Auth";
 
 const Person = () => {
   const [people, setPeople] = React.useState([]);
@@ -23,17 +24,17 @@ const Person = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    async function loadPeople() {
+      try {
+        const res = await api.get(`bakeries/${getUserConfig().id}/people`);
+        setPeople(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
     loadPeople();
   }, []);
 
-  async function loadPeople() {
-    try {
-      const res = await api.get("people");
-      setPeople(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   function handleAdd() {
     navigate("adicionar");
