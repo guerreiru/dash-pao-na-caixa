@@ -11,7 +11,7 @@ const Dash = () => {
       setUser(user.data);
     }
     loadUserInfo();
-  }, [user]);
+  }, []);
 
   return (
     <Container>

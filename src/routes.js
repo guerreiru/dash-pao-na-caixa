@@ -27,6 +27,7 @@ import CategoryForm from "./pages/ProductsPages/CategoryForm";
 
 import ProductList from "./pages/ProductsPages/ProductsList";
 import ProductForm from "./pages/ProductsPages/ProductForm";
+import Cart from "./pages/Cart"
 import PrivateRoute from "./components/PrivateRoute";
 import Error401 from "./pages/Error401";
 
@@ -229,6 +230,19 @@ const Router = () => {
 
       <Route path="/produtos/adicionar" element={<ProductForm />} />
       <Route path="/produtos/:productId/editar" element={<ProductForm />} />
+
+      <Route
+        path="/carrinho"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+            ]}
+          >
+            <Cart />
+          </PrivateRoute>
+        }
+      />
 
       <Route path="/unauthorized" element={<Error401 />} />
     </Routes>

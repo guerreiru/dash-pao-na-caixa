@@ -5,15 +5,18 @@ import GlobalStyles from "./styles/globalStyles";
 import Router from "./routes";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
+import { CartProvider } from "./hooks/useCart";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <GlobalStyles />
-      <ToastContainer autoClose={2000} />
-      <Header>
-        <Router />
-      </Header>
+      <CartProvider>
+        <GlobalStyles />
+        <ToastContainer autoClose={2000} />
+        <Header>
+          <Router />
+        </Header>
+      </CartProvider>
     </BrowserRouter>
   );
 }

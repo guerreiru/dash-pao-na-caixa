@@ -7,6 +7,7 @@ const PadariaHeader = () => {
     return (
       <>
         <Link to="/produtos">Produtos</Link>
+        <Link to="/carrinho">Carrinho</Link>
         <Link to="/pedidos">Pedidos</Link>
       </>
     );

@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography,
 } from "@material-ui/core";
+import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { FiPlus, FiTrash } from "react-icons/fi";
 import { FaEdit, FaSearch } from "react-icons/fa";
@@ -22,6 +23,7 @@ import {
   TableHeader,
 } from "./styles";
 
+import { useCart } from "../../../hooks/useCart";
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
@@ -31,6 +33,27 @@ const ProductsList = () => {
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
+  const [role, setRole] = React.useState("");
+  const { addProduct, cart } = useCart();
+
+  const cartItemsAmount = React.useMemo(
+    () =>
+      cart.reduce((sumAmount, product) => {
+        const newSumAmount = { ...sumAmount };
+        newSumAmount[product.id] = product.amount;
+        return newSumAmount;
+      }, {}),
+    [cart]
+  );
+
+  React.useEffect(() => {
+    const user = localStorage.getItem("authData");
+    if (user) {
+      const userParsed = JSON.parse(user);
+      const userDecoded = jwtDecode(userParsed.access_token);
+      setRole(userDecoded.user.roles[0]);
+    }
+  }, [role]);
 
   React.useEffect(() => {
     loadProducts();
@@ -68,6 +91,10 @@ const ProductsList = () => {
     }
   }
 
+  function handleAddProduct(product) {
+    addProduct(product);
+  }
+
   function ItemCard(item) {
     return (
       <Grid item xs={12} sm={6} md={4} key={item.id}>
@@ -85,16 +112,32 @@ const ProductsList = () => {
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {FormatPrice(item.price)}
             </Typography>
-            <Typography variant="body2">{item.description}</Typography>
+            <Typography variant="body2">
+              {item.description}
+            </Typography>
           </CardContent>
           <CardActions>
-            <IconButton onClick={() => handleEdit(item.id)}>
-              <FaEdit title="Editar" className="btnEdit" />
-            </IconButton>
+            {role === "ROLE_RESIDENT" ? (
+              <Button
+                type="button"
+                variant="contained"
+                startIcon={<FiPlus />}
+                endIcon={cartItemsAmount[item.id] || "0"}
+                onClick={() => handleAddProduct(item)}
+                style={{ width: '100%' }}
+              >
+                Por no carrinho
+              </Button>
+            ) : (
+              <>
+                <IconButton onClick={() => handleEdit(item.id)}>
+                  <FaEdit title="Editar" className="btnEdit" />
+                </IconButton>
 
-            <IconButton onClick={() => handleDelete(item.id)}>
-              <FiTrash title="Excluir" className="btnDelete" />
-            </IconButton>
+                <IconButton onClick={() => handleDelete(item.id)}>
+                  <FiTrash title="Excluir" className="btnDelete" />
+                </IconButton></>
+            )}
           </CardActions>
         </Card>
       </Grid>
@@ -139,22 +182,28 @@ const ProductsList = () => {
                 <TiDeleteOutline color="#737373" onClick={clearBusca} />
               )}
             </SearchInput>
-            <Button
-              type="button"
-              variant="contained"
-              startIcon={<FiPlus />}
-              onClick={handleAdd}
-              className="btnAddDesktop"
-            >
-              Adicionar
-            </Button>
 
-            <IoPersonAdd
-              title="Adicionar"
-              size="34"
-              className="btnAddMobile"
-              onClick={handleAdd}
-            />
+            {role === "ROLE_RESIDENT" ? null : (
+              <>
+                <Button
+                  type="button"
+                  variant="contained"
+                  startIcon={<FiPlus />}
+                  onClick={handleAdd}
+                  className="btnAddDesktop"
+                >
+                  Adicionar
+                </Button>
+
+                <IoPersonAdd
+                  title="Adicionar"
+                  size="34"
+                  className="btnAddMobile"
+                  onClick={handleAdd}
+                />
+              </>
+            )}
+
           </TableHeader>
 
           <Grid
