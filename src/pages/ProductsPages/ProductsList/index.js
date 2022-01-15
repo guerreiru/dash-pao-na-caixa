@@ -34,17 +34,7 @@ const ProductsList = () => {
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
   const [role, setRole] = React.useState("");
-  const { addProduct, cart } = useCart();
-
-  const cartItemsAmount = React.useMemo(
-    () =>
-      cart.reduce((sumAmount, product) => {
-        const newSumAmount = { ...sumAmount };
-        newSumAmount[product.id] = product.amount;
-        return newSumAmount;
-      }, {}),
-    [cart]
-  );
+  const { addProduct } = useCart();
 
   React.useEffect(() => {
     const user = localStorage.getItem("authData");
@@ -102,6 +92,7 @@ const ProductsList = () => {
           <CardMedia
             component="img"
             width="140"
+            height="300"
             image={item.imgUrl}
             alt={item.name}
           />
@@ -122,11 +113,10 @@ const ProductsList = () => {
                 type="button"
                 variant="contained"
                 startIcon={<FiPlus />}
-                endIcon={cartItemsAmount[item.id] || "0"}
                 onClick={() => handleAddProduct(item)}
                 style={{ width: '100%' }}
               >
-                Por no carrinho
+                Por na caixa
               </Button>
             ) : (
               <>

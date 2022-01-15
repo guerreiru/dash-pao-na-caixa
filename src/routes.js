@@ -20,7 +20,7 @@ import FormPerson from "./pages/PersonPages/FormPerson";
 import SubscriptionPlanForm from "./pages/SubscriptionPages/SubscriptionPlanForm";
 import SubscriptionPlanList from "./pages/SubscriptionPages/SubscriptionPlanList";
 
-import PurchaseList from "./pages/PurchasePages/PurchaseList";
+import Purchase from "./pages/PurchasePages";
 
 import CategoryList from "./pages/ProductsPages/CategoryList";
 import CategoryForm from "./pages/ProductsPages/CategoryForm";
@@ -205,7 +205,7 @@ const Router = () => {
       <Route path="/planos/adicionar" element={<SubscriptionPlanForm />} />
       <Route path="/planos/:id/editar" element={<SubscriptionPlanForm />} />
 
-      <Route path="/pedidos" element={<PurchaseList />} />
+      <Route path="/pedidos" element={<Purchase />} />
 
       <Route path="/categorias" element={<CategoryList />} />
       <Route path="/categorias/adicionar" element={<CategoryForm />} />
@@ -232,7 +232,7 @@ const Router = () => {
       <Route path="/produtos/:productId/editar" element={<ProductForm />} />
 
       <Route
-        path="/carrinho"
+        path="/caixa"
         element={
           <PrivateRoute
             allowedRoutes={[
