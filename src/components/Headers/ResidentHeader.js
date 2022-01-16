@@ -10,13 +10,21 @@ const PadariaHeader = () => {
   const ItemLinks = () => {
     return (
       <>
-        <Link to="/produtos">Produtos</Link>
+        <Link to="/produtos">
+          <Badge badgeContent="">
+            Produtos
+          </Badge>
+        </Link>
         <Link to="/caixa">
           <Badge badgeContent={cartSize} color="primary">
             Caixa
           </Badge>
         </Link>
-        <Link to="/pedidos">Pedidos</Link>
+        <Link to="/pedidos">
+          <Badge badgeContent="">
+            Pedidos
+          </Badge>
+        </Link>
       </>
     );
   };

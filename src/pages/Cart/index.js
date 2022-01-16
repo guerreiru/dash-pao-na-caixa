@@ -4,13 +4,18 @@ import {
   MdAddCircleOutline,
   MdRemoveCircleOutline,
 } from "react-icons/md";
+import {
+  Button,
+} from "@material-ui/core";
 import { useCart } from "../../hooks/useCart";
-
 import { FormatPrice } from "../../utils/Functions/FormatPrice";
 import { Container, ProductTable, Total, Content } from "./styles";
+import DialogCart from "../../components/DialogCart"
+import { api } from "../../services/api";
 
 const Cart = () => {
   const { cart, removeProduct, updateProductAmount } = useCart();
+  const [modalOpen, setModalOpen] = React.useState(false);
 
   const cartFormatted = useMemo(
     () =>
@@ -21,13 +26,23 @@ const Cart = () => {
       })),
     [cart]
   );
+
+  const itemsFormatted = useMemo(
+    () =>
+      cart.map((product) => ({
+        quantity: product.amount,
+        price: +product.price,
+        subtotal: product.price * product.amount,
+        product_id: product.id,
+      })),
+    [cart]
+  );
+
   const total = useMemo(
     () =>
-      FormatPrice(
-        cart.reduce((sumTotal, product) => {
-          return sumTotal + product.price * product.amount;
-        }, 0)
-      ),
+      cart.reduce((sumTotal, product) => {
+        return sumTotal + product.price * product.amount;
+      }, 0),
     [cart]
   );
 
@@ -41,6 +56,31 @@ const Cart = () => {
 
   function handleRemoveProduct(productId) {
     removeProduct(productId);
+  }
+
+  async function handlePurchase(period) {
+    const purchase = {
+      purchase_datetime: new Date(),
+      amount: total,
+      items: itemsFormatted,
+      period: period
+    }
+
+    const res = await api.post("purchase-orders", purchase)
+    console.log(res);
+  }
+
+  const handleModalOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setModalOpen(false);
+  };
+
+  function handleModalConfirm(period) {
+    handlePurchase(period);
+    handleModalClose();
   }
 
   return (
@@ -105,13 +145,28 @@ const Cart = () => {
         </ProductTable>
 
         <footer>
-          <button type="button">Finalizar pedido</button>
+          <button type="button" onClick={handleModalOpen} >Finalizar pedido</button>
           <Total>
             <span>TOTAL</span>
-            <strong>{total}</strong>
+            <strong>{FormatPrice(total)}</strong>
           </Total>
         </footer>
       </Content>
+
+      <DialogCart open={modalOpen}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => handleModalConfirm(0)}
+          style={{ marginRight: "5px" }}
+        >
+          Manhã
+        </Button>
+        <Button type="submit" variant="contained" onClick={() => handleModalConfirm(1)}>
+          Tarde
+        </Button>
+      </DialogCart>
+
     </Container>
   );
 };

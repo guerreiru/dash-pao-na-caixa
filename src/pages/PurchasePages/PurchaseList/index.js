@@ -77,7 +77,9 @@ const PurchaseList = () => {
   }
 
   function setDefaultDate() {
-    return new Date().toISOString().slice(0, 10);
+    const data = new Date()
+    const month = data.getMonth() < 11 ? `${data.getMonth()}` : data.getMonth()
+    return `${data.getFullYear()}-${month + 1}-${data.getDate()}`
   }
 
   function handleBakeSelected(ev) {
