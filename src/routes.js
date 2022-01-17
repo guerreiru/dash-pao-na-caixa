@@ -43,7 +43,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_BAKERY",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -58,8 +57,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_BAKERY",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -74,8 +71,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_BAKERY",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -90,8 +85,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_BAKERY",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -106,8 +99,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_BAKERY",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -122,8 +113,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -138,8 +127,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -154,8 +141,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -170,8 +155,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}
@@ -186,8 +169,6 @@ const Router = () => {
         element={
           <PrivateRoute
             allowedRoutes={[
-              "ROLE_RESIDENT",
-              "ROLE_CONDOMINIUM",
               "ROLE_ADMIN",
               "ROLE_ROOT",
             ]}

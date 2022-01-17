@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { IoMenu, IoCloseOutline } from "react-icons/io5";
 import Logo from "../Logo";
 import { Container, Content, ListLinks, BtnMenu, SideMenu } from "./styles";
+import { Badge } from "@material-ui/core";
 
 const HeaderTemplate = ({ loc, Links }) => {
   const [menuIsOpen, setMenuIsOpen] = React.useState(false);
@@ -32,7 +33,9 @@ const HeaderTemplate = ({ loc, Links }) => {
           <ListLinks>
             {<Links />}{" "}
             <Link to="/" onClick={handleLogout}>
-              Sair
+              <Badge badgeContent="" >
+                Sair
+              </Badge>
             </Link>
           </ListLinks>
           <BtnMenu onClick={handleOpen}>

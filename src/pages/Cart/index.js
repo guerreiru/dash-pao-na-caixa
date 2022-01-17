@@ -5,17 +5,20 @@ import {
   MdRemoveCircleOutline,
 } from "react-icons/md";
 import {
-  Button,
+  Alert,
 } from "@material-ui/core";
 import { useCart } from "../../hooks/useCart";
 import { FormatPrice } from "../../utils/Functions/FormatPrice";
-import { Container, ProductTable, Total, Content } from "./styles";
-import DialogCart from "../../components/DialogCart"
+import { Container, ProductTable, Total, Content, ActionsBtns } from "./styles";
 import { api } from "../../services/api";
+import ModalPao from "../../components/ModalPao";
 
 const Cart = () => {
-  const { cart, removeProduct, updateProductAmount } = useCart();
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const { cart, setCart, removeProduct, updateProductAmount } = useCart();
+  const [period, setPeriod] = React.useState("");
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const handleOpen = () => setModalIsOpen(true);
+  const handleClose = () => setModalIsOpen(false);
 
   const cartFormatted = useMemo(
     () =>
@@ -58,40 +61,68 @@ const Cart = () => {
     removeProduct(productId);
   }
 
-  async function handlePurchase(period) {
+  async function handlePurchase() {
     const purchase = {
       purchase_datetime: new Date(),
       amount: total,
       items: itemsFormatted,
       period: period
     }
-
-    const res = await api.post("purchase-orders", purchase)
-    console.log(res);
+    setModalIsOpen(true)
+    return
+    await api.post("purchase-orders", purchase)
+      .then(() => {
+        setModalIsOpen(true)
+      })
+      .catch(err => console.error(err))
+      //setPeriod("")
+      //setCart([])
   }
 
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  function handleModalConfirm(period) {
-    handlePurchase(period);
-    handleModalClose();
+  function handlePeriodSelected(ev) {
+    setPeriod(ev.target.value)
   }
+
 
   return (
     <Container>
       <Content>
+        <Alert severity="info">
+          Para entregas pela <strong>MANHÃ</strong> os pedidos devem ser realizados até <strong>23:00</strong> do dia anterior.<br />
+          Para entregas no final da <strong>TARDE</strong> os pedidos devem ser realizados até <strong>13:00</strong> do mesmo dia.
+        </Alert>
+        <ActionsBtns>
+          <div>
+            <select
+              id="padaria"
+              value={period}
+              onChange={handlePeriodSelected}
+              style={{ marginRight: "5px", padding: "5px 10px 9px 10px" }}
+            >
+              <option value="" disabled>Selecione o período</option>
+              <option value="0">Manhã</option>
+              <option value="1">Tarde</option>
+            </select>
+            <button
+              disabled={period !== "" && cart.length > 0 ? false : true}
+              onClick={handlePurchase}
+            >
+              Finalizar pedido
+            </button>
+          </div>
+          <Total>
+            <span>TOTAL</span>
+            <strong>{FormatPrice(total)}</strong>
+          </Total>
+        </ActionsBtns>
         <ProductTable>
           <thead>
             <tr>
-              <th>PRODUTO</th>
-              <th>QTD</th>
-              <th>SUBTOTAL</th>
+              <th>Item</th>
+              <th>Qtd</th>
+              <th>Unidade</th>
+              <th>Valor Unitário</th>
+              <th>Subtotal</th>
               <th aria-label="delete icon" />
             </tr>
           </thead>
@@ -99,8 +130,7 @@ const Cart = () => {
             {cartFormatted.map((product) => (
               <tr key={product.id} data-testid="product">
                 <td>
-                  <strong>{product.name}</strong>
-                  <span>{product.priceFormatted}</span>
+                  {product.name}
                 </td>
                 <td>
                   <div>
@@ -115,8 +145,8 @@ const Cart = () => {
                     <input
                       type="text"
                       data-testid="product-amount"
-                      readOnly
                       value={product.amount}
+                      readOnly
                     />
                     <button
                       type="button"
@@ -127,9 +157,9 @@ const Cart = () => {
                     </button>
                   </div>
                 </td>
-                <td>
-                  <strong>{product.subTotal}</strong>
-                </td>
+                <td>Grama</td>
+                <td>{product.priceFormatted}</td>
+                <td>{product.subTotal}</td>
                 <td>
                   <button
                     type="button"
@@ -143,30 +173,11 @@ const Cart = () => {
             ))}
           </tbody>
         </ProductTable>
-
-        <footer>
-          <button type="button" onClick={handleModalOpen} >Finalizar pedido</button>
-          <Total>
-            <span>TOTAL</span>
-            <strong>{FormatPrice(total)}</strong>
-          </Total>
-        </footer>
       </Content>
-
-      <DialogCart open={modalOpen}>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => handleModalConfirm(0)}
-          style={{ marginRight: "5px" }}
-        >
-          Manhã
-        </Button>
-        <Button type="submit" variant="contained" onClick={() => handleModalConfirm(1)}>
-          Tarde
-        </Button>
-      </DialogCart>
-
+      <ModalPao
+        handleClose={handleClose}
+        modalIsOpen={modalIsOpen}
+      />
     </Container>
   );
 };

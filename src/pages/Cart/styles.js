@@ -13,30 +13,50 @@ export const Content = styled.div`
   border-radius: 4px;
   overflow-x: auto;
   box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
-  footer {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    @media (max-width: 578px) {
-      min-width: 350px;
+`;
+
+export const ActionsBtns = styled.div`
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  
+  button {
+    background: #1976d2;
+    color: white;
+    border: 0;
+    border-radius: 4px;
+    padding: 12px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background 0.2s;
+    &:hover {
+      background: ${darken(0.06, "#1976d2")};
     }
-    button {
-      background: #1976d2;
-      color: white;
-      border: 0;
-      border-radius: 4px;
-      padding: 12px 20px;
-      font-weight: bold;
-      text-transform: uppercase;
-      transition: background 0.2s;
-      &:hover {
-        background: ${darken(0.06, "#1976d2")};
-      }
+    &:disabled {
+      color: #777;
+      background-color: #efefef;
+      border-color: #efefef;
+      border: 1px solid #999;
+      cursor: not-allowed;
     }
   }
-`;
+  select {
+    height: 40px;
+    padding: 0 8px;
+    font-size: 16px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 578px) {
+    select {
+      margin-bottom: 4px;
+    }
+  }
+`
 
 export const ProductTable = styled.table`
   width: 100%;

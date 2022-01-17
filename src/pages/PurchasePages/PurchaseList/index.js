@@ -78,8 +78,10 @@ const PurchaseList = () => {
 
   function setDefaultDate() {
     const data = new Date()
+    const year = data.getFullYear()
     const month = data.getMonth() < 11 ? `${data.getMonth()}` : data.getMonth()
-    return `${data.getFullYear()}-${month + 1}-${data.getDate()}`
+    const day = data.getDate()
+    return `${year}-${month + 1}-${day}`
   }
 
   function handleBakeSelected(ev) {

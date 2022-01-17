@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import PadariaHeader from "./Headers/PadariaHeader";
 import ResidentHeader from "./Headers/ResidentHeader";
 import { useLocation } from "react-router-dom";
+import AdminHeader from "./Headers/AdminHeader";
 
 export default function Header({ children }) {
   const [role, setRole] = React.useState("");
@@ -17,10 +18,27 @@ export default function Header({ children }) {
     }
   }, [location]);
 
-  return (
-    <>
-      {role === "ROLE_RESIDENT" ? <ResidentHeader /> : <PadariaHeader />}
-      {children}
-    </>
-  );
+  if (role === "ROLE_RESIDENT") {
+    return (
+      <>
+        <ResidentHeader />
+        {children}
+      </>
+    )
+  } else if (role === "ROLE_BAKERY") {
+    return (
+      <>
+        <PadariaHeader />
+        {children}
+      </>
+    )
+  } else {
+    return (
+      <>
+        <AdminHeader />
+        {children}
+      </>
+    )
+  }
+
 }
