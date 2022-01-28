@@ -116,7 +116,7 @@ const ProductsList = () => {
                 onClick={() => handleAddProduct(item)}
                 style={{ width: '100%' }}
               >
-                Por na caixa
+                Adicionar na caixa
               </Button>
             ) : (
               <>

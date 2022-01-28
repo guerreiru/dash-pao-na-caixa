@@ -12,6 +12,7 @@ import { FormatPrice } from "../../utils/Functions/FormatPrice";
 import { Container, ProductTable, Total, Content, ActionsBtns } from "./styles";
 import { api } from "../../services/api";
 import ModalPao from "../../components/ModalPao";
+import { GetLocalDate } from "../../utils/Functions/GetLocalDate";
 
 const Cart = () => {
   const { cart, setCart, removeProduct, updateProductAmount } = useCart();
@@ -63,20 +64,21 @@ const Cart = () => {
 
   async function handlePurchase() {
     const purchase = {
-      purchase_datetime: new Date(),
+      purchase_datetime: GetLocalDate(),
       amount: total,
       items: itemsFormatted,
       period: period
     }
-    setModalIsOpen(true)
+    console.log(purchase);
     return
+
     await api.post("purchase-orders", purchase)
       .then(() => {
-        setModalIsOpen(true)
+        setPeriod("")
+        setCart([])
+        handleClose()
       })
       .catch(err => console.error(err))
-      //setPeriod("")
-      //setCart([])
   }
 
   function handlePeriodSelected(ev) {
@@ -105,7 +107,7 @@ const Cart = () => {
             </select>
             <button
               disabled={period !== "" && cart.length > 0 ? false : true}
-              onClick={handlePurchase}
+              onClick={handleOpen}
             >
               Finalizar pedido
             </button>
@@ -177,6 +179,7 @@ const Cart = () => {
       <ModalPao
         handleClose={handleClose}
         modalIsOpen={modalIsOpen}
+        handlePurchase={handlePurchase}
       />
     </Container>
   );

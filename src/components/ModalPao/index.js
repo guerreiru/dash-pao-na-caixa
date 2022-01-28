@@ -5,10 +5,17 @@ import {
   Typography,
   Modal,
   Grid,
-  TextField
+  TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio
 } from '@material-ui/core';
-import { FormGroup } from "./styles";
+import { BsCreditCard } from "react-icons/bs";
+import { FormGroup, CardPix } from "./styles";
 import pixIcon from '../../assets/pix.png'
+import pixQrCode from '../../assets/pixqrcode.png'
 
 const style = {
   position: 'absolute',
@@ -22,7 +29,14 @@ const style = {
   borderRadius: '4px'
 };
 
-export default function ModalPao({ modalIsOpen, handleOpen, handleClose }) {
+export default function ModalPao({ modalIsOpen, handleClose, handlePurchase }) {
+  const [paymentType, setPaymentType] = React.useState("")
+  const [cardType, setCardType] = React.useState("")
+
+  function handleTypeCard(ev) {
+    setCardType(ev.target.value);
+  }
+
   return (
     <div>
       <Modal
@@ -33,22 +47,59 @@ export default function ModalPao({ modalIsOpen, handleOpen, handleClose }) {
       >
         <Box sx={style}>
           <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Selecione a forma de pagameno
+            Selecione a forma de pagamento
           </Typography>
 
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <img
-              src={pixIcon}
-              height="32"
-              alt="Pagamento com pix"
-            />
-            <img
-              src={pixIcon}
-              height="32"
-              alt="Pagamento com pix"
-            />
+          <div style={{ marginBottom: "5px" }}>
+            <Button
+              onClick={() => setPaymentType("pix")}
+              type="button"
+              startIcon={<img src={pixIcon} alt="Pix" width="24" />}
+              style={{ width: '115px', marginRight: '5px', color: "#555" }}
+            >
+              Pix
+            </Button>
 
-            <form>
+            <Button
+              onClick={() => setPaymentType("cartao")}
+              type="button"
+              startIcon={<BsCreditCard color="#1565C0" />}
+              style={{ color: "#555" }}
+            >
+              Cartão
+            </Button>
+          </div>
+
+
+
+          {paymentType === "pix" ? (
+            <CardPix sx={{ mt: 2 }}>
+              <img src={pixQrCode} alt="Pix qr code" />
+              <p>
+                Banco: Banco do Brasil<br />
+                Nome: José da Silva<br />
+                Chave: 88999999999
+              </p>
+            </CardPix>
+          ) : null}
+
+
+          {paymentType === "cartao" ? (
+            <>
+              <FormControl>
+                <FormLabel id="card-type">Tipo do cartão {cardType}</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="card-type"
+                  defaultValue="credito"
+                  name="radio-buttons-group"
+                  onChange={handleTypeCard}
+                >
+                  <FormControlLabel value="credito" control={<Radio />} label="Crédito" />
+                  <FormControlLabel value="debito" control={<Radio />} label="Débito" />
+                </RadioGroup>
+              </FormControl>
+
               <Grid
                 container
                 rowSpacing={1}
@@ -107,16 +158,19 @@ export default function ModalPao({ modalIsOpen, handleOpen, handleClose }) {
                     type="submit"
                     variant="contained"
                     style={{ marginRight: "5px" }}
+                    onClick={handlePurchase}
                   >
-                    Gravar
+                    Pagar
                   </Button>
-                  <Button variant="outlined" color="error">
+                  <Button variant="outlined" color="error" onClick={handleClose}>
                     Cancelar
                   </Button>
                 </Grid>
               </Grid>
-            </form>
-          </Typography>
+            </>
+          ) : null}
+
+
         </Box>
       </Modal>
     </div>
