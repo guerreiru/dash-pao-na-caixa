@@ -1,5 +1,6 @@
 import { Grid, Button } from "@material-ui/core";
 import React from "react";
+import jwtDecode from "jwt-decode";
 
 import TableProdutos from "../../../components/TableProdutos";
 import TableResumo from "../../../components/TableResumo";
@@ -10,7 +11,6 @@ import {
   Content,
   ContentHeader,
   FormGroup,
-  ResultHeader,
   ResidentTitle,
   ResumoTitle,
 } from "./styles";
@@ -28,15 +28,7 @@ const turnos = [
 
 const PurchaseList = () => {
   const [date, setDate] = React.useState(setDefaultDate());
-  const [cond, setCond] = React.useState([]);
-  const [condOptions, setCondOptions] = React.useState([]);
   const [condSelected, setCondSelected] = React.useState({
-    id: "0",
-    name: "",
-  });
-
-  const [bake, setBak] = React.useState([]);
-  const [bakeSelected, setBakeSelected] = React.useState({
     id: "0",
     name: "",
   });
@@ -46,59 +38,26 @@ const PurchaseList = () => {
 
   React.useEffect(() => {
     SetBodyWidth();
-  }, [bakeSelected, condSelected, turno, results]);
+  }, [condSelected, turno, results]);
 
   React.useEffect(() => {
-    loadBake();
-  }, []);
+    const user = localStorage.getItem("authData");
+    if (user) {
+      const userParsed = JSON.parse(user);
+      const userDecoded = jwtDecode(userParsed.access_token);
 
-  React.useEffect(() => {
-    loadCond();
-  }, []);
-
-  React.useEffect(() => {
-    async function getConByBakeryId() {
-      const conByBakeryId = cond.filter(
-        (cond) => cond.bakery.id === +bakeSelected.id
-      );
-      setCondOptions(conByBakeryId);
+      if (userDecoded.user.condominium) {
+        setCondSelected({
+          id: userDecoded.user.condominium.id,
+          name: userDecoded.user.condominium.name,
+        });
+        setTurno("");
+      }
     }
-    getConByBakeryId();
-  }, [bakeSelected, cond]);
-
-  async function loadBake() {
-    const res = await api.get(`bakeries`);
-    setBak(res.data.data);
-  }
-
-  async function loadCond() {
-    const res = await api.get(`condominiums`);
-    setCond(res.data.data);
-  }
+  }, []);
 
   function setDefaultDate() {
     return new Date().toISOString().slice(0, 10);
-  }
-
-  function handleBakeSelected(ev) {
-    const bakeryName = bake.filter((bakery) => bakery.id === +ev.target.value);
-    setBakeSelected({
-      id: ev.target.value,
-      name: bakeryName[0].name,
-    });
-
-    setCondSelected({ id: 0, name: "" });
-    setTurno("");
-  }
-
-  function handleCondSelected(ev) {
-    const condominium = cond.filter(
-      (condominium) => condominium.id === +ev.target.value
-    );
-    setCondSelected({
-      id: ev.target.value,
-      name: condominium[0].name,
-    });
   }
 
   async function handleSubmit() {
@@ -132,49 +91,7 @@ const PurchaseList = () => {
             </FormGroup>
           </Grid>
 
-          <Grid item xs={6} sm={6} md={3}>
-            <FormGroup>
-              <label htmlFor="padaria">Padaria</label>
-              <select
-                id="padaria"
-                value={bakeSelected.id}
-                onChange={handleBakeSelected}
-              >
-                <option value="0" disabled>
-                  Selecione a Padaria
-                </option>
-                {bake.map((bakery) => (
-                  <option key={bakery.id} value={bakery.id}>
-                    {bakery.name}
-                  </option>
-                ))}
-              </select>
-            </FormGroup>
-          </Grid>
-
-          {bakeSelected.id > 0 ? (
-            <Grid item xs={6} sm={6} md={3}>
-              <FormGroup>
-                <label htmlFor="condominio">Condomínio</label>
-                <select
-                  id="condominio"
-                  value={condSelected.id}
-                  onChange={handleCondSelected}
-                >
-                  <option value="0" disabled>
-                    Selecione o Condomínio
-                  </option>
-                  {condOptions.map((condominium) => (
-                    <option key={condominium.id} value={condominium.id}>
-                      {condominium.name}
-                    </option>
-                  ))}
-                </select>
-              </FormGroup>
-            </Grid>
-          ) : null}
-
-          {condSelected.id > 0 ? (
+          {date !== "" ? (
             <Grid item xs={6} sm={6} md={3}>
               <FormGroup>
                 <label htmlFor="turno">Turno</label>
@@ -210,19 +127,6 @@ const PurchaseList = () => {
             </Grid>
           </Grid>
         </Grid>
-
-        <ResultHeader>
-          <h3>{bakeSelected.name}</h3>
-          <h3>{condSelected.name}</h3>
-          <h3>
-            {turno ? (
-              <>
-                {new Date(`${date} 00:00:00`).toLocaleDateString()} -{" "}
-                {turno === "0" ? "Manhã" : "Tarde"}
-              </>
-            ) : null}
-          </h3>
-        </ResultHeader>
 
         {results.data ? (
           <>

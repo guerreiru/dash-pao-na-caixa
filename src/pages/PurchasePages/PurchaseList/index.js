@@ -1,5 +1,6 @@
 import { Grid, Button } from "@material-ui/core";
 import React from "react";
+import jwtDecode from "jwt-decode";
 
 import TableProdutos from "../../../components/TableProdutos";
 import TableResumo from "../../../components/TableResumo";
@@ -30,16 +31,9 @@ const PurchaseList = () => {
   const [date, setDate] = React.useState(setDefaultDate());
   const [cond, setCond] = React.useState([]);
   const [condOptions, setCondOptions] = React.useState([]);
-  const [condSelected, setCondSelected] = React.useState({
-    id: "0",
-    name: "",
-  });
+  const [condSelected, setCondSelected] = React.useState({ id: "0", name: "" });
 
-  const [bake, setBak] = React.useState([]);
-  const [bakeSelected, setBakeSelected] = React.useState({
-    id: "0",
-    name: "",
-  });
+  const [bakeSelected, setBakeSelected] = React.useState({ id: "0", name: "" });
 
   const [turno, setTurno] = React.useState("");
   const [results, setResults] = React.useState([]);
@@ -47,10 +41,6 @@ const PurchaseList = () => {
   React.useEffect(() => {
     SetBodyWidth();
   }, [bakeSelected, condSelected, turno, results]);
-
-  React.useEffect(() => {
-    loadBake();
-  }, []);
 
   React.useEffect(() => {
     loadCond();
@@ -66,10 +56,25 @@ const PurchaseList = () => {
     getConByBakeryId();
   }, [bakeSelected, cond]);
 
-  async function loadBake() {
-    const res = await api.get(`bakeries`);
-    setBak(res.data.data);
-  }
+  React.useEffect(() => {
+    const user = localStorage.getItem("authData");
+    if (user) {
+      const userParsed = JSON.parse(user);
+      const userDecoded = jwtDecode(userParsed.access_token);
+
+      if (userDecoded.user.bakery) {
+        setBakeSelected({
+          id: userDecoded.user.bakery.id,
+          name: userDecoded.user.bakery.name,
+        });
+
+        setCondSelected({ id: 0, name: "" });
+        setTurno("");
+      } else {
+
+      }
+    }
+  }, []);
 
   async function loadCond() {
     const res = await api.get(`condominiums`);
@@ -79,20 +84,9 @@ const PurchaseList = () => {
   function setDefaultDate() {
     const data = new Date()
     const year = data.getFullYear()
-    const month = data.getMonth() < 11 ? `${data.getMonth()}` : data.getMonth()
-    const day = data.getDate()
-    return `${year}-${month + 1}-${day}`
-  }
-
-  function handleBakeSelected(ev) {
-    const bakeryName = bake.filter((bakery) => bakery.id === +ev.target.value);
-    setBakeSelected({
-      id: ev.target.value,
-      name: bakeryName[0].name,
-    });
-
-    setCondSelected({ id: 0, name: "" });
-    setTurno("");
+    const month = data.getMonth() < 10 ? `0${data.getMonth() + 1}` : data.getMonth()
+    const day = data.getDate() < 10 ? `0${data.getDate() + 1}` : data.getDate()
+    return `${year}-${month}-${day}`
   }
 
   function handleCondSelected(ev) {
@@ -124,7 +118,7 @@ const PurchaseList = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           className="noprint"
         >
-          <Grid item xs={6} sm={6} md={3}>
+          <Grid item xs={6} sm={6} md={3} lg={4}>
             <FormGroup>
               <label htmlFor="purchase_datetime">Data do pedido</label>
               <input
@@ -136,28 +130,8 @@ const PurchaseList = () => {
             </FormGroup>
           </Grid>
 
-          <Grid item xs={6} sm={6} md={3}>
-            <FormGroup>
-              <label htmlFor="padaria">Padaria</label>
-              <select
-                id="padaria"
-                value={bakeSelected.id}
-                onChange={handleBakeSelected}
-              >
-                <option value="0" disabled>
-                  Selecione a Padaria
-                </option>
-                {bake.map((bakery) => (
-                  <option key={bakery.id} value={bakery.id}>
-                    {bakery.name}
-                  </option>
-                ))}
-              </select>
-            </FormGroup>
-          </Grid>
-
           {bakeSelected.id > 0 ? (
-            <Grid item xs={6} sm={6} md={3}>
+            <Grid item xs={6} sm={6} md={3} lg={4}>
               <FormGroup>
                 <label htmlFor="condominio">Condomínio</label>
                 <select
@@ -179,7 +153,7 @@ const PurchaseList = () => {
           ) : null}
 
           {condSelected.id > 0 ? (
-            <Grid item xs={6} sm={6} md={3}>
+            <Grid item xs={6} sm={6} md={3} lg={4}>
               <FormGroup>
                 <label htmlFor="turno">Turno</label>
                 <select

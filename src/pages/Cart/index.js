@@ -69,8 +69,6 @@ const Cart = () => {
       items: itemsFormatted,
       period: period
     }
-    console.log(purchase);
-    return
 
     await api.post("purchase-orders", purchase)
       .then(() => {
