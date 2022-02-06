@@ -79,3 +79,13 @@ export const SideMenu = styled.aside`
     }
   }
 `;
+
+export const DropDownBtn = styled.div`
+  &:hover {
+    color: #777;
+    cursor: pointer;
+  }
+  margin-left: 10px;
+  display: inline-block;
+  font-weight: bold;
+`

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Camada_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 219 312" style="enable-background:new 0 0 219 312;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:#1C1510;}
+	.st2{font-family:'GoboldExtra2';}
+	.st3{font-size:53.2366px;}
+	.st4{letter-spacing:-4.6;}
+	.st5{font-family:'GoboldUplow';}
+	.st6{font-size:62.9269px;}
+	.st7{fill:none;stroke:#1E1E1E;stroke-width:5.6693;stroke-miterlimit:10;}
+	.st8{fill:none;stroke:#FFE2B3;stroke-width:8.5039;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st9{fill:#FAB852;}
+	.st10{clip-path:url(#SVGID_2_);}
+	.st11{fill:#F77F29;}
+	.st12{fill:#23211E;}
+</style>
+<rect y="-1" class="st0" width="219" height="307"/>
+<text transform="matrix(1.0969 0 0 1 31 214.3623)"><tspan x="0" y="0" class="st1 st2 st3">pão</tspan><tspan x="79.7" y="0" class="st1 st2 st3 st4"> </tspan><tspan x="88.2" y="0" class="st1 st5 st3">n</tspan><tspan x="115" y="0" class="st1 st2 st3">a</tspan><tspan x="0" y="69.6" class="st1 st2 st6">caixa</tspan></text>
+<polyline class="st7" points="163,-1 219,-1 219,306 0,306 0,-1 54,-1 "/>
+<line class="st8" x1="23" y1="42" x2="194" y2="42"/>
+<g>
+	<line class="st8" x1="23" y1="80" x2="37.3" y2="80"/>
+	<line class="st8" x1="23" y1="61" x2="50.7" y2="61"/>
+	<line class="st8" x1="23" y1="99" x2="34.8" y2="99"/>
+	<line class="st8" x1="23" y1="118" x2="45" y2="118"/>
+</g>
+<g>
+	<line class="st8" x1="193.7" y1="80" x2="179.3" y2="80"/>
+	<line class="st8" x1="193.7" y1="61" x2="166" y2="61"/>
+	<line class="st8" x1="193.7" y1="99" x2="181.8" y2="99"/>
+	<line class="st8" x1="193.7" y1="118" x2="171.7" y2="118"/>
+</g>
+<line class="st8" x1="23" y1="137" x2="194" y2="137"/>
+<line class="st8" x1="23" y1="23" x2="194" y2="23"/>
+<g>
+	<g>
+		<ellipse class="st9" cx="108.6" cy="95.3" rx="65.1" ry="32.8"/>
+	</g>
+	<g>
+		<defs>
+			<path id="SVGID_1_" d="M43.5,95.9c0,0-1.4-30.9,46.5-41.5c47.7-10.5,82.4,19.2,83,40.9c0.6,19.9-21.1,29.7-63.2,31
+				C67.7,127.5,41.7,110.2,43.5,95.9z"/>
+		</defs>
+		<clipPath id="SVGID_2_">
+			<use xlink:href="#SVGID_1_"  style="overflow:visible;"/>
+		</clipPath>
+		<g class="st10">
+			<path class="st11" d="M42.3,79.8c0,0,9.9,32.2,68.2,27.3c49.6-4.2,92.9-31,92.9-31l-2.5,49.6l-60.7,11.2l-92.9-5L32.4,117
+				L42.3,79.8z"/>
+		</g>
+	</g>
+	<g>
+		<path class="st12" d="M105.5,129c-30.8,0-50.6-9.6-59.1-19c-4.1-4.6-6-9.5-5.5-14.2c-0.1-3.3,0.8-33.4,48.5-44
+			c25.2-5.6,49.9-0.7,67.9,13.4c11.2,8.7,18,19.9,18.3,30c0.6,21.3-20.9,32.4-65.8,33.7C108.4,129,106.9,129,105.5,129z M109.7,54.9
+			c-6.3,0-12.7,0.7-19.1,2.1c-44.9,9.9-44.4,37.7-44.4,38.8l0,0.2l0,0.2c-0.4,3.2,1,6.7,4.1,10.2c7.7,8.5,27.9,18.1,59.5,17.2
+			c41.3-1.2,61.2-10.5,60.6-28.3c-0.2-8.5-6.3-18.3-16.3-26C141.9,59.9,126.3,54.9,109.7,54.9z"/>
+	</g>
+	<g>
+		<path class="st12" d="M80.7,82.5c-0.5,0-0.9-0.1-1.4-0.4c-1.2-0.7-1.7-2.4-0.9-3.6l14.9-24.8c0.7-1.2,2.4-1.7,3.6-0.9
+			c1.2,0.7,1.7,2.4,0.9,3.6L83,81.2C82.5,82,81.6,82.5,80.7,82.5z"/>
+	</g>
+	<g>
+		<path class="st12" d="M131.5,80c-0.4,0-0.9-0.1-1.3-0.3c-1.3-0.7-1.7-2.3-1-3.6l9.9-17.3c0.7-1.3,2.3-1.7,3.6-1
+			c1.3,0.7,1.7,2.3,1,3.6l-9.9,17.3C133.3,79.5,132.4,80,131.5,80z"/>
+	</g>
+	<g>
+		<path class="st12" d="M98,94.9c-0.5,0-0.9-0.1-1.4-0.4c-1.2-0.7-1.7-2.4-0.9-3.6l22.3-37.2c0.7-1.2,2.4-1.7,3.6-0.9
+			c1.2,0.7,1.7,2.4,0.9,3.6l-22.3,37.2C99.8,94.4,98.9,94.9,98,94.9z"/>
+	</g>
+	<g>
+		<circle class="st11" cx="135.3" cy="93.7" r="4.7"/>
+	</g>
+	<g>
+		<circle class="st11" cx="151.6" cy="88.3" r="4.7"/>
+	</g>
+</g>
+</svg>

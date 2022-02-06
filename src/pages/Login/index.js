@@ -2,9 +2,9 @@ import React from "react";
 import { TextField, Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { Container, Content, FormHeader, FormGroup } from "./styles";
-import Logo from "../../components/Logo";
 import { toast } from "react-toastify";
 import { makeLogin } from "../../utils/Functions/Auth";
+import logoImage from "../../assets/logo.svg"
 
 const Login = () => {
   const [values, setValues] = React.useState({
@@ -38,7 +38,7 @@ const Login = () => {
     <Container>
       <Content onSubmit={handleSubmit}>
         <FormHeader>
-          <Logo />
+          <img src={logoImage} alt="Logo pão na caixa" width="100" />
           <p>Área Administrativa</p>
         </FormHeader>
         <FormGroup>

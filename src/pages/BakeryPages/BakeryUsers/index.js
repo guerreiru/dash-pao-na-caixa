@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
+import jwtDecode from "jwt-decode";
 import { useNavigate, useParams } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
@@ -26,6 +27,14 @@ const BakeryUsers = () => {
 
   React.useEffect(() => {
     async function loadUsers() {
+      const user = localStorage.getItem("authData");
+      if (user) {
+        const userParsed = JSON.parse(user);
+        const userDecoded = jwtDecode(userParsed.access_token);
+
+        console.log(userDecoded);
+      }
+
       try {
         const res = await api.get(`bakeries/${bakeryId}/people`);
         setUsers(res.data);

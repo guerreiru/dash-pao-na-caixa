@@ -3,6 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dash from "./pages/Dash";
+import Profile from "./pages/Profile";
+import Cards from "./pages/Cards";
+import Subscription from "./pages/Subscription";
 
 import Bakery from "./pages/BakeryPages/Bakery";
 import BakeryForm from "./pages/BakeryPages/BakeryForm";
@@ -37,6 +40,9 @@ const Router = () => {
       <Route path="/" exact element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
+      <Route path="/perfil" element={<Profile />} />
+      <Route path="/:id/cartoes" element={<Cards />} />
+      <Route path="/:id/assinatura" element={<Subscription />} />
 
       <Route
         path="/padarias"
@@ -183,6 +189,7 @@ const Router = () => {
       <Route path="/usuarios/:id/editar" element={<FormPerson />} />
 
       <Route path="/planos" element={<SubscriptionPlanList />} />
+      <Route path="/:id/planos" element={<SubscriptionPlanList />} />
       <Route path="/planos/adicionar" element={<SubscriptionPlanForm />} />
       <Route path="/planos/:id/editar" element={<SubscriptionPlanForm />} />
 

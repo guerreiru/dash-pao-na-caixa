@@ -12,7 +12,6 @@ import { FormatPrice } from "../../utils/Functions/FormatPrice";
 import { Container, ProductTable, Total, Content, ActionsBtns } from "./styles";
 import { api } from "../../services/api";
 import ModalPao from "../../components/ModalPao";
-import { GetLocalDate } from "../../utils/Functions/GetLocalDate";
 
 const Cart = () => {
   const { cart, setCart, removeProduct, updateProductAmount } = useCart();
@@ -64,7 +63,7 @@ const Cart = () => {
 
   async function handlePurchase() {
     const purchase = {
-      purchase_datetime: GetLocalDate(),
+      purchase_datetime: new Date().toISOString(),
       amount: total,
       items: itemsFormatted,
       period: period

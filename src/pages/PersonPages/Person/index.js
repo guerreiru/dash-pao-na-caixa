@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
 import { FiPlus } from "react-icons/fi";
 import { FaSearch } from "react-icons/fa";
 import { IoPersonAdd } from "react-icons/io5";
@@ -15,7 +16,6 @@ import {
 import Table from "../../../components/Table";
 
 import { api } from "../../../services/api";
-import { getUserConfig } from "../../../utils/Functions/Auth";
 
 const Person = () => {
   const [people, setPeople] = React.useState([]);
@@ -24,15 +24,30 @@ const Person = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    async function loadPeople() {
-      try {
-        const res = await api.get(`bakeries/${getUserConfig().id}/people`);
+    async function loadUsers(route) {
+      api.get(route).then(res => {
         setPeople(res.data);
-      } catch (error) {
-        console.error(error);
+        console.log(res.data);
+      })
+    }
+
+    const user = localStorage.getItem("authData");
+    if (user) {
+      const userParsed = JSON.parse(user);
+      const userDecoded = jwtDecode(userParsed.access_token);
+      const role = userDecoded.user.roles
+
+      switch (role[0]) {
+        case "ROLE_BAKERY":
+          loadUsers(`bakeries/${userDecoded.user.bakery.id}/people`);
+          break;
+        case "ROLE_CONDOMINIUM":
+          loadUsers(`condominiums/${userDecoded.user.condominium.id}/people`);
+          break;
+        default:
+          break;
       }
     }
-    loadPeople();
   }, []);
 
 
@@ -45,7 +60,7 @@ const Person = () => {
     const results = [];
     if (str.length > 2) {
       for (var j = 0; j < people.length; j++) {
-        if (people[j].name.toLowerCase().match(str.toLowerCase())) {
+        if (people[j].person_name.toLowerCase().match(str.toLowerCase())) {
           results.push(people[j]);
           setResults(results);
         }

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Badge } from "@material-ui/core";
 import HeaderTemplate from "../HeaderTemplate";
 import { useCart } from "../../hooks/useCart";
+import DropDown from "../DropDown";
+import { DropDownBtn } from "./styles";
 
 const PadariaHeader = () => {
   const { cart } = useCart();
@@ -25,6 +27,11 @@ const PadariaHeader = () => {
             Pedidos
           </Badge>
         </Link>
+        <DropDownBtn href="/" onClick={(e) => e.preventDefault()}>
+          <Badge badgeContent="">
+            <DropDown></DropDown>
+          </Badge>
+        </DropDownBtn>
       </>
     );
   };

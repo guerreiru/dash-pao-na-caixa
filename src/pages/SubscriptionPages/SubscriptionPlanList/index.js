@@ -23,21 +23,30 @@ import {
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
 import { toast } from "react-toastify";
+import { getUserConfig } from "../../../utils/Functions/Auth";
 
 const SubscriptionList = () => {
   const [plans, setPlans] = React.useState([]);
+  const [role, setRole] = React.useState("");
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadPlans();
+    if (getUserConfig() !== undefined) {
+      setRole(getUserConfig().roles[0]);
+      loadPlans(); 
+    } else {
+      navigate("/")
+    }
   }, []);
 
   async function loadPlans() {
     try {
       const res = await api.get("subscription-plans");
-      setPlans(res.data.data);
+      const arrayPlans = []
+      arrayPlans.push(res.data)
+      setPlans(arrayPlans);
     } catch (error) {
       console.error(error);
     }
@@ -89,13 +98,25 @@ const SubscriptionList = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <IconButton onClick={() => handleEdit(item.id)}>
-              <FaEdit title="Editar" className="btnEdit" />
-            </IconButton>
+            {role !== "ROLE_RESIDENT" ? (
+              <>
+                <IconButton onClick={() => handleEdit(item.id)}>
+                  <FaEdit title="Editar" className="btnEdit" />
+                </IconButton>
 
-            <IconButton onClick={() => handleDelete(item.id)}>
-              <FiTrash title="Excluir" className="btnDelete" />
-            </IconButton>
+                <IconButton onClick={() => handleDelete(item.id)}>
+                  <FiTrash title="Excluir" className="btnDelete" />
+                </IconButton>
+              </>
+            ) : <Button
+              type="button"
+              variant="contained"
+              onClick={handleAdd}
+              className="btnAddDesktop"
+            >
+              Assinar
+            </Button>}
+
           </CardActions>
         </Card>
       </Grid>
@@ -140,22 +161,26 @@ const SubscriptionList = () => {
                 <TiDeleteOutline color="#737373" onClick={clearBusca} />
               )}
             </SearchInput>
-            <Button
-              type="button"
-              variant="contained"
-              startIcon={<FiPlus />}
-              onClick={handleAdd}
-              className="btnAddDesktop"
-            >
-              Adicionar
-            </Button>
+            {role !== "ROLE_RESIDENT" ? (
+              <span>
+                <Button
+                  type="button"
+                  variant="contained"
+                  startIcon={<FiPlus />}
+                  onClick={handleAdd}
+                  className="btnAddDesktop"
+                >
+                  Adicionar
+                </Button>
 
-            <IoPersonAdd
-              title="Adicionar"
-              size="34"
-              className="btnAddMobile"
-              onClick={handleAdd}
-            />
+                <IoPersonAdd
+                  title="Adicionar"
+                  size="34"
+                  className="btnAddMobile"
+                  onClick={handleAdd}
+                />
+              </span>
+            ) : null}
           </TableHeader>
 
           <Grid
