@@ -27,6 +27,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   margin: 0 20px;
   padding-top: 20px;
+  height: 100%;
 
   @media (max-width: 568px) {
     margin: 0 10px;
@@ -42,6 +43,7 @@ export const Content = styled.div`
 
 export const TableContainer = styled.div`
   padding: 20px 30px;
+  height: calc(100% - 20px);
   @media (max-width: 568px) {
     margin: 10px 0;
     padding: 20px;

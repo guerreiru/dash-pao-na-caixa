@@ -7,6 +7,11 @@ import {
   Grid,
   IconButton,
   Typography,
+  FormGroup,
+  TextField,
+  Modal,
+  Box,
+  Alert
 } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { FiPlus, FiTrash } from "react-icons/fi";
@@ -18,7 +23,7 @@ import {
   Content,
   SearchInput,
   TableContainer,
-  TableHeader,
+  TableHeader
 } from "./styles";
 import { api } from "../../../services/api";
 import { FormatPrice } from "../../../utils/Functions/FormatPrice";
@@ -27,19 +32,26 @@ import { getUserConfig } from "../../../utils/Functions/Auth";
 
 const SubscriptionList = () => {
   const [plans, setPlans] = React.useState([]);
+  const [planId, setPlanId] = React.useState("");
   const [role, setRole] = React.useState("");
   const [results, setResults] = React.useState([]);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = (id) => {
+    setOpen(true)
+    setPlanId(id)
+  }
+  const handleClose = () => setOpen(false);
 
   React.useEffect(() => {
     if (getUserConfig() !== undefined) {
       setRole(getUserConfig().roles[0]);
-      loadPlans(); 
+      loadPlans();
     } else {
       navigate("/")
     }
-  }, []);
+  }, [navigate]);
 
   async function loadPlans() {
     try {
@@ -79,6 +91,89 @@ const SubscriptionList = () => {
     }
   }
 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    borderRadius: '4px',
+    p: 4,
+  };
+
+  function BasicModal() {
+    const [recurrence, setRecurrence] = React.useState("")
+
+    function handleRecurrence(e) {
+      setRecurrence(e.target.value)
+    }
+
+    async function signPlan(e) {
+      e.preventDefault()
+      const res = await api.post(`/subscriptions`, {
+        subscriptionPlan_id: planId,
+        recurrence: Number(recurrence)
+      })
+      window.open(res.data.init_point, '_blank');
+    }
+
+    return (
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <form onSubmit={signPlan}>
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid item xs={12}>
+
+                <Alert severity="warning">
+                  Atenção! Você será redirecionado para uma nova aba do Mercado Pago para concluir
+                  a sua assinatura.
+                </Alert>
+                <h4 style={{ marginTop: "8px" }} >
+                  Informe o número de meses da assinatura
+                </h4>
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormGroup>
+                  <TextField
+                    label="Número de meses"
+                    type="tel"
+                    onChange={handleRecurrence}
+                    value={recurrence}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  style={{ marginRight: "5px" }}
+                >
+                  Confirmar
+                </Button>
+                <Button onClick={handleClose} variant="outlined" color="error" >
+                  Cancelar
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Box>
+      </Modal>
+    );
+  }
+
   function ItemCard(item) {
     return (
       <Grid item xs={12} sm={6} md={4} key={item.id}>
@@ -111,7 +206,7 @@ const SubscriptionList = () => {
             ) : <Button
               type="button"
               variant="contained"
-              onClick={handleAdd}
+              onClick={() => handleOpen(item.id)}
               className="btnAddDesktop"
             >
               Assinar
@@ -194,6 +289,7 @@ const SubscriptionList = () => {
           </Grid>
         </TableContainer>
       </Content>
+      <BasicModal />
     </Container>
   );
 };

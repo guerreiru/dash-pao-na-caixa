@@ -27,7 +27,6 @@ const Person = () => {
     async function loadUsers(route) {
       api.get(route).then(res => {
         setPeople(res.data);
-        console.log(res.data);
       })
     }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container } from "./styles";
-import { api } from "../../services/api";
 import { getUserConfig } from '../../utils/Functions/Auth';
 
 const DropDown = ({ children, name }) => {
@@ -22,6 +21,16 @@ const DropDown = ({ children, name }) => {
         <p>
           <NavLink to="/perfil" >
             Perfil
+          </NavLink>
+        </p>
+        <p>
+          <NavLink to={`/${getUserConfig().id}/cartoes`} >
+            Cartões
+          </NavLink>
+        </p>
+        <p>
+          <NavLink to={`/${getUserConfig().id}/assinatura`} >
+            Assinatura
           </NavLink>
         </p>
         {children}

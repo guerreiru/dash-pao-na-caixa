@@ -6,6 +6,10 @@ export const Container = styled.div`
     display: inline-block;
   }
 
+  .dropdown span {
+    text-transform: capitalize
+  }
+
   .dropdown-content {
     display: none;
     position: absolute;

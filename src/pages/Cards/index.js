@@ -69,7 +69,7 @@ const Cards = () => {
               style={{ marginRight: "5px" }}
 
             >
-              Pagar
+              Salvar
             </Button>
             <Button variant="outlined" color="error" onClick={() => setModal("none")} >
               Cancelar

@@ -7,6 +7,8 @@ const Dash = () => {
 
   React.useEffect(() => {
     async function loadUserInfo() {
+      const user = await api.get("users/profile");
+      // const subscription = await api.get("subscriptions");
       setUser(user.data);
     }
     loadUserInfo();
