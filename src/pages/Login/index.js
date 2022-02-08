@@ -1,6 +1,7 @@
 import React from "react";
-import { TextField, Button } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import { TextField, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from "@material-ui/core";
+import { MdOutlineVisibilityOff, MdOutlineVisibility } from 'react-icons/md';
 import { Container, Content, FormHeader, FormGroup } from "./styles";
 import { toast } from "react-toastify";
 import { makeLogin } from "../../utils/Functions/Auth";
@@ -10,6 +11,7 @@ const Login = () => {
   const [values, setValues] = React.useState({
     user_name: "",
     password: "",
+    showPassword: false,
   });
   const navigate = useNavigate();
 
@@ -34,6 +36,17 @@ const Login = () => {
       });
   }
 
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <Container>
       <Content onSubmit={handleSubmit}>
@@ -53,18 +66,35 @@ const Login = () => {
           />
         </FormGroup>
 
-        <FormGroup>
-          <TextField
-            required
+        <FormControl variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
+          <OutlinedInput
             name="password"
-            label="Senha"
-            type="password"
-            onChange={handleChange}
+            id="outlined-adornment-password"
+            type={values.showPassword ? 'text' : 'password'}
             value={values.password}
-            fullWidth
+            onChange={handleChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {values.showPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Senha"
           />
-        </FormGroup>
-        <Button type="submit" variant="contained">
+        </FormControl>
+
+        <Button
+          style={{marginTop: "10px"}}
+          type="submit"
+          variant="contained"
+        >  
           Entrar
         </Button>
       </Content>

@@ -5,8 +5,10 @@ import { getUserConfig } from '../../utils/Functions/Auth';
 
 const DropDown = ({ children, name }) => {
   const [user, setUser] = React.useState("");
+  const [role, setRole] = React.useState("");
 
   React.useMemo(() => {
+    setRole(getUserConfig().roles[0])
     setUser(getUserConfig().user_name);
   }, []);
 
@@ -23,16 +25,20 @@ const DropDown = ({ children, name }) => {
             Perfil
           </NavLink>
         </p>
-        <p>
-          <NavLink to={`/${getUserConfig().id}/cartoes`} >
-            Cartões
-          </NavLink>
-        </p>
-        <p>
-          <NavLink to={`/${getUserConfig().id}/assinatura`} >
-            Assinatura
-          </NavLink>
-        </p>
+        {role === "ROLE_RESIDENT" ? (
+          <>
+            <p>
+              <NavLink to={`/${getUserConfig().id}/cartoes`} >
+                Cartões
+              </NavLink>
+            </p>
+            <p>
+              <NavLink to={`/${getUserConfig().id}/assinatura`} >
+                Assinatura
+              </NavLink>
+            </p>
+          </>
+        ) : null}
         {children}
         <p onClick={() => handleLogout()}>
           <NavLink to="/" >

@@ -93,7 +93,7 @@ export default function DateTable(props) {
                     {props.noEditable ? null : (
                       <FaEdit
                         title="Editar"
-                        onClick={() => navigate(`${data.id}/editar`)}
+                        onClick={() => navigate(`${data.user_id}/editar`)}
                         className="btnEdit"
                       />
                     )}

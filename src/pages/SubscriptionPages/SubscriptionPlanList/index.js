@@ -102,7 +102,7 @@ const SubscriptionList = () => {
     p: 4,
   };
 
-  function BasicModal() {
+  function ModalRecurrence() {
     const [recurrence, setRecurrence] = React.useState("")
 
     function handleRecurrence(e) {
@@ -289,7 +289,7 @@ const SubscriptionList = () => {
           </Grid>
         </TableContainer>
       </Content>
-      <BasicModal />
+      <ModalRecurrence />
     </Container>
   );
 };

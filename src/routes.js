@@ -41,8 +41,32 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
       <Route path="/perfil" element={<Profile />} />
-      <Route path="/:id/cartoes" element={<Cards />} />
-      <Route path="/:id/assinatura" element={<Subscription />} />
+
+      <Route
+        path="/:id/cartoes"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+            ]}
+          >
+            <Cards />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/:id/assinatura"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_RESIDENT",
+            ]}
+          >
+            <Subscription />
+          </PrivateRoute>
+        }
+      />
 
       <Route
         path="/padarias"
