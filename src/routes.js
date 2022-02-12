@@ -11,6 +11,9 @@ import Bakery from "./pages/BakeryPages/Bakery";
 import BakeryForm from "./pages/BakeryPages/BakeryForm";
 import BakeryFormUser from "./pages/BakeryPages/BakeryFormUser";
 import BakeryUsers from "./pages/BakeryPages/BakeryUsers";
+import ConfirmPayment from "./pages/ConfirmPayment";
+import PaymentFailed from "./pages/PaymentFailed";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 import Condominium from "./pages/CondominiumPages/Condominium";
 import CondominiumForm from "./pages/CondominiumPages/CondominiumForm";
@@ -41,6 +44,9 @@ const Router = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
       <Route path="/perfil" element={<Profile />} />
+      <Route path="/confirma-assinatura" element={<ConfirmPayment />} />
+      <Route path="/pagamento_confirmado" element={<PaymentSuccess />} />
+      <Route path="/pagamento_falho" element={<PaymentFailed />} />
 
       <Route
         path="/:id/cartoes"
@@ -213,7 +219,6 @@ const Router = () => {
       <Route path="/usuarios/:id/editar" element={<FormPerson />} />
 
       <Route path="/planos" element={<SubscriptionPlanList />} />
-      <Route path="/:id/planos" element={<SubscriptionPlanList />} />
       <Route path="/planos/adicionar" element={<SubscriptionPlanForm />} />
       <Route path="/planos/:id/editar" element={<SubscriptionPlanForm />} />
 

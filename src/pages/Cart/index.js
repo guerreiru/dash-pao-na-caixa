@@ -14,7 +14,7 @@ import { api } from "../../services/api";
 import ModalPao from "../../components/ModalPao";
 
 const Cart = () => {
-  const { cart, setCart, removeProduct, updateProductAmount } = useCart();
+  const { cart, removeProduct, updateProductAmount } = useCart();
   const [period, setPeriod] = React.useState("");
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
   const handleOpen = () => setModalIsOpen(true);
@@ -70,9 +70,9 @@ const Cart = () => {
     }
 
     await api.post("purchase-orders", purchase)
-      .then(() => {
+      .then((res) => {
+        window.open(res.data.init_point, '_blank');
         setPeriod("")
-        setCart([])
         handleClose()
       })
       .catch(err => console.error(err))

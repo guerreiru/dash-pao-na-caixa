@@ -1,11 +1,10 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { Container, Content, TableContainer } from "./styles";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Subscription = () => {
   const navigate = useNavigate();
-  const { id: userId } = useParams();
 
   return (
     <Container>
@@ -19,7 +18,7 @@ const Subscription = () => {
           <Button
             type="button"
             variant="contained"
-            onClick={() => navigate(`/${userId}/planos`)}
+            onClick={() => navigate(`/planos`)}
           >
             Assinar um Plano
           </Button>
