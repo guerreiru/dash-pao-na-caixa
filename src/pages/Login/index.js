@@ -52,7 +52,7 @@ const Login = () => {
       <Content onSubmit={handleSubmit}>
         <FormHeader>
           <img src={logoImage} alt="Logo pão na caixa" width="100" />
-          <p>Área Administrativa</p>
+          {/* <p>Área Administrativa</p> */}
         </FormHeader>
         <FormGroup>
           <TextField
