@@ -1,10 +1,11 @@
 import React from "react";
 import { Logo } from "./styles";
+import logoImage from "../../assets/logo.svg"
 
 const index = ({size}) => {
   return (
-    <Logo style={{fontSize: `${size} || 2em`}} >
-      <span>Pão </span>na caixa
+    <Logo>
+      <img src={logoImage} alt="logo" width="40"/>
     </Logo>
   );
 };

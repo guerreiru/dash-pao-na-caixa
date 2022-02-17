@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Content, TableContainer } from "./styles";
 import { api } from "../../services/api";
 import { Button, FormGroup, Grid, TextField } from "@material-ui/core";
+import HeadTitle from "../../components/HeadTitle";
 
 const Profile = () => {
   const [values, setValues] = React.useState({
@@ -43,6 +44,10 @@ const Profile = () => {
 
   return (
     <Container>
+      <HeadTitle
+        title="Pão na caixa | Perfil"
+        description="Perfil do usuário!"
+      />
       <Content>
         <TableContainer>
           <form onSubmit={handleSubmit}>

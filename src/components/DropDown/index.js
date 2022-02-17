@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Container } from "./styles";
 import { getUserConfig } from '../../utils/Functions/Auth';
+import {IoMdArrowDropdown} from 'react-icons/io'
 
 const DropDown = ({ children, name }) => {
   const [user, setUser] = React.useState("");
@@ -18,7 +19,7 @@ const DropDown = ({ children, name }) => {
 
   return <Container>
     <div className="dropdown">
-      <span>{user ? `${user}` : "Usuário"}</span>
+      <span>{user ? `${user}` : "Usuário"} <IoMdArrowDropdown size={20} /></span>
       <div className="dropdown-content">
         <p>
           <NavLink to="/perfil" >
@@ -27,6 +28,11 @@ const DropDown = ({ children, name }) => {
         </p>
         {role === "ROLE_RESIDENT" ? (
           <>
+            <p>
+              <NavLink to={`/produtos`} >
+                Selecionar Produtos
+              </NavLink>
+            </p>
             <p>
               <NavLink to={`/${getUserConfig().id}/cartoes`} >
                 Cartões

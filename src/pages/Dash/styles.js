@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--bg-white);
-  height: calc(100% - 61px);
+  height: calc(100% - 92px);
 
   .btnAddMobile {
     display: none;
@@ -27,6 +27,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   margin: 0 20px;
   padding-top: 20px;
+  height: 98%;
 
   @media (max-width: 568px) {
     margin: 0 10px;
@@ -35,6 +36,7 @@ export const Content = styled.div`
 
 export const TableContainer = styled.div`
   padding: 20px 30px;
+  height: 100%;
   @media (max-width: 568px) {
     margin: 10px 0;
     padding: 20px;
@@ -93,3 +95,19 @@ export const SearchInput = styled.div`
     }
   }
 `;
+
+export const CardBtnLink = styled.div`
+  padding: 20px 30px;
+  background-color:#FABC5C;
+  text-align: center;
+  border-radius: 4px;
+  color: black;
+    font-weight: bold;
+    font-size: 1.5em;
+
+  &:hover {
+    filter: brightness(70%);
+    cursor: pointer;
+  }
+
+`

@@ -251,6 +251,7 @@ const ProductForm = () => {
                 <FormControl fullWidth>
                   <InputLabel id="select-unit">Status do produto</InputLabel>
                   <Select
+                    name="isActive"
                     labelId="select-unit"
                     id="select-unit"
                     label="Status do produto"

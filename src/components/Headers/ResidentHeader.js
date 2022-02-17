@@ -12,14 +12,9 @@ const PadariaHeader = () => {
   const ItemLinks = () => {
     return (
       <>
-        <Link to="/produtos">
-          <Badge badgeContent="">
-            Produtos
-          </Badge>
-        </Link>
         <Link to="/caixa">
           <Badge badgeContent={cartSize} color="primary">
-            Caixa
+            Minha Caixa
           </Badge>
         </Link>
         <Link to="/pedidos">

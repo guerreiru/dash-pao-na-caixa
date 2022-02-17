@@ -22,7 +22,7 @@ const AdminHeader = () => {
         </Link>
         <Link to="/caixa">
           <Badge badgeContent={cartSize} color="primary">
-            Caixa
+            Minha Caixa
           </Badge>
         </Link>
         <Link to="/pedidos">

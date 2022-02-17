@@ -87,7 +87,7 @@ const ProductsList = () => {
 
   function ItemCard(item) {
     return (
-      <Grid item xs={12} sm={6} md={4} key={item.id}>
+      <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
         <Card>
           <CardMedia
             component="img"

@@ -1,8 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Content, TableContainer } from "./styles";
-import { api } from "../../services/api";
+import { Link, useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Grid, Modal } from "@material-ui/core";
+import HeadTitle from "../../components/HeadTitle"
+import { Container, Content, TableContainer, CardBtnLink } from "./styles";
+import { api } from "../../services/api";
 import { getUserConfig } from "../../utils/Functions/Auth";
 
 
@@ -87,12 +88,36 @@ const Dash = () => {
     );
   }
 
+  function cardLink(link) {
+    navigate(link)
+  }
+
   return (
     <Container>
+      <HeadTitle
+        title="Pão na caixa | Home"
+        description="Página inicial da aplicação!"
+      />
       <ModalRecurrence />
       <Content>
         <TableContainer>
-          {user.person ? `Olá ${user.person.name}!` : null}
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={12} sm={4} md={3}>
+              <CardBtnLink onClick={() => cardLink("/produtos")} >
+                Produtos
+              </CardBtnLink>
+            </Grid>
+
+            <Grid item xs={12} sm={4} md={3}>
+              <CardBtnLink onClick={() => cardLink("/perfil")} >
+                Perfil
+              </CardBtnLink>
+            </Grid>
+          </Grid>
         </TableContainer>
       </Content>
     </Container>
