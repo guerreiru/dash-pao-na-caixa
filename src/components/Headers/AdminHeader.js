@@ -20,11 +20,6 @@ const AdminHeader = () => {
             Condomínios
           </Badge>
         </Link>
-        <Link to="/caixa">
-          <Badge badgeContent={cartSize} color="primary">
-            Minha Caixa
-          </Badge>
-        </Link>
         <Link to="/pedidos">
           <Badge badgeContent="">
             Pedidos

@@ -32,10 +32,16 @@ export default function Header({ children }) {
         {children}
       </>
     )
-  } else {
+  } else if (role === "ROLE_ROOT") {
     return (
       <>
         <AdminHeader />
+        {children}
+      </>
+    )
+  } else {
+    return (
+      <>
         {children}
       </>
     )

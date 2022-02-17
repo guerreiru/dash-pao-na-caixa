@@ -31,7 +31,7 @@ const BakeryUsers = () => {
       if (user) {
         const userParsed = JSON.parse(user);
         const userDecoded = jwtDecode(userParsed.access_token);
-        return userDecoded
+        return userDecoded;
       }
 
       try {

@@ -1,11 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { TextField, Button, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from "@material-ui/core";
-import { MdOutlineVisibilityOff, MdOutlineVisibility } from 'react-icons/md';
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core";
+import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { Container, Content, FormHeader, FormGroup } from "./styles";
 import { toast } from "react-toastify";
+import HeadTitle from "../../components/HeadTitle"
 import { makeLogin } from "../../utils/Functions/Auth";
-import logoImage from "../../assets/logo.svg"
+import logoImage from "../../assets/logo.svg";
 
 const Login = () => {
   const [values, setValues] = React.useState({
@@ -49,6 +58,10 @@ const Login = () => {
 
   return (
     <Container>
+      <HeadTitle
+        title="Pão na caixa | Login"
+        description="Login da aplicação!"
+      />
       <Content onSubmit={handleSubmit}>
         <FormHeader>
           <img src={logoImage} alt="Logo pão na caixa" width="100" />
@@ -71,7 +84,7 @@ const Login = () => {
           <OutlinedInput
             name="password"
             id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
+            type={values.showPassword ? "text" : "password"}
             value={values.password}
             onChange={handleChange}
             endAdornment={
@@ -82,7 +95,11 @@ const Login = () => {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.showPassword ? <MdOutlineVisibilityOff /> : <MdOutlineVisibility />}
+                  {values.showPassword ? (
+                    <MdOutlineVisibilityOff />
+                  ) : (
+                    <MdOutlineVisibility />
+                  )}
                 </IconButton>
               </InputAdornment>
             }
@@ -90,11 +107,7 @@ const Login = () => {
           />
         </FormControl>
 
-        <Button
-          style={{marginTop: "10px"}}
-          type="submit"
-          variant="contained"
-        >  
+        <Button style={{ marginTop: "10px" }} type="submit" variant="contained">
           Entrar
         </Button>
       </Content>
