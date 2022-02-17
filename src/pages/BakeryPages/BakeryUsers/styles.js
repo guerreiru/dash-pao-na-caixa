@@ -26,7 +26,8 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   margin: 0 20px;
-
+  padding-top: 20px;
+  
   @media (max-width: 568px) {
     margin: 0 10px;
   }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button, Grid, Modal } from "@material-ui/core";
 import HeadTitle from "../../components/HeadTitle";
 import { Container, Content, TableContainer, CardBtnLink } from "./styles";
@@ -7,22 +7,28 @@ import { api } from "../../services/api";
 import { getUserConfig } from "../../utils/Functions/Auth";
 
 const Dash = () => {
+  const navigate = useNavigate();
   const [user, setUser] = React.useState({});
   const [open, setOpen] = React.useState(true);
-  const navigate = useNavigate();
+  const [loading, setloading] = React.useState(true);
+
+  React.useEffect(() => {
+    let mounted = true;
+    api.get("users/profile").then((user) => {
+      if (mounted) {
+        setUser(user.data);
+        setloading(false);
+      }
+    });
+    return function cleanup() {
+      mounted = false;
+    };
+  }, []);
+
   const handleClose = () => {
     setOpen(false);
     handleModalSubscription();
   };
-
-  React.useEffect(() => {
-    async function loadUserInfo() {
-      const user = await api.get("users/profile");
-      // const subscription = await api.get("subscriptions");
-      setUser(user.data);
-    }
-    loadUserInfo();
-  }, []);
 
   React.useEffect(() => {
     const modalSubscription = localStorage.getItem("modalSubscription");
@@ -96,52 +102,58 @@ const Dash = () => {
   }
 
   return (
-    <Container>
-      <HeadTitle
-        title="Pão na caixa | Home"
-        description="Página inicial da aplicação!"
-      />
-      <ModalRecurrence />
-      <Content>
-        <TableContainer>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            {getUserConfig().roles[0] === "ROLE_RESIDENT" ? (
-              <>
-                <Grid item xs={12} sm={4} md={3}>
-                  <CardBtnLink onClick={() => cardLink("/produtos")}>
-                    Produtos
-                  </CardBtnLink>
-                </Grid>
+    <>
+      {loading ? (
+        <p>Aguarde...</p>
+      ) : (
+        <Container>
+          <ModalRecurrence />
+          <HeadTitle
+            title="Pão na caixa | Home"
+            description="Página inicial da aplicação!"
+          />
+          <Content>
+            <TableContainer>
+              <Grid
+                container
+                rowSpacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+              >
+                {getUserConfig().roles[0] === "ROLE_RESIDENT" ? (
+                  <>
+                    <Grid item xs={12} sm={4} md={3}>
+                      <CardBtnLink onClick={() => cardLink("/produtos")}>
+                        Produtos
+                      </CardBtnLink>
+                    </Grid>
 
-                <Grid item xs={12} sm={4} md={3}>
-                  <CardBtnLink onClick={() => cardLink("/perfil")}>
-                    Perfil
-                  </CardBtnLink>
-                </Grid>
-              </>
-            ) : (
-              <>
-                <Grid item xs={12} sm={4} md={3}>
-                  <CardBtnLink onClick={() => cardLink("/usuarios")}>
-                    Usuários
-                  </CardBtnLink>
-                </Grid>
+                    <Grid item xs={12} sm={4} md={3}>
+                      <CardBtnLink onClick={() => cardLink("/perfil")}>
+                        Perfil
+                      </CardBtnLink>
+                    </Grid>
+                  </>
+                ) : (
+                  <>
+                    <Grid item xs={12} sm={4} md={3}>
+                      <CardBtnLink onClick={() => cardLink("/usuarios")}>
+                        Usuários
+                      </CardBtnLink>
+                    </Grid>
 
-                <Grid item xs={12} sm={4} md={3}>
-                  <CardBtnLink onClick={() => cardLink("/pedidos")}>
-                    Pedidos
-                  </CardBtnLink>
-                </Grid>
-              </>
-            )}
-          </Grid>
-        </TableContainer>
-      </Content>
-    </Container>
+                    <Grid item xs={12} sm={4} md={3}>
+                      <CardBtnLink onClick={() => cardLink("/pedidos")}>
+                        Pedidos
+                      </CardBtnLink>
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+            </TableContainer>
+          </Content>
+        </Container>
+      )}
+    </>
   );
 };
 

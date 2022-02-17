@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 
-import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dash from "./pages/Dash";
 import Profile from "./pages/Profile";
@@ -41,7 +40,6 @@ const Router = () => {
   return (
     <Routes>
       <Route path="/" exact element={<Login />} />
-      <Route path="/register" element={<Register />} />
       <Route path="/dash" element={<Dash />} />
       <Route path="/perfil" element={<Profile />} />
       <Route path="/confirma-assinatura" element={<ConfirmPayment />} />

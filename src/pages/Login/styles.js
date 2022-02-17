@@ -9,6 +9,8 @@ export const Container = styled.div`
   background-size: cover;
   height: 100%;
   padding-top: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 export const Content = styled.form`

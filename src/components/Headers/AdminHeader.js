@@ -2,11 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@material-ui/core";
 import HeaderTemplate from "../HeaderTemplate";
-import { useCart } from "../../hooks/useCart";
 
 const AdminHeader = () => {
-  const { cart } = useCart();
-  const cartSize = React.useMemo(() => cart.length, [cart]);
   const ItemLinks = () => {
     return (
       <>

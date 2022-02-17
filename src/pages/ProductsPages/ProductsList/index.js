@@ -103,9 +103,7 @@ const ProductsList = () => {
             <Typography sx={{ mb: 1.5 }} color="text.secondary">
               {FormatPrice(item.price)}
             </Typography>
-            <Typography variant="body2">
-              {item.description}
-            </Typography>
+            <Typography variant="body2">{item.description}</Typography>
           </CardContent>
           <CardActions>
             {role === "ROLE_RESIDENT" ? (
@@ -114,7 +112,7 @@ const ProductsList = () => {
                 variant="contained"
                 startIcon={<FiPlus />}
                 onClick={() => handleAddProduct(item)}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               >
                 Adicionar na caixa
               </Button>
@@ -126,7 +124,8 @@ const ProductsList = () => {
 
                 <IconButton onClick={() => handleDelete(item.id)}>
                   <FiTrash title="Excluir" className="btnDelete" />
-                </IconButton></>
+                </IconButton>
+              </>
             )}
           </CardActions>
         </Card>
@@ -193,7 +192,6 @@ const ProductsList = () => {
                 />
               </>
             )}
-
           </TableHeader>
 
           <Grid
