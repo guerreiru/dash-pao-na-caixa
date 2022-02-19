@@ -15,38 +15,67 @@ import Table from "../../../components/Table";
 
 import { api } from "../../../services/api";
 import { IoPersonAdd } from "react-icons/io5";
+import { getUserConfig } from "../../../utils/Functions/Auth";
 
-const BakeryUsers = () => {
+const BakeryUsers = (props) => {
   const [users, setUsers] = React.useState([]);
   const [results, setResults] = React.useState([]);
+  const [loading, setloading] = React.useState(true);
   const [busca, setBusca] = React.useState("");
   const [bakerySelected, setBakerySelected] = React.useState([]);
   const { id: bakeryId } = useParams();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    async function loadUsers() {
-      try {
-        const res = await api.get(`bakeries/${bakeryId}/people`);
-        setUsers(res.data);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadUsers();
-  }, [bakeryId]);
 
   React.useEffect(() => {
-    async function loadBakeryInfo() {
-      try {
-        const res = await api.get(`bakeries/${bakeryId}`);
-        setBakerySelected(res.data);
-      } catch (error) {
-        console.error(error);
+    let mounted = true;
+    if (mounted) {
+      if (getUserConfig().roles[0] === "ROLE_BAKERY") {
+        api.get(`bakeries/${props.bakeryId}/people`).then((res) => {
+          if (mounted) {
+            setUsers(res.data);
+            setloading(false)
+          }
+        });
+      } else {
+        api.get(`bakeries/${bakeryId}/people`).then((res) => {
+          if (mounted) {
+            setUsers(res.data);
+            setloading(false)
+          }
+        });
       }
     }
-    loadBakeryInfo();
-  }, [bakeryId]);
+    return function cleanup() {
+      mounted = false;
+    };
+
+  }, [props.bakeryId, bakeryId]);
+
+  React.useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      if (getUserConfig().roles[0] === "ROLE_BAKERY") {
+        api.get(`bakeries/${props.bakeryId}`).then((res) => {
+          if (mounted) {
+            setBakerySelected(res.data);
+            setloading(false)
+          }
+        });
+      } else {
+        api.get(`bakeries/${bakeryId}`).then((res) => {
+          if (mounted) {
+            setBakerySelected(res.data);
+            setloading(false)
+          }
+        });
+      }
+    }
+    return function cleanup() {
+      mounted = false;
+    };
+
+  }, [props.bakeryId, bakeryId]);
 
   function handleAdd() {
     navigate("adicionar");
@@ -76,42 +105,46 @@ const BakeryUsers = () => {
     <Container>
       <Content>
         <TableContainer>
-          <TableHeader>
-            {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : null}
-            <SearchInput>
-              <FaSearch color="#737373" onClick={searchStringInArray} />
-              <input
-                value={busca}
-                onChange={({ target }) => searchStringInArray(target.value)}
-                type="text"
-                placeholder="Pesquisar"
-              />
-              {busca && (
-                <TiDeleteOutline color="#737373" onClick={clearBusca} />
-              )}
-            </SearchInput>
-            <Button
-              type="button"
-              variant="contained"
-              startIcon={<FiPlus />}
-              onClick={handleAdd}
-              className="btnAddDesktop"
-            >
-              Adicionar
-            </Button>
+          {loading ? <p>Carregando...</p> : (
+            <>
+              <TableHeader>
+                {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : null}
+                <SearchInput>
+                  <FaSearch color="#737373" onClick={searchStringInArray} />
+                  <input
+                    value={busca}
+                    onChange={({ target }) => searchStringInArray(target.value)}
+                    type="text"
+                    placeholder="Pesquisar"
+                  />
+                  {busca && (
+                    <TiDeleteOutline color="#737373" onClick={clearBusca} />
+                  )}
+                </SearchInput>
+                <Button
+                  type="button"
+                  variant="contained"
+                  startIcon={<FiPlus />}
+                  onClick={handleAdd}
+                  className="btnAddDesktop"
+                >
+                  Adicionar
+                </Button>
 
-            <IoPersonAdd
-              title="Adicionar"
-              size="34"
-              className="btnAddMobile"
-              onClick={handleAdd}
-            />
-          </TableHeader>
-          <Table
-            noEditable={true}
-            data={results.length > 0 ? results : users}
-            apiRoute="users"
-          ></Table>
+                <IoPersonAdd
+                  title="Adicionar"
+                  size="34"
+                  className="btnAddMobile"
+                  onClick={handleAdd}
+                />
+              </TableHeader>
+              <Table
+                noEditable={true}
+                data={results.length > 0 ? results : users}
+                apiRoute="users"
+              ></Table>
+            </>
+          )}
         </TableContainer>
       </Content>
     </Container>

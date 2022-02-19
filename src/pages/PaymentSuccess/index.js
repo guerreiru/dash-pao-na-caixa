@@ -11,10 +11,11 @@ const ConfirmPayment = () => {
   const navigate = useNavigate();
   const search = useLocation().search;
   const paymentId = new URLSearchParams(search).get('payment_id');
+  const externalReference = new URLSearchParams(search).get('external_reference');
   const [payment, setPayment] = React.useState(false)
 
   React.useEffect(() => {
-    api.put(`/purchase-order-payments/status/${paymentId}`, {}).then(res => {
+    api.put(`/purchase-order-payments/status/${paymentId}/${externalReference}`, {}).then(res => {
       setCart([])
       navigate("/dash")
       setPayment(true)

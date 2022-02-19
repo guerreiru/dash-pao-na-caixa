@@ -1,11 +1,28 @@
 import React from "react";
 import { Button, FormGroup, Grid, TextField } from "@material-ui/core";
 import { FiTrash } from "react-icons/fi";
-//import { api } from "../../services/api";
+import { api } from "../../services/api";
+import { getUserConfig } from '../../utils/Functions/Auth';
 import { Container, Content, TableContainer, ModalAddCard } from "./styles";
 
 const Cards = () => {
   const [modal, setModal] = React.useState("none")
+  const [creditCard, setCreditCard] = React.useState([]);
+  const [loading, setloading] = React.useState(true);
+
+  React.useEffect(() => {
+    let mounted = true;
+    api.get(`/credit-cards/${getUserConfig().id}`).then((card) => {
+      if (mounted) {
+        setCreditCard(card.data);
+        setloading(false);
+      }
+    });
+    return function cleanup() {
+      mounted = false;
+    };
+  }, []);
+
   function AddCard() {
     return (
       <ModalAddCard display={modal}>
@@ -80,24 +97,53 @@ const Cards = () => {
     )
   }
 
-  return (
-    <Container>
-      <Content>
-        <TableContainer>
-          <h3>Cartões</h3>
-          <p style={{ margin: "10px 0" }} >**** **** **** 1300 <FiTrash color="#ff7a7a" /></p>
-          <Button
-            type="button"
-            variant="contained"
-            onClick={() => setModal("block")}
-          >
-            Adicionar cartão
-          </Button>
-          <AddCard></AddCard>
-        </TableContainer>
-      </Content>
-    </Container>
-  );
+  if (loading) {
+    return (
+      <Container>
+        <Content>
+          <TableContainer>
+            <h3>Aguarde...</h3>
+          </TableContainer>
+        </Content>
+      </Container>
+    )
+  } else {
+    return (
+      <Container>
+        <Content>
+          <TableContainer>
+            {creditCard !== "" ? (
+              <>
+                <h3>Cartões</h3>
+                <p style={{ margin: "10px 0" }} >**** **** **** 1300 <FiTrash color="#ff7a7a" /></p>
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={() => setModal("block")}
+                >
+                  Adicionar cartão
+                </Button>
+              </>
+            ) : (
+              <>
+                <h3>Cartões</h3>
+                <p style={{ margin: "10px 0" }} >Nenhum cartão cadastrado!</p>
+                <Button
+                  type="button"
+                  variant="contained"
+                  onClick={() => setModal("block")}
+                >
+                  Adicionar cartão
+                </Button>
+              </>
+            )}
+
+            <AddCard></AddCard>
+          </TableContainer>
+        </Content>
+      </Container>
+    )
+  }
 };
 
 export default Cards;

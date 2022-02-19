@@ -82,6 +82,7 @@ const Login = () => {
         <FormControl variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Senha</InputLabel>
           <OutlinedInput
+            autoComplete="on"
             name="password"
             id="outlined-adornment-password"
             type={values.showPassword ? "text" : "password"}

@@ -72,6 +72,9 @@ export const SideMenu = styled.aside`
     text-decoration: none;
     font-weight: 600;
     margin-top: 10px;
+    @media (max-width: 768px) {
+      margin-top: 0;
+    }
 
     &:hover {
       color: #777;
@@ -88,4 +91,8 @@ export const DropDownBtn = styled.div`
   margin-left: 10px;
   display: inline-block;
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 `

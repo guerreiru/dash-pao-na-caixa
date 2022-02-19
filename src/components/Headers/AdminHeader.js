@@ -22,6 +22,16 @@ const AdminHeader = () => {
             Pedidos
           </Badge>
         </Link>
+        <Link to="/categorias">
+          <Badge badgeContent="">
+            Categorias
+          </Badge>
+        </Link>
+        <Link to="/unidade/adicionar">
+          <Badge badgeContent="">
+            Unidades
+          </Badge>
+        </Link>
       </>
     );
   };

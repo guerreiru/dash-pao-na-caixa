@@ -19,7 +19,7 @@ import CondominiumForm from "./pages/CondominiumPages/CondominiumForm";
 import CondominiumResidents from "./pages/CondominiumPages/CondominiumResidents";
 import CondominiumFormResident from "./pages/CondominiumPages/CondominiumFormResident";
 
-import Person from "./pages/PersonPages/Person";
+import Person from "./pages/PersonPages";
 import FormPerson from "./pages/PersonPages/FormPerson";
 
 import SubscriptionPlanForm from "./pages/SubscriptionPages/SubscriptionPlanForm";
@@ -29,6 +29,10 @@ import Purchase from "./pages/PurchasePages";
 
 import CategoryList from "./pages/ProductsPages/CategoryList";
 import CategoryForm from "./pages/ProductsPages/CategoryForm";
+
+import UnitForm from "./pages/ProductsPages/UnitForm";
+import UnitList from "./pages/ProductsPages/UnitList";
+
 
 import ProductList from "./pages/ProductsPages/ProductsList";
 import ProductForm from "./pages/ProductsPages/ProductForm";
@@ -47,7 +51,7 @@ const Router = () => {
       <Route path="/pagamento_falho" element={<PaymentFailed />} />
 
       <Route
-        path="/:id/cartoes"
+        path="/cartoes"
         element={
           <PrivateRoute
             allowedRoutes={[
@@ -60,7 +64,7 @@ const Router = () => {
       />
 
       <Route
-        path="/:id/assinatura"
+        path="/assinatura"
         element={
           <PrivateRoute
             allowedRoutes={[
@@ -225,6 +229,9 @@ const Router = () => {
       <Route path="/categorias" element={<CategoryList />} />
       <Route path="/categorias/adicionar" element={<CategoryForm />} />
       <Route path="/categorias/:id/editar" element={<CategoryForm />} />
+
+      <Route path="/unidade" element={<UnitList />} />
+      <Route path="/unidade/adicionar" element={<UnitForm />} />
 
       <Route
         path="/produtos"

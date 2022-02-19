@@ -18,21 +18,22 @@ import { api } from "../../../services/api";
 const Bakery = () => {
   const [bakeries, setBakeries] = React.useState([]);
   const [results, setResults] = React.useState([]);
+  const [loading, setloading] = React.useState(true);
   const [busca, setBusca] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadBakeries();
+    let mounted = true;
+    api.get("bakeries").then((res) => {
+      if (mounted) {
+        setBakeries(res.data.data);
+        setloading(false);
+      }
+    });
+    return function cleanup() {
+      mounted = false;
+    };
   }, []);
-
-  async function loadBakeries() {
-    try {
-      const res = await api.get("bakeries");
-      setBakeries(res.data.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   function handleAdd() {
     navigate("adicionar");
@@ -60,43 +61,45 @@ const Bakery = () => {
   return (
     <Container>
       <Content>
-        <TableContainer>
-          <TableHeader>
-            <h3>Padarias</h3>
-            <SearchInput>
-              <FaSearch color="#737373" onClick={searchStringInArray} />
-              <input
-                value={busca}
-                onChange={({ target }) => searchStringInArray(target.value)}
-                type="text"
-                placeholder="Pesquisar"
-              />
-              {busca && (
-                <TiDeleteOutline color="#737373" onClick={clearBusca} />
-              )}
-            </SearchInput>
-            <Button
-              type="button"
-              variant="contained"
-              startIcon={<FiPlus />}
-              onClick={handleAdd}
-              className="btnAddDesktop"
-            >
-              Adicionar
-            </Button>
+        {loading ? <p>Carregando...</p> : (
+          <TableContainer>
+            <TableHeader>
+              <h3>Padarias</h3>
+              <SearchInput>
+                <FaSearch color="#737373" onClick={searchStringInArray} />
+                <input
+                  value={busca}
+                  onChange={({ target }) => searchStringInArray(target.value)}
+                  type="text"
+                  placeholder="Pesquisar"
+                />
+                {busca && (
+                  <TiDeleteOutline color="#737373" onClick={clearBusca} />
+                )}
+              </SearchInput>
+              <Button
+                type="button"
+                variant="contained"
+                startIcon={<FiPlus />}
+                onClick={handleAdd}
+                className="btnAddDesktop"
+              >
+                Adicionar
+              </Button>
 
-            <IoPersonAdd
-              title="Adicionar"
-              size="34"
-              className="btnAddMobile"
-              onClick={handleAdd}
-            />
-          </TableHeader>
-          <Table
-            data={results.length > 0 ? results : bakeries}
-            apiRoute="bakeries"
-          ></Table>
-        </TableContainer>
+              <IoPersonAdd
+                title="Adicionar"
+                size="34"
+                className="btnAddMobile"
+                onClick={handleAdd}
+              />
+            </TableHeader>
+            <Table
+              data={results.length > 0 ? results : bakeries}
+              apiRoute="bakeries"
+            ></Table>
+          </TableContainer>
+        )}
       </Content>
     </Container>
   );

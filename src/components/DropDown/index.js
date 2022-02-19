@@ -34,12 +34,12 @@ const DropDown = ({ children, name }) => {
               </NavLink>
             </p>
             <p>
-              <NavLink to={`/${getUserConfig().id}/cartoes`} >
+              <NavLink to={`/cartoes`} >
                 Cartões
               </NavLink>
             </p>
             <p>
-              <NavLink to={`/${getUserConfig().id}/assinatura`} >
+              <NavLink to={`/assinatura`} >
                 Assinatura
               </NavLink>
             </p>

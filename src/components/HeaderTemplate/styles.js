@@ -72,6 +72,9 @@ export const SideMenu = styled.aside`
     text-decoration: none;
     font-weight: 600;
     margin-top: 10px;
+    @media (max-width: 768px) {
+      margin-top: 0;
+    }
 
     &:hover {
       color: #777;

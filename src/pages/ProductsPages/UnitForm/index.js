@@ -13,26 +13,28 @@ import {
 import { api } from "../../../services/api";
 import ClearForm from "../../../utils/Functions/ClearForm";
 
-const CategoryForm = () => {
+const UnitForm = () => {
   const [values, setValues] = React.useState({
     name: "",
+    acronyms: "",
   });
   const navigate = useNavigate();
-  const { id: categoryId } = useParams();
+  const { id: unitId } = useParams();
 
   React.useEffect(() => {
-    if (categoryId) {
+    if (unitId) {
       try {
-        api.get(`categories/${categoryId}`).then((res) => {
+        api.get(`units/${unitId}`).then((res) => {
           setValues({
             name: res.data.name,
+            acronyms: res.data.acronyms,
           });
         });
       } catch (error) {
         console.error(error);
       }
     }
-  }, [categoryId]);
+  }, [unitId]);
 
   function handleChange(ev) {
     setValues({
@@ -44,25 +46,26 @@ const CategoryForm = () => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const categoria = {
+    const unidade = {
       name: values.name,
+      acronyms: values.acronyms,
     };
 
-    if (categoryId) {
+    if (unitId) {
       try {
-        await api.put(`categories/${categoryId}`, categoria);
-        toast.success("Categoria editada!");
+        await api.put(`units/${unitId}`, unidade);
+        toast.success("Unidade editada!");
         setValues(ClearForm(values));
-        navigate("/categorias");
+        navigate("/unidade");
       } catch (error) {
         console.error(error);
       }
     } else {
       try {
-        await api.post("categories", categoria);
-        toast.success("Categoria cadastrada!");
+        await api.post("units", unidade);
+        toast.success("Unidade cadastrada!");
         setValues(ClearForm(values));
-        navigate("/categorias");
+        navigate("/unidade");
       } catch (error) {
         console.error(error);
       }
@@ -71,7 +74,7 @@ const CategoryForm = () => {
 
   function handleCancel() {
     setValues(ClearForm(values));
-    navigate("/categorias");
+    navigate("/unidade");
   }
 
   return (
@@ -79,7 +82,7 @@ const CategoryForm = () => {
       <Content>
         <FormContainer>
           <FormHeader>
-            <h3>Adicionar Categoria</h3>
+            <h3>Adicionar Unidade</h3>
           </FormHeader>
 
           <form onSubmit={handleSubmit}>
@@ -92,10 +95,23 @@ const CategoryForm = () => {
                 <FormGroup>
                   <TextField
                     name="name"
-                    label="Nome da categoria"
+                    label="Nome da unidade"
                     type="text"
                     onChange={handleChange}
                     value={values.name || ""}
+                    fullWidth
+                  />
+                </FormGroup>
+              </Grid>
+
+              <Grid item xs={12} sm={4} md={6}>
+                <FormGroup>
+                  <TextField
+                    name="acronyms"
+                    label="Sigla da unidade"
+                    type="text"
+                    onChange={handleChange}
+                    value={values.acronyms || ""}
                     fullWidth
                   />
                 </FormGroup>
@@ -121,4 +137,4 @@ const CategoryForm = () => {
   );
 };
 
-export default CategoryForm;
+export default UnitForm;
