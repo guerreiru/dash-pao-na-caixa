@@ -92,7 +92,7 @@ const ProductsList = () => {
           <CardMedia
             component="img"
             width="140"
-            height="300"
+            height="200"
             image={item.imgUrl}
             alt={item.name}
           />

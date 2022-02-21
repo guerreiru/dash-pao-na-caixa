@@ -120,6 +120,7 @@ const Register = () => {
           value={formik.values.password}
           error={formik.errors.password}
           helperText={formik.errors.password}
+          autoComplete="true"
         />
 
         <Button type="submit" variant="contained">

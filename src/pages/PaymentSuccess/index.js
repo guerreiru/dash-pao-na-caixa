@@ -20,7 +20,7 @@ const ConfirmPayment = () => {
       navigate("/dash")
       setPayment(true)
     })
-  }, [paymentId, navigate, setCart])
+  }, [paymentId, navigate, setCart, externalReference])
 
   return (
     <Container>

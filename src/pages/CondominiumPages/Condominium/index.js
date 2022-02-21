@@ -95,6 +95,7 @@ const Condominium = () => {
           <Table
             data={results.length > 0 ? results : condominiums}
             apiRoute="condominiums"
+            userType="condominium"
           ></Table>
         </TableContainer>
       </Content>

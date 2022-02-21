@@ -28,6 +28,7 @@ const CondominiumResidents = () => {
     async function loadResidents() {
       try {
         const res = await api.get(`condominiums/${condominiumId}/people`);
+        console.log(res.data);
         setResidents(res.data);
       } catch (error) {
         console.error(error);
@@ -110,9 +111,9 @@ const CondominiumResidents = () => {
             />
           </TableHeader>
           <Table
-            noEditable={true}
             data={results.length > 0 ? results : residents}
             apiRoute="residents"
+            urlRoute="condominio"
           ></Table>
         </TableContainer>
       </Content>

@@ -4,11 +4,11 @@ import DropDown from '../DropDown';
 import HeaderTemplate from '../HeaderTemplate'
 import { DropDownBtn } from './styles';
 
-const PadariaHeader = () => {
+const PadariaHeader = ({ userData }) => {
   const ItemLinks = () => {
     return (
       <>
-        <Link to="/usuarios">Usuários</Link>
+        <Link to={`/padarias/${userData.bakery.id}/usuarios`}>Usuários</Link>
         <Link to="/produtos">Produtos</Link>
         <Link to="/pedidos">Pedidos</Link>
         <DropDownBtn href="/" onClick={(e) => e.preventDefault()}>

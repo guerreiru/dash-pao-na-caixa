@@ -10,14 +10,14 @@ const Dash = () => {
   const navigate = useNavigate();
   const [user, setUser] = React.useState({});
   const [open, setOpen] = React.useState(true);
-  const [loading, setloading] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     let mounted = true;
     api.get("users/profile").then((user) => {
       if (mounted) {
         setUser(user.data);
-        setloading(false);
+        setLoading(false);
       }
     });
     return function cleanup() {

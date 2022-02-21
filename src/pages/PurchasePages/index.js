@@ -1,6 +1,7 @@
 import React from "react";
 import PurchaseList from "./PurchaseList";
 import PurchaseHistory from "./PurchaseHistory";
+import PurchaseListAdmin from "./PurchaseListAdmin";
 import jwtDecode from "jwt-decode";
 
 const Purchase = () => {
@@ -29,6 +30,8 @@ const Purchase = () => {
   } else {
     if (role === "ROLE_RESIDENT") {
       return <PurchaseHistory />;
+    } else if (role === "ROLE_ROOT" || role === "ROLE_ADMIN") {
+      return <PurchaseListAdmin />;
     } else {
       return <PurchaseList />;
     }

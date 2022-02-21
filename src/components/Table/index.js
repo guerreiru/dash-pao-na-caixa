@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { FaEdit } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 import { HiUser } from "react-icons/hi";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import AlertDialog from "../../components/AlertDialog";
 import { Container, BtnOptions } from "./styles";
 import { api } from "../../services/api";
@@ -22,6 +22,7 @@ export default function DateTable(props) {
   const [data, setData] = React.useState([]);
   const [alertOpen, setAlertOpen] = React.useState(false);
   const [itemSeleted, setItemSeleted] = React.useState([]);
+  const { id: bakeryId } = useParams();
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
@@ -62,6 +63,58 @@ export default function DateTable(props) {
     }
   }
 
+  function RenderBtnOptions({ data }) {
+    if (props.userType === 'bakery' || props.userType === 'condominium') {
+      return (
+        <BtnOptions>
+          {location.includes("usuarios") || location.includes("categorias") ? null : (
+            <HiUser
+              title="Usuários"
+              onClick={() => navigate(`${data.id}/usuarios`)}
+              size="16"
+              className="btnAdd"
+            />
+          )}
+
+          {props.noEditable ? null : (
+            <FaEdit
+              title="Editar"
+              onClick={() => navigate(`${data.id}/editar`)}
+              className="btnEdit"
+            />
+          )}
+
+          <FiTrash
+            title="Excluir"
+            onClick={() => handleOpen(data)}
+            size="16"
+            className="btnDelete"
+          />
+        </BtnOptions>
+      )
+    } else {
+      return (
+        <BtnOptions>
+          {props.noEditable ? null : (
+            <FaEdit
+              title="Editar"
+              onClick={() => {
+                navigate(`/${props.urlRoute}/${bakeryId}/usuarios/${data.user_id}/editar`)
+              }}
+              className="btnEdit"
+            />
+          )}
+          <FiTrash
+            title="Excluir"
+            onClick={() => handleOpen(data)}
+            size="16"
+            className="btnDelete"
+          />
+        </BtnOptions>
+      )
+    }
+  }
+
   return (
     <Container>
       <TableContainer component={Paper}>
@@ -73,41 +126,19 @@ export default function DateTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((data, index) => (
-              <TableRow
-                key={index}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{data.name || data.user_name}</TableCell>
-                <TableCell>
-                  <BtnOptions>
-                    {location.includes("usuarios") || location.includes("categorias") ? null : (
-                      <HiUser
-                        title="Usuários"
-                        onClick={() => navigate(`${data.id}/usuarios`)}
-                        size="16"
-                        className="btnAdd"
-                      />
-                    )}
-
-                    {props.noEditable ? null : (
-                      <FaEdit
-                        title="Editar"
-                        onClick={() => navigate(`${data.user_id}/editar`)}
-                        className="btnEdit"
-                      />
-                    )}
-
-                    <FiTrash
-                      title="Excluir"
-                      onClick={() => handleOpen(data)}
-                      size="16"
-                      className="btnDelete"
-                    />
-                  </BtnOptions>
-                </TableCell>
-              </TableRow>
-            ))}
+            {data.map((data, index) => {
+              return (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{data.name || data.user_name}</TableCell>
+                  <TableCell>
+                    <RenderBtnOptions data={data} />
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </TableContainer>

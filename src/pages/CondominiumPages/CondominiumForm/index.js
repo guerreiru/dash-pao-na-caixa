@@ -76,8 +76,16 @@ const CondominiumForm = () => {
             complement: res.data.address.complement,
           });
           setTitle(res.data.name);
-          setBakerySelected(res.data.bakery.id);
-          setSubscriptionSelected(res.data.subscriptionPlan.id);
+          if (res.data.bakery) {
+            setBakerySelected(res.data.bakery.id);
+          } else {
+            setBakerySelected("");
+          }
+          if (res.data.subscriptionPlan) {
+            setSubscriptionSelected(res.data.subscriptionPlan.id);
+          } else {
+            setSubscriptionSelected("");
+          }
         });
       } catch (error) {
         console.error(error);
@@ -105,6 +113,8 @@ const CondominiumForm = () => {
         zip_code: values.zip_code,
         complement: values.complement,
       },
+      bakery: bakerySelected,
+      subscriptionPlan: subscriptionSelected
     };
 
     if (condominiumId) {
@@ -114,7 +124,7 @@ const CondominiumForm = () => {
         toast.success("Condomínio editado!");
         setValues(ClearForm(values));
         navigate("/condominios");
-      } catch (error) {}
+      } catch (error) { }
     } else {
       try {
         api.post("condominiums", condominium);
@@ -122,7 +132,7 @@ const CondominiumForm = () => {
         toast.success("Condomínio cadastrado!");
         setValues(ClearForm(values));
         navigate("/condominios");
-      } catch (error) {}
+      } catch (error) { }
     }
   }
 

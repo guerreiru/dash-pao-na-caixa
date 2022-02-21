@@ -12,7 +12,7 @@ import {
   TableHeader,
 } from "./styles";
 import Table from "../../../components/Table";
-
+import HeadTitle from "../../../components/HeadTitle";
 import { api } from "../../../services/api";
 import { IoPersonAdd } from "react-icons/io5";
 import { getUserConfig } from "../../../utils/Functions/Auth";
@@ -31,7 +31,7 @@ const BakeryUsers = (props) => {
     let mounted = true;
     if (mounted) {
       if (getUserConfig().roles[0] === "ROLE_BAKERY") {
-        api.get(`bakeries/${props.bakeryId}/people`).then((res) => {
+        api.get(`bakeries/${getUserConfig().bakery.id}/people`).then((res) => {
           if (mounted) {
             setUsers(res.data);
             setloading(false)
@@ -56,7 +56,7 @@ const BakeryUsers = (props) => {
     let mounted = true;
     if (mounted) {
       if (getUserConfig().roles[0] === "ROLE_BAKERY") {
-        api.get(`bakeries/${props.bakeryId}`).then((res) => {
+        api.get(`bakeries/${getUserConfig().bakery.id}`).then((res) => {
           if (mounted) {
             setBakerySelected(res.data);
             setloading(false)
@@ -78,7 +78,7 @@ const BakeryUsers = (props) => {
   }, [props.bakeryId, bakeryId]);
 
   function handleAdd() {
-    navigate("adicionar");
+    navigate(`/padarias/${bakeryId}/usuarios/adicionar`);
   }
 
   function searchStringInArray(str) {
@@ -104,11 +104,15 @@ const BakeryUsers = (props) => {
   return (
     <Container>
       <Content>
+        <HeadTitle
+          title={bakerySelected ? `Pão na caixa | ${bakerySelected.name}` : null}
+          description="Padarias cadastradas"
+        />
         <TableContainer>
           {loading ? <p>Carregando...</p> : (
             <>
               <TableHeader>
-                {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : null}
+                {bakerySelected ? <h3>Usuários de {bakerySelected.name}</h3> : ""}
                 <SearchInput>
                   <FaSearch color="#737373" onClick={searchStringInArray} />
                   <input
@@ -139,9 +143,10 @@ const BakeryUsers = (props) => {
                 />
               </TableHeader>
               <Table
-                noEditable={true}
                 data={results.length > 0 ? results : users}
                 apiRoute="users"
+                urlRoute="padarias"
+                userType="bakeryUser"
               ></Table>
             </>
           )}

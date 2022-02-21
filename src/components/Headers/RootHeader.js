@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@material-ui/core";
 import HeaderTemplate from "../HeaderTemplate";
+import { DropDownBtn } from './styles';
+import DropDown from "../DropDown";
 
-const AdminHeader = () => {
+const RootHeader = () => {
   const ItemLinks = () => {
     return (
       <>
@@ -17,21 +19,21 @@ const AdminHeader = () => {
             Condomínios
           </Badge>
         </Link>
+        <Link to="/planos">
+          <Badge badgeContent="">
+            Planos
+          </Badge>
+        </Link>
         <Link to="/pedidos">
           <Badge badgeContent="">
             Pedidos
           </Badge>
         </Link>
-        <Link to="/categorias">
+        <DropDownBtn href="/" onClick={(e) => e.preventDefault()}>
           <Badge badgeContent="">
-            Categorias
+            <DropDown></DropDown>
           </Badge>
-        </Link>
-        <Link to="/unidade/adicionar">
-          <Badge badgeContent="">
-            Unidades
-          </Badge>
-        </Link>
+        </DropDownBtn>
       </>
     );
   };
@@ -43,4 +45,4 @@ const AdminHeader = () => {
   );
 };
 
-export default AdminHeader;
+export default RootHeader;

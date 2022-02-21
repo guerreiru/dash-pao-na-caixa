@@ -154,6 +154,7 @@ const FormPerson = () => {
                       onChange={handleChange}
                       value={values.password || ""}
                       fullWidth
+                      autoComplete="true"
                     />
                   </FormGroup>
                 </Grid>

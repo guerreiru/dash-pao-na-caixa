@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHeader,
 } from "./styles";
+import HeadTitle from "../../../components/HeadTitle";
 import Table from "../../../components/Table";
 import { api } from "../../../services/api";
 
@@ -60,6 +61,10 @@ const Bakery = () => {
   }
   return (
     <Container>
+      <HeadTitle
+        title="Pão na caixa | Padarias"
+        description="Padarias cadastradas"
+      />
       <Content>
         {loading ? <p>Carregando...</p> : (
           <TableContainer>
@@ -97,6 +102,7 @@ const Bakery = () => {
             <Table
               data={results.length > 0 ? results : bakeries}
               apiRoute="bakeries"
+              userType="bakery"
             ></Table>
           </TableContainer>
         )}

@@ -125,6 +125,7 @@ const Router = () => {
             allowedRoutes={[
               "ROLE_ADMIN",
               "ROLE_ROOT",
+              "ROLE_BAKERY",
             ]}
           >
             <BakeryUsers />
@@ -139,6 +140,22 @@ const Router = () => {
             allowedRoutes={[
               "ROLE_ADMIN",
               "ROLE_ROOT",
+              "ROLE_BAKERY",
+            ]}
+          >
+            <BakeryFormUser />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/padarias/:id/usuarios/:userId/editar"
+        element={
+          <PrivateRoute
+            allowedRoutes={[
+              "ROLE_ADMIN",
+              "ROLE_ROOT",
+              "ROLE_BAKERY",
             ]}
           >
             <BakeryFormUser />
